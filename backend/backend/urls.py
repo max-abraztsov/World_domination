@@ -5,5 +5,5 @@ from django.urls import re_path as url
  
 urlpatterns = [ 
     path('admin/', admin.site.urls), 
-    path('login', LoginView.as_view(), name='oh shit') 
+    path('login', LoginView.as_view(), name='some text') 
 ]
