@@ -17,7 +17,7 @@ const Country: FC = () => {
         bomb: 2,
         cities: [
             {
-                photo: "https://www.sb.by/upload/medialibrary/1a7/1a727cda80dc698264b839a7ff704fa8.jpg",
+                photo: "https://www.sb.by/upload/iblock/f82/f8206e5046cccf16e1a69da02994b74f.jpg",
                 city__name: "Minsk",
                 live__level: 56,
                 progress: 90,
@@ -33,7 +33,7 @@ const Country: FC = () => {
                 shield: undefined,
             },
             {
-                photo: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/09/fb/ce/ff/caption.jpg?w=700&h=500&s=1",
+                photo: "https://www.sb.by/upload/iblock/f82/f8206e5046cccf16e1a69da02994b74f.jpg",
                 city__name: "Grodno",
                 live__level: 57,
                 progress: 50,
@@ -41,7 +41,7 @@ const Country: FC = () => {
                 shield: undefined,
             },
             {
-                photo: "https://www.vsedostoprimechatelnosti.ru/assets/cache/images/evropa/belorussiya/brest/brest-880x-770.jpg",
+                photo: "https://www.sb.by/upload/iblock/f82/f8206e5046cccf16e1a69da02994b74f.jpg",
                 city__name: "Brest",
                 live__level: 58,
                 progress: 50,
