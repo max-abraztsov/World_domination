@@ -9,6 +9,7 @@ const Navigation: FC = () => {
                 <Link className={cl.navigation__link} to="/">Home</Link>
                 <Link className={cl.navigation__link} to="/country">Your country</Link>
                 <Link className={cl.navigation__link} to="/login">Sign in</Link>
+                <Link className={cl.navigation__link} to="/wd-admin">Admin</Link>
             </ul>
         </nav>
     );

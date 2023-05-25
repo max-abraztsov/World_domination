@@ -3,11 +3,10 @@
     flex-direction: column;
     align-items: center;
     background-color: #FBFBFB;
-    width: 100vw;
-    height: 100vh;
+    /* width: 100vw; */
 }
 .container{
-    max-width: 1300px;
+    /* max-width: 1300px; */
     margin: 0 20px;
 }
 .country__info{

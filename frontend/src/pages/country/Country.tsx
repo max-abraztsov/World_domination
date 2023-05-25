@@ -5,9 +5,15 @@ import cl from "./Country.module.css"
 import City from '../../components/city/City';
 import Checkbox from '../../components/UI/checkbox/Checkbox';
 
-const Country: FC = () => {
+interface CountryProps{
+    forAdmin?: ICountry;
+}
 
-    const country = useAppSelector(state => state.country);
+const Country: FC<CountryProps> = ({forAdmin}) => {
+
+    let country = useAppSelector(state => state.country);
+
+    if (forAdmin) country = forAdmin;
 
     const [isPresident, setIsPresident] = useState(true);
     
