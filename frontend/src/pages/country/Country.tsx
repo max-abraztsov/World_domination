@@ -1,6 +1,7 @@
-import {FC, useState} from 'react';
-import { ICountry, IForm  } from '../../types/types';
-import { useAppSelector } from '../../hook';
+import {FC, useState, useEffect} from 'react';
+import { ICountry } from '../../types/types';
+import { useAppSelector, useAppDispatch } from '../../hook';
+import { toggleNuclearStatus, toggleEcologyDevelop } from '../../store/countrySlice';
 import cl from "./Country.module.css"
 import City from '../../components/city/City';
 import Checkbox from '../../components/UI/checkbox/Checkbox';
@@ -11,42 +12,18 @@ interface CountryProps{
 
 const Country: FC<CountryProps> = ({forAdmin}) => {
 
-    let country = useAppSelector(state => state.country);
+    const [isPresident, setIsPresident] = useState(true);
+    const dispatch = useAppDispatch();
 
+    let country = useAppSelector(state => state.country);
     if (forAdmin) country = forAdmin;
 
-    const [isPresident, setIsPresident] = useState(true);
+    const form = useAppSelector(state => state.form);
     
-
-    const [formResult, setFormResult] = useState<IForm>({
-        country: "Belarus",
-        nuclear__program: false,
-        ecology: false,
-        bomb: 0,
-        donat: 0,
-        cities: [
-            {
-                city__name: "Minsk",
-                develop: false,
-                shield: false,
-            },
-            {
-                city__name: "Homel",
-                develop: false,
-                shield: false,
-            },
-            {
-                city__name: "Grodno",
-                develop: false,
-                shield: false,
-            },
-            {
-                city__name: "Brest",
-                develop: false,
-                shield: false,
-            },
-        ],
-    });
+    // useEffect(() => {
+    //     console.log(form);
+    // }, [form])
+    
 
     return (
         <div className={cl.country}>
@@ -69,10 +46,11 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
                 </section>
                 <form>
                     <section className={cl.cities__info}>
-                        {country.cities.map(item => 
+                        {country.cities.map((item, index) => 
                             <City 
-                                key={item.city__name} 
+                                key={index} 
                                 city={item} 
+                                id={index}
                                 isPresident={isPresident}
                             />                    
                         )}
@@ -81,7 +59,9 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
                         <div className={cl.country__development}>
                             <div className={cl.country__dev_col}>
                                 <h3>Nuclear program:</h3>
-                                <Checkbox checked={country.nuclear__program}>Develop nuclear program (500$)</Checkbox>
+                                <Checkbox 
+                                toggleStatus={() => dispatch(toggleNuclearStatus(form.nuclear__program))} 
+                                checked={country.nuclear__program}>Develop nuclear program (500$)</Checkbox>
                                 <div className={cl.country__input}>
                                     <p className={cl.input__text}>Order nuclear bombs (150$):</p>
                                     <input type="number" placeholder='2'/>
@@ -89,7 +69,8 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
                             </div>
                             <div className={cl.country__dev_col}>
                                 <h3>Ecology:</h3>
-                                <Checkbox>Develop ecology (200$)</Checkbox>
+                                <Checkbox 
+                                toggleStatus={() => dispatch(toggleEcologyDevelop(form.ecology))}>Develop ecology (200$)</Checkbox>
                             </div>
                         </div>
                         <div className={cl.country__button}>

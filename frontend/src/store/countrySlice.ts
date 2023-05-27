@@ -1,12 +1,12 @@
 import {createSlice, PayloadAction, createAsyncThunk} from "@reduxjs/toolkit";
-import { ICountry } from "../types/types";
+import { ICountry, IForm } from "../types/types";
 
-const initialState: ICountry = {
+const initialStateCountry: ICountry = {
     country: "Belarus",
     flag__photo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQNcell8SvcD2oHdkfnzK_q_hZ7LSyjc7UyAPeZtyATwYoD5HOGYtq-tOGyVpxE7YLhb0&usqp=CAU",
     budget: 1000,
     average__live__level: 57,
-    nuclear__program: true,
+    nuclear__program: false,
     bomb: 2,
     cities: [ 
         {
@@ -23,7 +23,7 @@ const initialState: ICountry = {
             live__level: 57,
             progress: 60,
             profit: 180,  
-            shield: undefined,
+            shield: false,
         },
         {
             photo: "https://www.sb.by/upload/iblock/f82/f8206e5046cccf16e1a69da02994b74f.jpg",
@@ -31,7 +31,7 @@ const initialState: ICountry = {
             live__level: 57,
             progress: 50,
             profit: 170,  
-            shield: undefined,
+            shield: false,
         },
         {
             photo: "https://www.sb.by/upload/iblock/f82/f8206e5046cccf16e1a69da02994b74f.jpg",
@@ -44,18 +44,77 @@ const initialState: ICountry = {
     ] 
 }
 
+const formResult: IForm = {
+    country: initialStateCountry.country,
+    nuclear__program: initialStateCountry.nuclear__program,
+    ecology: false,
+    bomb: 0,
+    donat: 0,
+    cities: [
+        {
+            city__name: initialStateCountry.cities[0].city__name,
+            develop: false,
+            shield: initialStateCountry.cities[0].shield,
+        },
+        {
+            city__name: initialStateCountry.cities[1].city__name,
+            develop: false,
+            shield: initialStateCountry.cities[1].shield,
+        },
+        {
+            city__name: initialStateCountry.cities[2].city__name,
+            develop: false,
+            shield: initialStateCountry.cities[2].shield,
+        },
+        {
+            city__name: initialStateCountry.cities[3].city__name,
+            develop: false,
+            shield: initialStateCountry.cities[3].shield,
+        },
+    ],
+};
+
 const countrySlice = createSlice({
     name: "country",
-    initialState,
+    initialState: initialStateCountry,
     reducers: {
-        toggleCheckbox(state, action: PayloadAction<boolean>){
-            console.log("Work!");
+        toggleChecked(state, action: PayloadAction<boolean>){
+            console.log(action.payload);
         }
     },
 });
 
-export const {toggleCheckbox} = countrySlice.actions;
+const formSlice = createSlice({
+    name: "form",
+    initialState: formResult,
+    reducers: {
+        toggleNuclearStatus(state, action: PayloadAction<boolean> ){
+            state.nuclear__program = !action.payload;   
+        },
+        toggleEcologyDevelop(state, action: PayloadAction<boolean>){ 
+            state.ecology = !action.payload;    
+        },
+        toggleCityDevelop(state, action: PayloadAction<{status: boolean, id: number}>){
+            state.cities[action.payload.id].develop = !action.payload.status;
+        },
+        toggleProtect(state, action: PayloadAction<{status: boolean, id: number}>){
+            state.cities[action.payload.id].shield = !action.payload.status;
+        }
+    },
+});
 
-export default countrySlice.reducer;
+export const {toggleChecked} = countrySlice.actions;
+export const 
+{
+    toggleNuclearStatus, 
+    toggleEcologyDevelop, 
+    toggleCityDevelop,
+    toggleProtect,
+} = formSlice.actions;
+
+export default {
+    countryInfoReducer : countrySlice.reducer,
+    formReducer: formSlice.reducer,
+}
 
 

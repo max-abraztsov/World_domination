@@ -1,14 +1,25 @@
-import React, {FC} from 'react';
+import React, {FC, useEffect} from 'react';
 import Checkbox from '../UI/checkbox/Checkbox';
+import { useAppSelector, useAppDispatch } from '../../hook';
+import { toggleProtect, toggleCityDevelop } from '../../store/countrySlice';
 import { ICity } from '../../types/types';
 import cl from "./City.module.css"
 
 interface CityProps{
    city: ICity;
    isPresident: boolean; 
+   id: number;
 }
 
-const City: FC<CityProps> = ({city, isPresident}) => {
+const City: FC<CityProps> = ({city, isPresident, id}) => {
+    
+    const dispatch = useAppDispatch();
+    const form = useAppSelector(state => state.form);
+
+    // useEffect(() => {
+    //     console.log(form);
+    // }, [form])
+
     return (
         <div className={cl.city}>
             <div className={cl.city__block}>
@@ -27,8 +38,13 @@ const City: FC<CityProps> = ({city, isPresident}) => {
                 )}</p><hr />
             </div>
             <div className={cl.city__prices}>
-                <Checkbox>Develop the city (150$)</Checkbox>
-                <Checkbox checked={city.shield}>Protect (300$)</Checkbox>
+                <Checkbox 
+                toggleStatus={() => dispatch(toggleCityDevelop({status:form.cities[id].develop, id: id}))}
+                id={id}>Develop the city (150$)</Checkbox>
+                <Checkbox 
+                toggleStatus={() => dispatch(toggleProtect({ status: form.cities[id].shield, id: id}))}
+                id={id} 
+                checked={city.shield}>Protect (300$)</Checkbox>
             </div>
         </div>
     );

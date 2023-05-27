@@ -5,7 +5,7 @@ export interface ICity{ // Информация по конкретному го
     live__level: number; // Уровень жизни %
     progress: number; // Развитие %
     profit: number;   // Доход %
-    shield: boolean | undefined;  // Наличие щита
+    shield: boolean;  // Наличие щита
 }
 
 export interface ICountry{
@@ -13,7 +13,7 @@ export interface ICountry{
     flag__photo: string; // Ссылка на фото флага
     budget: number; // Бюджет 
     average__live__level: number; // Средний уровень жизни
-    nuclear__program: boolean | undefined; // Наличие ядерной программы
+    nuclear__program: boolean; // Наличие ядерной программы
     bomb: number; // Количество имеющихся бомб
     cities: ICity[]; // Массив всех городов одной страны 
 }

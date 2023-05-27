@@ -5,7 +5,8 @@ import adminReducers from "./adminSlice"
 const store = configureStore({
     reducer: {
         // Coutry reducers
-        country: countryReducer,
+        country: countryReducer.countryInfoReducer,
+        form: countryReducer.formReducer,
         // Admin reducers
         countries: adminReducers.countriesReducer, // Reducer for information about all countries 
     }

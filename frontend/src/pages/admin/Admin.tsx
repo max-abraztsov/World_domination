@@ -11,7 +11,6 @@ const Admin: FC = () => {
         <div className={cl.admin}>
             <div className={cl.container}>
                 <section className={cl.countries}>
-
                     {countries.countries.map( country => 
                         <div>
                             <Country key={country.country} forAdmin={country}></Country>
