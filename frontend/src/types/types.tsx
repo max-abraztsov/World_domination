@@ -34,7 +34,30 @@ export interface IForm{ // Изменения вцелом для страны
     country: string; // Для ориентирования
     nuclear__program: boolean; // Развитие ядерной программы
     ecology: boolean; // Инвестиция в экологию
+    budget: number;
     bomb: number; // Количество заказанных бомб
     donat: number; // Донат другим странам
     cities: ICityForm[]; // Массив изменений для городов
+}
+// For login page
+export interface IStatus { // Статус пользователя
+    isPresident: boolean, // Принимает только два значения(false - для юзера, true - для президента и админа)
+}
+
+// Public information about countries//////////////////////////////////////////////////////////////////////////////
+
+export interface ICountriesPublicInfo{
+    countries: ICountryPublicInfo[]; // Все страны
+}
+
+export interface ICountryPublicInfo{
+    country: string;
+    average__live__level: number; // Средний уровень жизни
+    cities: ICityPublicInfo[];
+}
+
+export interface ICityPublicInfo{
+    photo: string; // Ссылка на фото
+    city__name: string; // Название 
+    live__level: number; // Уровень жизни %
 }

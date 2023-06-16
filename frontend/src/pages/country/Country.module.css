@@ -113,3 +113,10 @@
     font-weight: 600;
     font-size: 22px;
 }
+
+.country__bomb{
+    font-weight: 600;
+    font-size: 30px;
+    color:rgb(25, 163, 78);
+
+}

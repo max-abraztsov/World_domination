@@ -4,7 +4,6 @@
 }
 .city__photo{
     width:100%;
-    
     object-fit: cover; 
 }
 .city__block{
@@ -49,4 +48,9 @@
     padding: 15px; 
     margin-top: 5px;
     color: white; 
+}
+
+.city__price{
+    font-weight: 600;
+    font-size: 22px;
 }

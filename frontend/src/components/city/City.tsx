@@ -1,13 +1,13 @@
-import React, {FC, useEffect} from 'react';
+import {FC, useEffect} from 'react';
 import Checkbox from '../UI/checkbox/Checkbox';
 import { useAppSelector, useAppDispatch } from '../../hook';
 import { toggleProtect, toggleCityDevelop } from '../../store/countrySlice';
-import { ICity } from '../../types/types';
+import { ICity, IStatus } from '../../types/types';
 import cl from "./City.module.css"
 
 interface CityProps{
    city: ICity;
-   isPresident: boolean; 
+   isPresident: IStatus; 
    id: number;
 }
 
@@ -18,7 +18,7 @@ const City: FC<CityProps> = ({city, isPresident, id}) => {
 
     // useEffect(() => {
     //     console.log(form);
-    // }, [form])
+    // }, [form]);
 
     return (
         <div className={cl.city}>
@@ -37,15 +37,22 @@ const City: FC<CityProps> = ({city, isPresident, id}) => {
                     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Cross_red_circle.svg/800px-Cross_red_circle.svg.png" alt="cross" />
                 )}</p><hr />
             </div>
-            <div className={cl.city__prices}>
-                <Checkbox 
-                toggleStatus={() => dispatch(toggleCityDevelop({status:form.cities[id].develop, id: id}))}
-                id={id}>Develop the city (150$)</Checkbox>
-                <Checkbox 
-                toggleStatus={() => dispatch(toggleProtect({ status: form.cities[id].shield, id: id}))}
-                id={id} 
-                checked={city.shield}>Protect (300$)</Checkbox>
-            </div>
+            { isPresident.isPresident ? ( // For president and admin
+                <div className={cl.city__prices}>
+                    <Checkbox 
+                        toggleStatus={() => dispatch(toggleCityDevelop({status:form.cities[id].develop, id: id, price: 150}))}
+                    >Develop the city (150$)</Checkbox>
+                    <Checkbox 
+                        toggleStatus={() => dispatch(toggleProtect({ status: form.cities[id].shield, id: id, price: 300}))}
+                        checked={city.shield}
+                    >Protect (300$)</Checkbox>
+                </div>
+            ) : ( // For simple users
+                <div className={cl.city__prices}>
+                    <p className={cl.city__price}>Develop the city (150$)</p>
+                    <p className={cl.city__price}>Protect (300$)</p>
+                </div>
+            )}
         </div>
     );
 };

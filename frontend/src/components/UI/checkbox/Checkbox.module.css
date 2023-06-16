@@ -42,9 +42,12 @@
     transition: .2s ease-in;
 }
 
-.real_checkbox:checked + .custom_checkbox::before{
+
+
+
+/* .real_checkbox:checked + .custom_checkbox::before{
     transform: translate(-50%, -50%) scale(1);
-}
+} */
 
 .active_custom_checkbox{
     position: relative;

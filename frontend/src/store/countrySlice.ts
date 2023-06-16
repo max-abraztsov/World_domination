@@ -1,5 +1,6 @@
 import {createSlice, PayloadAction, createAsyncThunk} from "@reduxjs/toolkit";
-import { ICountry, IForm } from "../types/types";
+import { ICountriesPublicInfo, ICountry, IForm } from "../types/types";
+import CSS from "csstype"
 
 const initialStateCountry: ICountry = {
     country: "Belarus",
@@ -48,6 +49,7 @@ const formResult: IForm = {
     country: initialStateCountry.country,
     nuclear__program: initialStateCountry.nuclear__program,
     ecology: false,
+    budget: initialStateCountry.budget,
     bomb: 0,
     donat: 0,
     cities: [
@@ -84,22 +86,154 @@ const countrySlice = createSlice({
     },
 });
 
+const styleCheckbox: CSS.Properties = {
+    transform: "translate(-50%, -50%) scale(1)", 
+}
+
+const initialStateCountriesPublic: ICountriesPublicInfo = {
+    countries: [
+        {
+            country: "Belarus",
+            average__live__level: 57, 
+            cities: [
+                {
+                    city__name: "Minsk",
+                    live__level: 56,  
+                },
+                {
+                    city__name: "Homel",
+                    live__level: 57,  
+                },
+                {
+                    city__name: "Grodno",
+                    live__level: 57,  
+                },
+                {
+                    city__name: "Brest",
+                    live__level: 58,  
+                },
+            ],
+        },
+        {
+            country: "Russia",
+            average__live__level: 57, 
+            cities: [
+                {
+                    city__name: "Moscow",
+                    live__level: 60,  
+                },
+                {
+                    city__name: "St. Petersburg",
+                    live__level: 59,  
+                },
+                {
+                    city__name: "Sochi",
+                    live__level: 55,  
+                },
+                {
+                    city__name: "Ekaterinburg",
+                    live__level: 56,  
+                },
+            ],
+        },
+        {
+            country: "China",
+            average__live__level: 65, 
+            cities: [
+                {
+                    city__name: "Hong Kong",
+                    live__level: 70,  
+                },
+                {
+                    city__name: "Shanghai",
+                    live__level: 68,  
+                },
+                {
+                    city__name: "Beijing",
+                    live__level: 66,  
+                },
+                {
+                    city__name: "Guangzhou",
+                    live__level: 63,  
+                },
+            ],
+        },
+        {
+            country: "USA",
+            average__live__level: 75, 
+            cities: [
+                {
+                    city__name: "New York",
+                    live__level: 80,  
+                },
+                {
+                    city__name: "Chicago",
+                    live__level: 75,  
+                },
+                {
+                    city__name: "Los Angeles",
+                    live__level: 73,  
+                },
+                {
+                    city__name: "Atlanta",
+                    live__level: 70,  
+                },
+            ],
+        },
+    ]
+}
+
+const coutriesPublicInfoSlice = createSlice({
+    name: "countriesPublic",
+    initialState: initialStateCountriesPublic,
+    reducers: {},
+})
+
+
 const formSlice = createSlice({
     name: "form",
     initialState: formResult,
     reducers: {
-        toggleNuclearStatus(state, action: PayloadAction<boolean> ){
-            state.nuclear__program = !action.payload;   
+        toggleNuclearStatus(state, action: PayloadAction<{status: boolean, price: number, component: HTMLElement}> ){
+            if (state.budget >=  action.payload.price && !action.payload.status) {
+                state.nuclear__program = !action.payload.status;
+                state.budget = state.budget - action.payload.price;
+            } else if (action.payload.status) {
+                state.nuclear__program = !action.payload.status;
+                state.budget = state.budget + action.payload.price;
+            } else {
+                console.log(23);
+                console.log(action.payload.component);
+            }
         },
-        toggleEcologyDevelop(state, action: PayloadAction<boolean>){ 
-            state.ecology = !action.payload;    
+        toggleEcologyDevelop(state, action: PayloadAction<{status:boolean, price:number}>){ 
+            state.ecology = !action.payload.status; 
+            if(action.payload.status) state.budget = state.budget + action.payload.price;
+            else state.budget = state.budget - action.payload.price; 
         },
-        toggleCityDevelop(state, action: PayloadAction<{status: boolean, id: number}>){
+        toggleCityDevelop(state, action: PayloadAction<{status: boolean, id: number, price: number}>){
             state.cities[action.payload.id].develop = !action.payload.status;
+            if(action.payload.status) state.budget = state.budget + action.payload.price;
+            else state.budget = state.budget - action.payload.price;
         },
-        toggleProtect(state, action: PayloadAction<{status: boolean, id: number}>){
+        toggleProtect(state, action: PayloadAction<{status: boolean, id: number, price: number}>){
             state.cities[action.payload.id].shield = !action.payload.status;
-        }
+            if(action.payload.status) state.budget = state.budget + action.payload.price;
+            else state.budget = state.budget - action.payload.price;
+            
+        },
+        // autoSubtractBudgetCheckbox(state, action: PayloadAction<{price:number, status: boolean, checked?: boolean, }>){
+        //     if (!action.payload.checked){
+        //         if(action.payload.status) {
+        //             state.budget = state.budget + action.payload.price;
+        //             console.log("+200");
+        //         }
+        //         else {
+        //             state.budget = state.budget - action.payload.price;
+        //             console.log("-200");
+        //         }
+        //     }
+        // }
     },
 });
 
@@ -110,11 +244,13 @@ export const
     toggleEcologyDevelop, 
     toggleCityDevelop,
     toggleProtect,
+    // autoSubtractBudgetCheckbox,
 } = formSlice.actions;
 
 export default {
     countryInfoReducer : countrySlice.reducer,
     formReducer: formSlice.reducer,
+    countriesPublic: coutriesPublicInfoSlice.reducer,
 }
 
 
