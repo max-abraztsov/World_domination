@@ -6,6 +6,7 @@ export interface ICity{ // Информация по конкретному го
     progress: number; // Развитие %
     profit: number;   // Доход %
     shield: boolean;  // Наличие щита
+    state: boolean; // Состояние города
 }
 
 export interface ICountry{
@@ -30,6 +31,16 @@ export interface ICityForm{ // Изменения для конкретного 
     shield: boolean; // Установка щита
 }
 
+export interface IEnemyCity{
+    city__name: string;
+    city__state: boolean;
+}
+
+export interface IEnemy{
+    country: string; //
+    cities: IEnemyCity[]; //
+}
+
 export interface IForm{ // Изменения вцелом для страны
     country: string; // Для ориентирования
     nuclear__program: boolean; // Развитие ядерной программы
@@ -38,6 +49,7 @@ export interface IForm{ // Изменения вцелом для страны
     bomb: number; // Количество заказанных бомб
     donat: number; // Донат другим странам
     cities: ICityForm[]; // Массив изменений для городов
+    enemies: IEnemy[]; // 
 }
 // For login page
 export interface IStatus { // Статус пользователя
@@ -57,7 +69,7 @@ export interface ICountryPublicInfo{
 }
 
 export interface ICityPublicInfo{
-    photo: string; // Ссылка на фото
     city__name: string; // Название 
     live__level: number; // Уровень жизни %
+    city__state: boolean;
 }

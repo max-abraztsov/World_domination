@@ -6,7 +6,7 @@
     /* width: 100vw; */
 }
 .container{
-    /* max-width: 1300px; */
+    max-width: 960px;
     margin: 0 20px;
 }
 .country__info{

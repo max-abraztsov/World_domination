@@ -8,7 +8,7 @@
 }
 .container{
     display: flex;
-    max-width: 1400px;
+    max-width: 1200px;
 }
 .countries{
     max-width: 1000px;
@@ -18,7 +18,7 @@
     margin-top: 20px;
     position: sticky;
     top: 20px;
-    width: 400px;
+    max-width: 400px;
     background-color: #dddddd;    
     height: 400px;
     display: flex;

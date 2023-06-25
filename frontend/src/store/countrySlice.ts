@@ -17,6 +17,7 @@ const initialStateCountry: ICountry = {
             progress: 90,
             profit: 270,  
             shield: true,  
+            state: true,
         },
         {
             photo: "https://www.sb.by/upload/iblock/f82/f8206e5046cccf16e1a69da02994b74f.jpg",
@@ -25,6 +26,7 @@ const initialStateCountry: ICountry = {
             progress: 60,
             profit: 180,  
             shield: false,
+            state: false,
         },
         {
             photo: "https://www.sb.by/upload/iblock/f82/f8206e5046cccf16e1a69da02994b74f.jpg",
@@ -33,6 +35,7 @@ const initialStateCountry: ICountry = {
             progress: 50,
             profit: 170,  
             shield: false,
+            state: true,
         },
         {
             photo: "https://www.sb.by/upload/iblock/f82/f8206e5046cccf16e1a69da02994b74f.jpg",
@@ -41,6 +44,7 @@ const initialStateCountry: ICountry = {
             progress: 50,
             profit: 160,  
             shield: true,
+            state: true,
         },
     ] 
 }
@@ -74,6 +78,71 @@ const formResult: IForm = {
             shield: initialStateCountry.cities[3].shield,
         },
     ],
+    enemies: [
+        {
+            country: "Russia",
+            cities: [
+                {
+                    city__name: "Moscow",
+                    city__state: true, 
+                },
+                {
+                    city__name: "St. Petersburg",
+                    city__state: true,
+                },
+                {
+                    city__name: "Sochi",
+                    city__state: true, 
+                },
+                {
+                    city__name: "Ekaterinburg",
+                    city__state: true, 
+                },
+            ],
+        },
+        {
+            country: "China", 
+            cities: [
+                {
+                    city__name: "Hong Kong",
+                    city__state: true, 
+                },
+                {
+                    city__name: "Shanghai",
+                    city__state: true, 
+                },
+                {
+                    city__name: "Beijing",
+                    city__state: false, 
+                },
+                {
+                    city__name: "Guangzhou",  
+                    city__state: false,
+                },
+            ],
+        },
+        {
+            country: "USA",
+            cities: [
+                {
+                    city__name: "New York",
+                    city__state: true,  
+                },
+                {
+                    city__name: "Chicago",
+                    city__state: true,  
+                },
+                {
+                    city__name: "Los Angeles",
+                    city__state: true,   
+                },
+                {
+                    city__name: "Atlanta",
+                    city__state: false,
+                },
+            ],
+        },
+    ]
 };
 
 const countrySlice = createSlice({
@@ -99,18 +168,22 @@ const initialStateCountriesPublic: ICountriesPublicInfo = {
                 {
                     city__name: "Minsk",
                     live__level: 56,  
+                    city__state: true,
                 },
                 {
                     city__name: "Homel",
                     live__level: 57,  
+                    city__state: false,
                 },
                 {
                     city__name: "Grodno",
                     live__level: 57,  
+                    city__state: true,
                 },
                 {
                     city__name: "Brest",
-                    live__level: 58,  
+                    live__level: 58, 
+                    city__state: true, 
                 },
             ],
         },
@@ -120,19 +193,23 @@ const initialStateCountriesPublic: ICountriesPublicInfo = {
             cities: [
                 {
                     city__name: "Moscow",
-                    live__level: 60,  
+                    live__level: 60, 
+                    city__state: true, 
                 },
                 {
                     city__name: "St. Petersburg",
                     live__level: 59,  
+                    city__state: true,
                 },
                 {
                     city__name: "Sochi",
-                    live__level: 55,  
+                    live__level: 55, 
+                    city__state: true, 
                 },
                 {
                     city__name: "Ekaterinburg",
-                    live__level: 56,  
+                    live__level: 56, 
+                    city__state: true, 
                 },
             ],
         },
@@ -142,19 +219,23 @@ const initialStateCountriesPublic: ICountriesPublicInfo = {
             cities: [
                 {
                     city__name: "Hong Kong",
-                    live__level: 70,  
+                    live__level: 70, 
+                    city__state: true, 
                 },
                 {
                     city__name: "Shanghai",
-                    live__level: 68,  
+                    live__level: 68, 
+                    city__state: true, 
                 },
                 {
                     city__name: "Beijing",
-                    live__level: 66,  
+                    live__level: 66, 
+                    city__state: false, 
                 },
                 {
                     city__name: "Guangzhou",
                     live__level: 63,  
+                    city__state: false,
                 },
             ],
         },
@@ -164,19 +245,23 @@ const initialStateCountriesPublic: ICountriesPublicInfo = {
             cities: [
                 {
                     city__name: "New York",
-                    live__level: 80,  
+                    live__level: 80, 
+                    city__state: true,  
                 },
                 {
                     city__name: "Chicago",
-                    live__level: 75,  
+                    live__level: 75, 
+                    city__state: true,  
                 },
                 {
                     city__name: "Los Angeles",
-                    live__level: 73,  
+                    live__level: 73,
+                    city__state: true,   
                 },
                 {
                     city__name: "Atlanta",
                     live__level: 70,  
+                    city__state: false,
                 },
             ],
         },

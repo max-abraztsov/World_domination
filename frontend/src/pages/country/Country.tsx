@@ -5,6 +5,8 @@ import { toggleNuclearStatus, toggleEcologyDevelop } from '../../store/countrySl
 import cl from "./Country.module.css"
 import City from '../../components/city/City';
 import Checkbox from '../../components/UI/checkbox/Checkbox';
+import EnemyCheckbox from '../../components/UI/enemyCheckbox/EnemyCheckbox';
+
 import BarChart from '../../components/UI/charts/BarChart';
 import { Chart as ChartJS, registerables } from 'chart.js';
 import { Chart } from 'react-chartjs-2'
@@ -28,6 +30,7 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
 
 
     const countriesPublic = useAppSelector(state => state.countriesPublic);
+    console.log(countriesPublic);
     const chartData = {
         labels: countriesPublic.countries.map( item => item.country),
         datasets: [
@@ -39,16 +42,14 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
         ],
     };
 
-
-   
-    // useEffect(() => {
-    //     console.log(form);
-    // }, [form]);
-
     return (
         <div className={cl.country}>
             <div className={cl.container}>
-                <BarChart data={chartData}/>
+                {forAdmin ? (
+                    <div></div>  
+                ) : (
+                    <BarChart data={chartData}/>   
+                )}
                 <section className={cl.country__info}>
                     <div className={cl.country__title}>
                         <img className={cl.country__flag} src={country.flag__photo} alt={"flag " + country.country} />
@@ -83,7 +84,6 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
                                 <div className={cl.country__dev_col}>
                                     <h3>Nuclear program:</h3>
                                     <Checkbox 
-                                        
                                         toggleStatus={(event: React.ChangeEvent<HTMLInputElement>) => dispatch(toggleNuclearStatus({status: form.nuclear__program, price: 500, component: event.target}))} 
                                         checked={country.nuclear__program}
                                     >Develop nuclear program (500$)</Checkbox>
@@ -100,6 +100,18 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
                                         toggleStatus={() => dispatch(toggleEcologyDevelop({status: form.ecology, price: 200}))}
                                     >Develop ecology (200$)</Checkbox>
                                 </div>
+                            </div>
+                            <div className={cl.country__development}>
+                                { form.enemies.map(enemy => 
+                                    <div>
+                                        <p>{enemy.country}</p>
+                                        <div>
+                                            {enemy.cities.map(city => 
+                                                <EnemyCheckbox stateCity={city.city__state}>{city.city__name}</EnemyCheckbox>
+                                            )}
+                                        </div>
+                                    </div>
+                                ) }
                             </div>
                             <div className={cl.country__button}>
                                 <button className={cl.button} type="submit">Send order</button>

@@ -17,7 +17,8 @@ const initialState: ICountries = {
                     live__level: 56,
                     progress: 90,
                     profit: 270,  
-                    shield: true,  
+                    shield: true, 
+                    state: true, 
                 },
                 {
                     photo: "https://www.sb.by/upload/iblock/f82/f8206e5046cccf16e1a69da02994b74f.jpg",
@@ -25,7 +26,8 @@ const initialState: ICountries = {
                     live__level: 57,
                     progress: 60,
                     profit: 180,  
-                    shield: undefined,
+                    shield: false,
+                    state: false,
                 },
                 {
                     photo: "https://www.sb.by/upload/iblock/f82/f8206e5046cccf16e1a69da02994b74f.jpg",
@@ -33,7 +35,8 @@ const initialState: ICountries = {
                     live__level: 57,
                     progress: 50,
                     profit: 170,  
-                    shield: undefined,
+                    shield: false,
+                    state: true,
                 },
                 {
                     photo: "https://www.sb.by/upload/iblock/f82/f8206e5046cccf16e1a69da02994b74f.jpg",
@@ -42,6 +45,7 @@ const initialState: ICountries = {
                     progress: 50,
                     profit: 160,  
                     shield: true,
+                    state: true,
                 },
             ]
         },
@@ -60,6 +64,7 @@ const initialState: ICountries = {
                     progress: 85,
                     profit: 300,
                     shield: true,
+                    state: true,
                 },
                 {
                     photo: "https://www.sb.by/upload/iblock/f82/f8206e5046cccf16e1a69da02994b74f.jpg",
@@ -68,6 +73,7 @@ const initialState: ICountries = {
                     progress: 80,
                     profit: 280,
                     shield: true,
+                    state: true,
                 },
                 {
                     photo: "https://www.sb.by/upload/iblock/f82/f8206e5046cccf16e1a69da02994b74f.jpg",
@@ -76,6 +82,7 @@ const initialState: ICountries = {
                     progress: 70,
                     profit: 250,
                     shield: false,
+                    state: true,
                 },
                 {
                     photo: "https://www.sb.by/upload/iblock/f82/f8206e5046cccf16e1a69da02994b74f.jpg",
@@ -84,6 +91,7 @@ const initialState: ICountries = {
                     progress: 75,
                     profit: 260,
                     shield: true,
+                    state: true,
                 },
             ],
         },
@@ -102,6 +110,7 @@ const initialState: ICountries = {
                     progress: 90,
                     profit: 400,
                     shield: true,
+                    state: true,
                 },
                 {
                     photo: "https://www.sb.by/upload/iblock/f82/f8206e5046cccf16e1a69da02994b74f.jpg",
@@ -110,6 +119,7 @@ const initialState: ICountries = {
                     progress: 85,
                     profit: 380,
                     shield: true,
+                    state: true,
                 },
                 {
                     photo: "https://www.sb.by/upload/iblock/f82/f8206e5046cccf16e1a69da02994b74f.jpg",
@@ -118,6 +128,7 @@ const initialState: ICountries = {
                     progress: 80,
                     profit: 360,
                     shield: false,
+                    state: false,
                 },
                 {
                     photo: "https://www.sb.by/upload/iblock/f82/f8206e5046cccf16e1a69da02994b74f.jpg",
@@ -126,6 +137,7 @@ const initialState: ICountries = {
                     progress: 75,
                     profit: 340,
                     shield: true,
+                    state: false,
                 },
             ],
         },
@@ -144,6 +156,7 @@ const initialState: ICountries = {
                     progress: 95,
                     profit: 500,
                     shield: true,
+                    state: true,
                 },
                 {
                     photo: "https://www.sb.by/upload/iblock/f82/f8206e5046cccf16e1a69da02994b74f.jpg",
@@ -152,6 +165,7 @@ const initialState: ICountries = {
                     progress: 90,
                     profit: 480,
                     shield: true,
+                    state: true,
                 },
                 {
                     photo: "https://www.sb.by/upload/iblock/f82/f8206e5046cccf16e1a69da02994b74f.jpg",
@@ -160,6 +174,7 @@ const initialState: ICountries = {
                     progress: 85,
                     profit: 460,
                     shield: false,
+                    state: true,
                 },
                 {
                     photo: "https://www.sb.by/upload/iblock/f82/f8206e5046cccf16e1a69da02994b74f.jpg",
@@ -168,6 +183,7 @@ const initialState: ICountries = {
                     progress: 80,
                     profit: 440,
                     shield: true,
+                    state: false,
                 },
             ],
         },

@@ -1,18 +1,18 @@
 import React, {FC} from 'react';
 
-import cl from "./Checkbox.module.css"
+import cl from "./EnemyCheckbox.module.css"
 
-interface CheckboxProps{
-    checked?: boolean,
+interface EnemyCheckboxProps{
+    stateCity?: boolean,
     children: React.ReactNode,
     toggleStatus?(event: React.ChangeEvent<HTMLInputElement> | React.FormEvent<HTMLLabelElement>): void, 
 }
 
-const Checkbox: FC<CheckboxProps> = ({children, checked, toggleStatus, cityState}) => {
+const EnemyCheckbox: FC<EnemyCheckboxProps> = ({children, stateCity, toggleStatus}) => {
     return (
         <label className={cl.checkbox} onChange={toggleStatus}>
-            { checked ? ( // Если данная услуга уже сделана, тогда выводится просто картинка
-                <span className={cl.active_custom_checkbox}></span>
+            { !stateCity ? ( // Если данная услуга уже сделана, тогда выводится просто картинка
+                <span className={cl.destroyed}></span>
             ) : ( // Если не куплена, тогда выводится функцональный компонент
                 <span>
                     <input className={cl.real_checkbox} type="checkbox"/>
@@ -24,4 +24,4 @@ const Checkbox: FC<CheckboxProps> = ({children, checked, toggleStatus, cityState
     );
 };
 
-export default Checkbox;
+export default EnemyCheckbox;

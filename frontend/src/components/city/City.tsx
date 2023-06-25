@@ -16,10 +16,6 @@ const City: FC<CityProps> = ({city, isPresident, id}) => {
     const dispatch = useAppDispatch();
     const form = useAppSelector(state => state.form);
 
-    // useEffect(() => {
-    //     console.log(form);
-    // }, [form]);
-
     return (
         <div className={cl.city}>
             <div className={cl.city__block}>
