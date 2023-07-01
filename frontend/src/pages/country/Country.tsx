@@ -11,6 +11,8 @@ import BarChart from '../../components/UI/charts/BarChart';
 import { Chart as ChartJS, registerables } from 'chart.js';
 import { Chart } from 'react-chartjs-2'
 
+import bomb from "../../assets/bomb-cursor.png"
+
 
 
 
@@ -42,14 +44,19 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
         ],
     };
 
+    const handleToggleNuclearStatus = (event: React.ChangeEvent<HTMLInputElement>) => {
+        event.preventDefault();
+        dispatch(toggleNuclearStatus({status: form.nuclear__program, price: 500, component: event.target}))
+    }
+
     return (
         <div className={cl.country}>
             <div className={cl.container}>
-                {forAdmin ? (
+                {/* {forAdmin ? (
                     <div></div>  
                 ) : (
-                    <BarChart data={chartData}/>   
-                )}
+                    // <BarChart data={chartData}/>   
+                )} */}
                 <section className={cl.country__info}>
                     <div className={cl.country__title}>
                         <img className={cl.country__flag} src={country.flag__photo} alt={"flag " + country.country} />
@@ -75,22 +82,20 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
                                     city={item} 
                                     id={index}
                                     isPresident={isPresident}
-                                /> 
-                                                   
+                                />                     
                             )}
                         </section>
                         <section>
                             <div className={cl.country__development}>
                                 <div className={cl.country__dev_col}>
+                                    
                                     <h3>Nuclear program:</h3>
                                     <Checkbox 
-                                        toggleStatus={(event: React.ChangeEvent<HTMLInputElement>) => dispatch(toggleNuclearStatus({status: form.nuclear__program, price: 500, component: event.target}))} 
+                                        toggleStatus={handleToggleNuclearStatus} 
                                         checked={country.nuclear__program}
                                     >Develop nuclear program (500$)</Checkbox>
                                     <div className={cl.country__input}>
-                                        <p className={cl.input__text}>Order nuclear bombs (150$):
-                                            <span className={cl.country__bomb}> {country.bomb} </span> (at this moment)
-                                        </p>
+                                        <p className={cl.input__text}>Order nuclear bombs (150$):</p>
                                         <input type="number" placeholder='2'/>
                                     </div>
                                 </div>
@@ -102,6 +107,11 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
                                 </div>
                             </div>
                             <div className={cl.country__development}>
+                                <div>
+                                    <h3>Order to attack:</h3>
+                                    <span className={cl.country__bomb}> {country.bomb} </span>
+                                    <img src={bomb}/>
+                                </div>
                                 { form.enemies.map(enemy => 
                                     <div>
                                         <p>{enemy.country}</p>
@@ -112,11 +122,39 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
                                         </div>
                                     </div>
                                 ) }
+                                
+                                
+                            </div>
+                            <div className={cl.country__development}>
+                                <div className={cl.country__dev_col}>
+                                    <h3>Introduction of sanctions:</h3>
+                                
+                                    { form.enemies.map(enemy => 
+                                        <Checkbox checked={enemy.sanctions}>{enemy.country}</Checkbox> 
+                                    ) }
+                                </div>
+                            </div>
+                            <div className={cl.country__development}>
+                                <form>
+                                    <label for="country">Country: </label>
+                                    <select id="country" name="country">
+                                        <option value="">Choose country...</option>
+                                        {form.enemies.map( enemy => 
+                                            <option value={enemy.country}>{enemy.country}</option>
+                                        )}
+                                    </select>
+
+                                    <label for="amount">Amount</label>
+                                    <input type="number" id="amount" name="amount" placeholder="Enter an amount " min="0" required />
+
+                                    <button type="submit">Отправить</button>
+                                </form>
                             </div>
                             <div className={cl.country__button}>
                                 <button className={cl.button} type="submit">Send order</button>
                             </div>
                         </section>
+                        
                     </form>
                 ):( // For simple users
                     <section>

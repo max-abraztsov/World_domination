@@ -73,6 +73,7 @@
     padding: 20px 50px 20px 15px;
     color:rgb(92, 92, 92);
     border-radius: 15px;
+    margin-bottom: 20px;
 }
 .country__button{
     text-align: center;
@@ -84,6 +85,10 @@
     font-size: 22px;
 }
 
+.country__enemy{
+    display: flex;
+}
+
 .button{
     margin-top: 30px;
     padding: 15px 40px;
@@ -93,6 +98,7 @@
     background-color: rgb(25, 163, 78);
     border: none;
     border-radius: 20px;
+    margin: 20px 0;
 }
 .country__input{
     margin-top: 8px;
@@ -116,7 +122,9 @@
 
 .country__bomb{
     font-weight: 600;
-    font-size: 30px;
+    font-size: 55px;
     color:rgb(25, 163, 78);
-
+    margin-right: -10px;
+    margin-top: 10px;
+    margin-left: 30px;
 }

@@ -28,12 +28,12 @@ const Admin: FC = () => {
             <div className={cl.container}>
                 <section className={cl.countries}>
                     <BarChart data={chartData}/>
-                    {/* {countries.countries.map( country => 
+                    {countries.countries.map( country => 
                         <div>
                             <Country key={country.country} forAdmin={country}></Country>
                             <hr className={cl.hr}></hr>
                         </div> 
-                    )} */}
+                    )}
                 </section>
                 <aside className={cl.panel}>
                     <button className={cl.admin__button}>Initiate</button>

@@ -81,6 +81,7 @@ const formResult: IForm = {
     enemies: [
         {
             country: "Russia",
+            sanctions: false,
             cities: [
                 {
                     city__name: "Moscow",
@@ -102,6 +103,7 @@ const formResult: IForm = {
         },
         {
             country: "China", 
+            sanctions: false,
             cities: [
                 {
                     city__name: "Hong Kong",
@@ -123,6 +125,7 @@ const formResult: IForm = {
         },
         {
             country: "USA",
+            sanctions: false,
             cities: [
                 {
                     city__name: "New York",

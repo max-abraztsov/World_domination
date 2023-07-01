@@ -54,3 +54,33 @@
     font-weight: 600;
     font-size: 22px;
 }
+
+.city_desroyed{
+    margin-right: 30px;
+    width: 25%;
+    padding: 5px;
+    border-radius:25px;
+    background-color: #FFB6A8;
+}
+
+.city__block_desroyed{
+    display: flex;
+    flex-direction:column;
+    align-items: center;
+    background-color: #ff7b61;
+    border-radius: 20px;
+    overflow:hidden;
+}
+
+.city__state_block{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.city__state{
+    display: inline-block;
+    padding: 10px 0;
+    font-size: 30px;
+    color: rgb(255, 82, 82);
+    font-weight: 600;
+}

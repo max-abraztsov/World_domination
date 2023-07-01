@@ -38,6 +38,7 @@ export interface IEnemyCity{
 
 export interface IEnemy{
     country: string; //
+    sanctions: boolean;
     cities: IEnemyCity[]; //
 }
 
