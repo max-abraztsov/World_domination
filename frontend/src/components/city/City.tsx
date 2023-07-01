@@ -9,9 +9,10 @@ interface CityProps{
    city: ICity;
    isPresident: IStatus; 
    id: number;
+   budget: number;
 }
 
-const City: FC<CityProps> = ({city, isPresident, id}) => {
+const City: FC<CityProps> = ({city, isPresident, id, budget}) => {
     
     const dispatch = useAppDispatch();
     const form = useAppSelector(state => state.form);
@@ -41,9 +42,15 @@ const City: FC<CityProps> = ({city, isPresident, id}) => {
                     { isPresident.isPresident ? ( // For president and admin
                         <div className={cl.city__prices}>
                             <Checkbox 
+                                formState={form.cities[id].develop}
+                                price={150}
+                                budget={budget}
                                 toggleStatus={() => dispatch(toggleCityDevelop({status:form.cities[id].develop, id: id, price: 150}))}
                             >Develop the city (150$)</Checkbox>
                             <Checkbox 
+                                formState={form.cities[id].shield}
+                                price={300}
+                                budget={budget}
                                 toggleStatus={() => dispatch(toggleProtect({ status: form.cities[id].shield, id: id, price: 300}))}
                                 checked={city.shield}
                             >Protect (300$)</Checkbox>

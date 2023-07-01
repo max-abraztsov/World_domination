@@ -7,7 +7,7 @@ const initialStateCountry: ICountry = {
     flag__photo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQNcell8SvcD2oHdkfnzK_q_hZ7LSyjc7UyAPeZtyATwYoD5HOGYtq-tOGyVpxE7YLhb0&usqp=CAU",
     budget: 1000,
     average__live__level: 57,
-    nuclear__program: false,
+    nuclear__program: true,
     bomb: 2,
     cities: [ 
         {
@@ -17,7 +17,7 @@ const initialStateCountry: ICountry = {
             progress: 90,
             profit: 270,  
             shield: true,  
-            state: true,
+            state: false,
         },
         {
             photo: "https://www.sb.by/upload/iblock/f82/f8206e5046cccf16e1a69da02994b74f.jpg",
@@ -26,7 +26,7 @@ const initialStateCountry: ICountry = {
             progress: 60,
             profit: 180,  
             shield: false,
-            state: false,
+            state: true,
         },
         {
             photo: "https://www.sb.by/upload/iblock/f82/f8206e5046cccf16e1a69da02994b74f.jpg",
@@ -283,21 +283,14 @@ const formSlice = createSlice({
     initialState: formResult,
     reducers: {
         toggleNuclearStatus(state, action: PayloadAction<{status: boolean, price: number, component: HTMLElement}> ){
-            if (state.budget >=  action.payload.price && !action.payload.status) {
-                state.nuclear__program = !action.payload.status;
-                state.budget = state.budget - action.payload.price;
-            } else if (action.payload.status) {
-                state.nuclear__program = !action.payload.status;
-                state.budget = state.budget + action.payload.price;
-            } else {
-                console.log(23);
-                console.log(action.payload.component);
-            }
+            state.nuclear__program = !action.payload.status; 
+            if(action.payload.status) state.budget = state.budget + action.payload.price;
+            else state.budget = state.budget - action.payload.price;
         },
         toggleEcologyDevelop(state, action: PayloadAction<{status:boolean, price:number}>){ 
             state.ecology = !action.payload.status; 
             if(action.payload.status) state.budget = state.budget + action.payload.price;
-            else state.budget = state.budget - action.payload.price; 
+            else state.budget = state.budget - action.payload.price;
         },
         toggleCityDevelop(state, action: PayloadAction<{status: boolean, id: number, price: number}>){
             state.cities[action.payload.id].develop = !action.payload.status;
@@ -308,7 +301,6 @@ const formSlice = createSlice({
             state.cities[action.payload.id].shield = !action.payload.status;
             if(action.payload.status) state.budget = state.budget + action.payload.price;
             else state.budget = state.budget - action.payload.price;
-            
         },
         // autoSubtractBudgetCheckbox(state, action: PayloadAction<{price:number, status: boolean, checked?: boolean, }>){
         //     if (!action.payload.checked){

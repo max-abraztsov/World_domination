@@ -78,6 +78,7 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
                         <section className={cl.cities__info}>
                             {country.cities.map((item, index) => 
                                 <City 
+                                    budget={form.budget}
                                     key={index} 
                                     city={item} 
                                     id={index}
@@ -91,6 +92,9 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
                                     
                                     <h3>Nuclear program:</h3>
                                     <Checkbox 
+                                        formState={form.nuclear__program}
+                                        price={500}
+                                        budget={form.budget}
                                         toggleStatus={handleToggleNuclearStatus} 
                                         checked={country.nuclear__program}
                                     >Develop nuclear program (500$)</Checkbox>
@@ -102,6 +106,9 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
                                 <div className={cl.country__dev_col}>
                                     <h3>Ecology:</h3>
                                     <Checkbox 
+                                        formState={form.ecology}
+                                        price={200}
+                                        budget={form.budget}
                                         toggleStatus={() => dispatch(toggleEcologyDevelop({status: form.ecology, price: 200}))}
                                     >Develop ecology (200$)</Checkbox>
                                 </div>
@@ -125,7 +132,7 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
                                 
                                 
                             </div>
-                            <div className={cl.country__development}>
+                            {/* <div className={cl.country__development}>
                                 <div className={cl.country__dev_col}>
                                     <h3>Introduction of sanctions:</h3>
                                 
@@ -152,7 +159,7 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
                             </div>
                             <div className={cl.country__button}>
                                 <button className={cl.button} type="submit">Send order</button>
-                            </div>
+                            </div> */}
                         </section>
                         
                     </form>
