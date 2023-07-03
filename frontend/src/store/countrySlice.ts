@@ -46,37 +46,6 @@ const initialStateCountry: ICountry = {
             shield: true,
             state: true,
         },
-    ] 
-}
-
-const formResult: IForm = {
-    country: initialStateCountry.country,
-    nuclear__program: initialStateCountry.nuclear__program,
-    ecology: false,
-    budget: initialStateCountry.budget,
-    bomb: 0,
-    donat: 0,
-    cities: [
-        {
-            city__name: initialStateCountry.cities[0].city__name,
-            develop: false,
-            shield: initialStateCountry.cities[0].shield,
-        },
-        {
-            city__name: initialStateCountry.cities[1].city__name,
-            develop: false,
-            shield: initialStateCountry.cities[1].shield,
-        },
-        {
-            city__name: initialStateCountry.cities[2].city__name,
-            develop: false,
-            shield: initialStateCountry.cities[2].shield,
-        },
-        {
-            city__name: initialStateCountry.cities[3].city__name,
-            develop: false,
-            shield: initialStateCountry.cities[3].shield,
-        },
     ],
     enemies: [
         {
@@ -146,6 +115,105 @@ const formResult: IForm = {
             ],
         },
     ]
+}
+
+const formResult: IForm = {
+    country: initialStateCountry.country,
+    nuclear__program: initialStateCountry.nuclear__program,
+    ecology: false,
+    budget: initialStateCountry.budget,
+    bomb: initialStateCountry.bomb,
+    donat: 0,
+    cities: [
+        {
+            city__name: initialStateCountry.cities[0].city__name,
+            develop: false,
+            shield: initialStateCountry.cities[0].shield,
+        },
+        {
+            city__name: initialStateCountry.cities[1].city__name,
+            develop: false,
+            shield: initialStateCountry.cities[1].shield,
+        },
+        {
+            city__name: initialStateCountry.cities[2].city__name,
+            develop: false,
+            shield: initialStateCountry.cities[2].shield,
+        },
+        {
+            city__name: initialStateCountry.cities[3].city__name,
+            develop: false,
+            shield: initialStateCountry.cities[3].shield,
+        },
+    ],
+    enemies: [
+        {
+            country: "Russia",
+            sanctions: false,
+            cities: [
+                {
+                    city__name: "Moscow",
+                    city__state: false, 
+                },
+                {
+                    city__name: "St. Petersburg",
+                    city__state: false,
+                },
+                {
+                    city__name: "Sochi",
+                    city__state: false, 
+                },
+                {
+                    city__name: "Ekaterinburg",
+                    city__state: false, 
+                },
+            ],
+        },
+        {
+            country: "China", 
+            sanctions: false,
+            cities: [
+                {
+                    city__name: "Hong Kong",
+                    city__state: false, 
+                },
+                {
+                    city__name: "Shanghai",
+                    city__state: false, 
+                },
+                {
+                    city__name: "Beijing",
+                    city__state: true, 
+                },
+                {
+                    city__name: "Guangzhou",  
+                    city__state: true,
+                },
+            ],
+        },
+        {
+            country: "USA",
+            sanctions: false,
+            cities: [
+                {
+                    city__name: "New York",
+                    city__state: false,  
+                },
+                {
+                    city__name: "Chicago",
+                    city__state: false,  
+                },
+                {
+                    city__name: "Los Angeles",
+                    city__state: false,   
+                },
+                {
+                    city__name: "Atlanta",
+                    city__state: true,
+                },
+            ],
+        },
+    ]
 };
 
 const countrySlice = createSlice({
@@ -157,10 +225,6 @@ const countrySlice = createSlice({
         }
     },
 });
-
-const styleCheckbox: CSS.Properties = {
-    transform: "translate(-50%, -50%) scale(1)", 
-}
 
 const initialStateCountriesPublic: ICountriesPublicInfo = {
     countries: [
@@ -302,6 +366,16 @@ const formSlice = createSlice({
             if(action.payload.status) state.budget = state.budget + action.payload.price;
             else state.budget = state.budget - action.payload.price;
         },
+        toggleEnemyCheckbox(state, action: PayloadAction<{status: boolean, index: number, id: number}>){
+            state.enemies[action.payload.index].cities[action.payload.id].city__state = !action.payload.status;
+            if(action.payload.status) state.bomb += 1;   
+            else state.bomb -= 1;
+        },
+        toggleSanctionCheckbox(state, action: PayloadAction<{status: boolean, index: number}>){
+            state.enemies[action.payload.index].sanctions = !action.payload.status;
+
+        }
+
         // autoSubtractBudgetCheckbox(state, action: PayloadAction<{price:number, status: boolean, checked?: boolean, }>){
         //     if (!action.payload.checked){
         //         if(action.payload.status) {
@@ -324,6 +398,8 @@ export const
     toggleEcologyDevelop, 
     toggleCityDevelop,
     toggleProtect,
+    toggleEnemyCheckbox,
+    toggleSanctionCheckbox,
     // autoSubtractBudgetCheckbox,
 } = formSlice.actions;
 

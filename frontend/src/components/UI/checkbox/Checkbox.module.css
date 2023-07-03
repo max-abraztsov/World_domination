@@ -26,19 +26,6 @@
     margin-right: 5px;
 }
 
-.custom_checkbox2{
-    position: relative;
-    top: -3px;
-    left: 0;
-    display: inline-block;
-    width: 20px;
-    height: 20px;
-    background-color: white;
-    border-radius: 4px;
-    vertical-align: sub;
-    margin-right: 5px;
-}
-
 .custom_checkbox::before{
     content: '';
     display: inline-block;

@@ -17,6 +17,7 @@ export interface ICountry{
     nuclear__program: boolean; // Наличие ядерной программы
     bomb: number; // Количество имеющихся бомб
     cities: ICity[]; // Массив всех городов одной страны 
+    enemies: IEnemy[];
 }
 
 // For general page request /////////////////////////////////////////////

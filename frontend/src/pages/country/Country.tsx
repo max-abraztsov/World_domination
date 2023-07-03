@@ -1,11 +1,12 @@
 import {FC, useState, useEffect} from 'react';
 import { ICountry } from '../../types/types';
 import { useAppSelector, useAppDispatch } from '../../hook';
-import { toggleNuclearStatus, toggleEcologyDevelop } from '../../store/countrySlice';
+import { toggleNuclearStatus, toggleEcologyDevelop, toggleEnemyCheckbox,toggleSanctionCheckbox } from '../../store/countrySlice';
 import cl from "./Country.module.css"
 import City from '../../components/city/City';
 import Checkbox from '../../components/UI/checkbox/Checkbox';
 import EnemyCheckbox from '../../components/UI/enemyCheckbox/EnemyCheckbox';
+import SanctionCheckbox from '../../components/UI/sanctionsCheckbox/SanctionCheckbox';
 
 import BarChart from '../../components/UI/charts/BarChart';
 import { Chart as ChartJS, registerables } from 'chart.js';
@@ -32,7 +33,7 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
 
 
     const countriesPublic = useAppSelector(state => state.countriesPublic);
-    console.log(countriesPublic);
+    // console.log(countriesPublic);
     const chartData = {
         labels: countriesPublic.countries.map( item => item.country),
         datasets: [
@@ -116,28 +117,36 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
                             <div className={cl.country__development}>
                                 <div>
                                     <h3>Order to attack:</h3>
-                                    <span className={cl.country__bomb}> {country.bomb} </span>
+                                    <span className={cl.country__bomb}> {form.bomb} </span>
                                     <img src={bomb}/>
                                 </div>
-                                { form.enemies.map(enemy => 
+                                { form.enemies.map((enemy, index) => 
                                     <div>
                                         <p>{enemy.country}</p>
                                         <div>
-                                            {enemy.cities.map(city => 
-                                                <EnemyCheckbox stateCity={city.city__state}>{city.city__name}</EnemyCheckbox>
+                                            {enemy.cities.map((city, id) => 
+                                                <EnemyCheckbox 
+                                                formState={form.enemies[index].cities[id].city__state}
+                                                indexCol={index}
+                                                id={id}
+                                                key={city.city__name} 
+                                                stateCity={country.enemies[index].cities[id].city__state}
+                                                bombs={form.bomb}
+                                                toggleStatus={() => dispatch(toggleEnemyCheckbox({status: form.enemies[index].cities[id].city__state, index: index, id: id}))}
+                                                >{city.city__name}</EnemyCheckbox>
                                             )}
                                         </div>
                                     </div>
                                 ) }
-                                
-                                
                             </div>
-                            {/* <div className={cl.country__development}>
+                            <div className={cl.country__development}>
                                 <div className={cl.country__dev_col}>
                                     <h3>Introduction of sanctions:</h3>
-                                
-                                    { form.enemies.map(enemy => 
-                                        <Checkbox checked={enemy.sanctions}>{enemy.country}</Checkbox> 
+                                    { form.enemies.map((enemy, index) => 
+                                        <SanctionCheckbox 
+                                        key={index}
+                                        toggleStatus={() => dispatch(toggleSanctionCheckbox({status: form.enemies[index].sanctions, index: index}))}
+                                        >{enemy.country}</SanctionCheckbox> 
                                     ) }
                                 </div>
                             </div>
@@ -157,10 +166,10 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
                                     <button type="submit">Отправить</button>
                                 </form>
                             </div>
-                            <div className={cl.country__button}>
+                            {/* <div className={cl.country__button}>
                                 <button className={cl.button} type="submit">Send order</button>
-                            </div> */}
-                        </section>
+                            </div>*/}
+                        </section> 
                         
                     </form>
                 ):( // For simple users
@@ -172,6 +181,7 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
                                     city={item} 
                                     id={index}
                                     isPresident={isPresident}
+                                    budget={form.budget}                                    
                                 />                    
                             )}
                         </div>
