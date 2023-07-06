@@ -1,5 +1,5 @@
 import {createSlice, PayloadAction, createAsyncThunk} from "@reduxjs/toolkit";
-import { ICountriesPublicInfo, ICountry, IForm } from "../types/types";
+import { ICountriesPublicInfo, ICountry, IForm, IDonat } from "../types/types";
 import CSS from "csstype"
 
 const initialStateCountry: ICountry = {
@@ -7,7 +7,7 @@ const initialStateCountry: ICountry = {
     flag__photo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQNcell8SvcD2oHdkfnzK_q_hZ7LSyjc7UyAPeZtyATwYoD5HOGYtq-tOGyVpxE7YLhb0&usqp=CAU",
     budget: 1000,
     average__live__level: 57,
-    nuclear__program: true,
+    nuclear__program: false,
     bomb: 2,
     cities: [ 
         {
@@ -123,7 +123,6 @@ const formResult: IForm = {
     ecology: false,
     budget: initialStateCountry.budget,
     bomb: initialStateCountry.bomb,
-    donat: 0,
     cities: [
         {
             city__name: initialStateCountry.cities[0].city__name,
@@ -215,6 +214,12 @@ const formResult: IForm = {
         },
     ]
 };
+
+const donatForm: IDonat = {
+    from: initialStateCountry.country,
+    to: "",
+    amount: 0,
+}
 
 const countrySlice = createSlice({
     name: "country",
@@ -341,12 +346,23 @@ const coutriesPublicInfoSlice = createSlice({
     reducers: {},
 })
 
+const donatSlice = createSlice({
+    name: "donat",
+    initialState: donatForm,
+    reducers: {
+        donatFromBudget(state, action: PayloadAction<{ amount: number, countryTo: string}>){
+            console.log(a)
+        },
+    }
+})
+
 
 const formSlice = createSlice({
     name: "form",
     initialState: formResult,
     reducers: {
-        toggleNuclearStatus(state, action: PayloadAction<{status: boolean, price: number, component: HTMLElement}> ){
+        toggleNuclearStatus(state, action: PayloadAction<{ status: boolean, price: number, component: HTMLElement}> ){
+           
             state.nuclear__program = !action.payload.status; 
             if(action.payload.status) state.budget = state.budget + action.payload.price;
             else state.budget = state.budget - action.payload.price;

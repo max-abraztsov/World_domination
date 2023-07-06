@@ -49,7 +49,6 @@ export interface IForm{ // Изменения вцелом для страны
     ecology: boolean; // Инвестиция в экологию
     budget: number;
     bomb: number; // Количество заказанных бомб
-    donat: number; // Донат другим странам
     cities: ICityForm[]; // Массив изменений для городов
     enemies: IEnemy[]; // 
 }
@@ -74,4 +73,10 @@ export interface ICityPublicInfo{
     city__name: string; // Название 
     live__level: number; // Уровень жизни %
     city__state: boolean;
+}
+
+export interface IDonat {
+    from: string;
+    to: string;
+    amount: number;
 }

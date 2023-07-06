@@ -7,6 +7,7 @@ import City from '../../components/city/City';
 import Checkbox from '../../components/UI/checkbox/Checkbox';
 import EnemyCheckbox from '../../components/UI/enemyCheckbox/EnemyCheckbox';
 import SanctionCheckbox from '../../components/UI/sanctionsCheckbox/SanctionCheckbox';
+import Tooltip from '../../components/UI/tooltip/Tooltip';
 
 import BarChart from '../../components/UI/charts/BarChart';
 import { Chart as ChartJS, registerables } from 'chart.js';
@@ -33,7 +34,6 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
 
 
     const countriesPublic = useAppSelector(state => state.countriesPublic);
-    // console.log(countriesPublic);
     const chartData = {
         labels: countriesPublic.countries.map( item => item.country),
         datasets: [
@@ -45,19 +45,28 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
         ],
     };
 
-    const handleToggleNuclearStatus = (event: React.ChangeEvent<HTMLInputElement>) => {
-        event.preventDefault();
-        dispatch(toggleNuclearStatus({status: form.nuclear__program, price: 500, component: event.target}))
-    }
-
     return (
         <div className={cl.country}>
             <div className={cl.container}>
-                {/* {forAdmin ? (
+                <section>
+                {}
+                    <div>
+                        <div>
+                            <h3></h3>
+                        </div>
+                        <ul>
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                        </ul>
+                    </div>
+                </section>
+                {forAdmin ? (
                     <div></div>  
                 ) : (
-                    // <BarChart data={chartData}/>   
-                )} */}
+                    <BarChart data={chartData}/>   
+                )}
                 <section className={cl.country__info}>
                     <div className={cl.country__title}>
                         <img className={cl.country__flag} src={country.flag__photo} alt={"flag " + country.country} />
@@ -67,6 +76,7 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
                         <div className={cl.country__live_level}>
                             <p className={cl.country__indicator}>Average <br/>live level:</p>
                             <p className={cl.country__index}>{country.average__live__level}%</p>
+                            
                         </div>
                         <div className={cl.country__budget}>
                             <p className={cl.country__indicator}>Your <br/>Budget:</p>
@@ -75,7 +85,7 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
                     </div> 
                 </section>
                 { isPresident.isPresident ? ( // For president and admin
-                    <form>
+                    <form action="#" >
                         <section className={cl.cities__info}>
                             {country.cities.map((item, index) => 
                                 <City 
@@ -90,13 +100,26 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
                         <section>
                             <div className={cl.country__development}>
                                 <div className={cl.country__dev_col}>
-                                    
-                                    <h3>Nuclear program:</h3>
+
+
+
+
+                                    {/* <div className={cl.tooltip}>
+                                        <h1>Пример использования подсказки</h1>
+                                        <Tooltip text="Это подсказка для примера" />
+                                    </div> */}
+
+
+
+                                    <div className={cl.tooltip}>
+                                        <h3>Nuclear program:</h3>
+                                        <Tooltip text="Это подсказка для примера" />
+                                    </div>
                                     <Checkbox 
                                         formState={form.nuclear__program}
                                         price={500}
                                         budget={form.budget}
-                                        toggleStatus={handleToggleNuclearStatus} 
+                                        toggleStatus={() => dispatch(toggleNuclearStatus({ status: form.nuclear__program, price: 500, component: event.target}))} 
                                         checked={country.nuclear__program}
                                     >Develop nuclear program (500$)</Checkbox>
                                     <div className={cl.country__input}>
@@ -105,7 +128,10 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
                                     </div>
                                 </div>
                                 <div className={cl.country__dev_col}>
-                                    <h3>Ecology:</h3>
+                                    <div className={cl.tooltip}>
+                                        <h3>Ecology:</h3>
+                                        <Tooltip text="Это подсказка для примера" />
+                                    </div>
                                     <Checkbox 
                                         formState={form.ecology}
                                         price={200}
@@ -116,7 +142,10 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
                             </div>
                             <div className={cl.country__development}>
                                 <div>
-                                    <h3>Order to attack:</h3>
+                                    <div className={cl.tooltip}>
+                                        <h3>Order to attack:</h3>
+                                        <Tooltip text="Это подсказка для примера" />
+                                    </div>
                                     <span className={cl.country__bomb}> {form.bomb} </span>
                                     <img src={bomb}/>
                                 </div>
@@ -141,7 +170,10 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
                             </div>
                             <div className={cl.country__development}>
                                 <div className={cl.country__dev_col}>
-                                    <h3>Introduction of sanctions:</h3>
+                                    <div className={cl.tooltip}>
+                                        <h3>Introduction of sanctions:</h3>
+                                        <Tooltip text="Это подсказка для примера" />
+                                    </div>
                                     { form.enemies.map((enemy, index) => 
                                         <SanctionCheckbox 
                                         key={index}
@@ -159,16 +191,14 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
                                             <option value={enemy.country}>{enemy.country}</option>
                                         )}
                                     </select>
-
                                     <label for="amount">Amount</label>
                                     <input type="number" id="amount" name="amount" placeholder="Enter an amount " min="0" required />
-
                                     <button type="submit">Отправить</button>
                                 </form>
                             </div>
-                            {/* <div className={cl.country__button}>
+                            <div className={cl.country__button}>
                                 <button className={cl.button} type="submit">Send order</button>
-                            </div>*/}
+                            </div>
                         </section> 
                         
                     </form>
