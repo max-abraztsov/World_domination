@@ -40,6 +40,7 @@ export interface IEnemyCity{
 export interface IEnemy{
     country: string; //
     sanctions: boolean;
+    sanctinosFrom: boolean;
     cities: IEnemyCity[]; //
 }
 
@@ -49,6 +50,7 @@ export interface IForm{ // Изменения вцелом для страны
     ecology: boolean; // Инвестиция в экологию
     budget: number;
     bomb: number; // Количество заказанных бомб
+    donate: IDonat;
     cities: ICityForm[]; // Массив изменений для городов
     enemies: IEnemy[]; // 
 }

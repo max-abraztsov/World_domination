@@ -29,6 +29,7 @@ const Login: FC = () => {
 
     async function postLogin(){
         try{
+            console.log(userForm);
             const response = await axios.post("http://127.0.0.1:8000/loginPage", userForm);
             console.log(response.data);
             return response;
