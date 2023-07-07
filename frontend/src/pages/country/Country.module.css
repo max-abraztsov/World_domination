@@ -15,6 +15,12 @@
     width: 100%;
     margin: 40px 0;
 }
+
+.country__enemies{
+    display: flex;
+    flex-direction: column;
+}
+
 .country__title{
     display:flex;
     align-items: center;
@@ -85,6 +91,14 @@
     margin-bottom: 8px;
     font-size: 22px;
 }
+.country__sanctions{
+    display: flex;
+    justify-content: space-between;
+}
+
+.country__sanction{
+    margin-right: 80px;
+}
 
 .country__enemy{
     display: flex;
@@ -128,4 +142,21 @@
     margin-right: -10px;
     margin-top: 10px;
     margin-left: 30px;
+}
+
+.tooltip{
+    display: flex;
+    position: relative;
+}
+
+.city__destoyed{
+    position: relative;
+    top: 2px;
+    left: 0; 
+    width: 15px;
+    height: 15px;
+}
+.countires__information{
+    display: flex;
+    justify-content: space-around;
 }

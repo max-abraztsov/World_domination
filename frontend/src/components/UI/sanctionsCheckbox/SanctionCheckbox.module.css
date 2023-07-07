@@ -3,6 +3,7 @@
     font-weight: 600;
     font-size: 22px;
     margin-bottom: 5px; 
+    position: relative;
 }
 .real_checkbox{
     width: 0;

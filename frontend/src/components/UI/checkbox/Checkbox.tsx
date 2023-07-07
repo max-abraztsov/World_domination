@@ -20,10 +20,10 @@ const Checkbox: FC<CheckboxProps> = ({formState, children, checked, toggleStatus
         </label>
     );
     else return (
-        <label className={cl.checkbox} onChange={toggleStatus}>  
+        <label className={cl.checkbox} >  
             { (budget >= price) || (budget < price && formState)  ? ( 
                 <span>
-                    <input className={cl.real_checkbox} type="checkbox"/>
+                    <input className={cl.real_checkbox} type="checkbox" onChange={toggleStatus}/>
                     <span className={cl.custom_checkbox}></span>
                 </span>
             ) : formState ? ( 

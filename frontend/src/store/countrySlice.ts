@@ -1,5 +1,5 @@
 import {createSlice, PayloadAction, createAsyncThunk} from "@reduxjs/toolkit";
-import { ICountriesPublicInfo, ICountry, IForm } from "../types/types";
+import { ICountriesPublicInfo, ICountry, IForm, IDonat } from "../types/types";
 import CSS from "csstype"
 
 const initialStateCountry: ICountry = {
@@ -7,7 +7,7 @@ const initialStateCountry: ICountry = {
     flag__photo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQNcell8SvcD2oHdkfnzK_q_hZ7LSyjc7UyAPeZtyATwYoD5HOGYtq-tOGyVpxE7YLhb0&usqp=CAU",
     budget: 1000,
     average__live__level: 57,
-    nuclear__program: true,
+    nuclear__program: false,
     bomb: 2,
     cities: [ 
         {
@@ -48,9 +48,10 @@ const initialStateCountry: ICountry = {
         },
     ],
     enemies: [
-        {
+        {   
             country: "Russia",
             sanctions: false,
+            sanctinosFrom: false,
             cities: [
                 {
                     city__name: "Moscow",
@@ -73,6 +74,7 @@ const initialStateCountry: ICountry = {
         {
             country: "China", 
             sanctions: false,
+            sanctinosFrom: false,
             cities: [
                 {
                     city__name: "Hong Kong",
@@ -95,6 +97,7 @@ const initialStateCountry: ICountry = {
         {
             country: "USA",
             sanctions: false,
+            sanctinosFrom: true,
             cities: [
                 {
                     city__name: "New York",
@@ -123,7 +126,6 @@ const formResult: IForm = {
     ecology: false,
     budget: initialStateCountry.budget,
     bomb: initialStateCountry.bomb,
-    donat: 0,
     cities: [
         {
             city__name: initialStateCountry.cities[0].city__name,
@@ -150,6 +152,7 @@ const formResult: IForm = {
         {
             country: "Russia",
             sanctions: false,
+            sanctinosFrom: initialStateCountry.enemies[0].sanctinosFrom,
             cities: [
                 {
                     city__name: "Moscow",
@@ -172,6 +175,7 @@ const formResult: IForm = {
         {
             country: "China", 
             sanctions: false,
+            sanctinosFrom: initialStateCountry.enemies[1].sanctinosFrom,
             cities: [
                 {
                     city__name: "Hong Kong",
@@ -194,6 +198,7 @@ const formResult: IForm = {
         {
             country: "USA",
             sanctions: false,
+            sanctinosFrom: initialStateCountry.enemies[2].sanctinosFrom,
             cities: [
                 {
                     city__name: "New York",
@@ -213,7 +218,12 @@ const formResult: IForm = {
                 },
             ],
         },
-    ]
+    ],
+    donate: {
+        from: "",
+        to: "",
+        amount: 0,
+    },
 };
 
 const countrySlice = createSlice({
@@ -346,7 +356,7 @@ const formSlice = createSlice({
     name: "form",
     initialState: formResult,
     reducers: {
-        toggleNuclearStatus(state, action: PayloadAction<{status: boolean, price: number, component: HTMLElement}> ){
+        toggleNuclearStatus(state, action: PayloadAction<{ status: boolean, price: number}> ){
             state.nuclear__program = !action.payload.status; 
             if(action.payload.status) state.budget = state.budget + action.payload.price;
             else state.budget = state.budget - action.payload.price;
@@ -373,21 +383,21 @@ const formSlice = createSlice({
         },
         toggleSanctionCheckbox(state, action: PayloadAction<{status: boolean, index: number}>){
             state.enemies[action.payload.index].sanctions = !action.payload.status;
-
-        }
-
-        // autoSubtractBudgetCheckbox(state, action: PayloadAction<{price:number, status: boolean, checked?: boolean, }>){
-        //     if (!action.payload.checked){
-        //         if(action.payload.status) {
-        //             state.budget = state.budget + action.payload.price;
-        //             console.log("+200");
-        //         }
-        //         else {
-        //             state.budget = state.budget - action.payload.price;
-        //             console.log("-200");
-        //         }
-        //     }
-        // }
+        },
+        donatFromBudget(state, action: PayloadAction<{ amount: number, countryTo: string}>){
+            if(state.budget > action.payload.amount){
+                state.donate.to = action.payload.countryTo;
+                state.donate.amount = action.payload.amount;
+                state.budget = state.budget - action.payload.amount;
+                // Иммитация высылки данных на сервер
+                console.log(state.donate.to, state.donate.amount, "Sum:", state.budget);
+                state.donate.to = "";
+                state.donate.amount = 0;
+                console.log(state.donate.to, state.donate.amount, "Sum:", state.budget);
+            } else {
+                alert("Not money");
+            }
+        },
     },
 });
 
@@ -400,7 +410,7 @@ export const
     toggleProtect,
     toggleEnemyCheckbox,
     toggleSanctionCheckbox,
-    // autoSubtractBudgetCheckbox,
+    donatFromBudget,
 } = formSlice.actions;
 
 export default {
