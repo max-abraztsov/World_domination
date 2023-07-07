@@ -1,9 +1,9 @@
-from django.contrib import admin 
-from django.urls import path, include 
-from loginPage.views import * 
-from django.urls import re_path as url 
- 
-urlpatterns = [ 
-    path('admin/', admin.site.urls), 
-    path('login', LoginView.as_view(), name='some text') 
+from django.contrib import admin
+from django.urls import path
+#from loginPage.views import LoginView
+from loginPage import views
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('loginPage', views.login_page, name='loginPage'),
 ]
