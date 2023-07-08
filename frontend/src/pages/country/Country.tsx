@@ -1,28 +1,23 @@
 import {FC, useState, useEffect} from 'react';
 import { ICountry } from '../../types/types';
 import { useAppSelector, useAppDispatch } from '../../hook';
-import { toggleNuclearStatus, toggleEcologyDevelop, toggleEnemyCheckbox,toggleSanctionCheckbox, donatFromBudget } from '../../store/countrySlice';
+import {toggleRocketOrder, toggleNuclearStatus, toggleEcologyDevelop, toggleEnemyCheckbox,toggleSanctionCheckbox, donatFromBudget } from '../../store/countrySlice';
 import cl from "./Country.module.css"
 import City from '../../components/city/City';
 import Checkbox from '../../components/UI/checkbox/Checkbox';
 import EnemyCheckbox from '../../components/UI/enemyCheckbox/EnemyCheckbox';
 import SanctionCheckbox from '../../components/UI/sanctionsCheckbox/SanctionCheckbox';
 import Tooltip from '../../components/UI/tooltip/Tooltip';
-
+import axios from 'axios';
 import BarChart from '../../components/UI/charts/BarChart';
 import { Chart as ChartJS, registerables } from 'chart.js';
 import { Chart } from 'react-chartjs-2'
 
 import bomb from "../../assets/bomb-cursor.png"
 
-
-
-
 interface CountryProps{
     forAdmin?: ICountry;
 }
-
-
 
 const Country: FC<CountryProps> = ({forAdmin}) => {
 
@@ -32,23 +27,61 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
     if (forAdmin) country = forAdmin;
     const dispatch = useAppDispatch();
 
-    const [donateForm, setDonateForm] = useState({
-        to: "",
-        amount: 0,
-    })
-
-
     const countriesPublic = useAppSelector(state => state.countriesPublic);
     const chartData = {
         labels: countriesPublic.countries.map( item => item.country),
         datasets: [
             {
                 label: 'Average live level',
-                data: countriesPublic.countries.map( item => item.average__live__level),
+                data: countriesPublic.countries.map( item => item.average_live_level),
                 backgroundColor: '#55828B',
             },
         ],
     };
+
+    const [donateForm, setDonateForm] = useState({
+        to: "",
+        amount: 0,
+    })
+
+    const [possibleRocketLimit, setPossibleRocketLimit] = useState<number>(0);
+
+    useEffect(() => {
+        setPossibleRocketLimit(Math.floor(form.budget/150));
+    }, [form.budget]);
+
+    const [rocketOrder, setRocketOrder] = useState<number>(0);
+
+    function changeRocketOrder(e: React.ChangeEvent<HTMLInputElement>) {
+        if(rocketOrder <= possibleRocketLimit) setRocketOrder(Number(e.target.value));
+        else setRocketOrder(possibleRocketLimit);
+    }
+
+    function activateRocketOrder(e: React.MouseEvent<HTMLButtonElement>){
+        e.preventDefault();
+        if(rocketOrder <= possibleRocketLimit && form.rocket_order != 0){
+            console.log("you remove order with " + form.rocket_order + " rockets and ordered " + rocketOrder )
+            dispatch(toggleRocketOrder({order: rocketOrder}));
+            setRocketOrder(0);
+        } else if (rocketOrder <= possibleRocketLimit && form.rocket_order == 0){
+            console.log("you ordered " + rocketOrder );
+            setRocketOrder(possibleRocketLimit);
+            setRocketOrder(0);
+        } else {
+            console.log("you no have money");
+        }
+    }
+
+    function cancelRocketOrder(e: React.MouseEvent<HTMLButtonElement>){
+        e.preventDefault();
+        if (form.rocket_order != 0){
+            console.log("you remove order with " + form.rocket_order + " rockets");
+            dispatch(toggleRocketOrder({order: 0}));
+            setRocketOrder(0);
+        } else {
+            console.log("you haven't got any order");
+        }
+    }
 
     function donate(e: React.MouseEvent<HTMLButtonElement>){
         e.preventDefault();
@@ -57,13 +90,35 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
         setDonateForm({ to: "", amount: 0, });
     }
 
-    const handleChangeAmount = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setDonateForm({ ...donateForm, amount: Number(event.target.value)});
-    };
+    function handleChangeAmount(e: React.ChangeEvent<HTMLInputElement>) {
+        setDonateForm({ ...donateForm, amount: Number(e.target.value)});
+    }
 
-    const handleChangeTo = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        setDonateForm({ ...donateForm, to: event.target.value});
-    };
+    function handleChangeTo(e: React.ChangeEvent<HTMLSelectElement>) {
+        setDonateForm({ ...donateForm, to: e.target.value});
+    }
+
+    const clickHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
+        console.log(form);
+        e.preventDefault();
+        postForm();
+    }
+
+    async function postForm(){
+        try{
+            const response = await axios.post("http://127.0.0.1:8000/round_form", form);
+            console.log(response.data);
+            return response;
+        }catch (error){
+            if (axios.isAxiosError(error)) {
+                console.log('error message: ', error.message);
+                return error.message;
+            } else {
+                console.log('unexpected error: ', error);
+                return 'An unexpected error occurred';
+            }
+        }
+    }
 
     return (
         <div className={cl.country}>
@@ -82,10 +137,10 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
                             </div>
                             <div>
                                 { country.cities.map((city, index) => 
-                                city.city__state ? (
-                                    <p key={city.city__name}>{city.city__name}: {city.live__level}%</p>
+                                city.city_state ? (
+                                    <p key={city.city_name}>{city.city_name}: {city.live_level}%</p>
                                 ) : (
-                                    <p key={city.city__name}>{city.city__name}: <img className={cl.city__destoyed} src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Cross_red_circle.svg/800px-Cross_red_circle.svg.png" alt="cross" /></p> 
+                                    <p key={city.city_name}>{city.city_name}: <img className={cl.city__destoyed} src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Cross_red_circle.svg/800px-Cross_red_circle.svg.png" alt="cross" /></p> 
                                 )
                                 )}
                             </div>
@@ -96,19 +151,22 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
                 </section>
                 <section className={cl.country__info}>
                     <div className={cl.country__title}>
-                        <img className={cl.country__flag} src={country.flag__photo} alt={"flag " + country.country} />
+                        <img className={cl.country__flag} src={country.flag_photo} />
                         <h2 className={cl.country__name}>{country.country}</h2>
                     </div>
-                    <div className={cl.country__stats}>
+                    <div className={cl.country__info_stats}>
                         <div className={cl.country__live_level}>
-                            <p className={cl.country__indicator}>Average <br/>live level:</p>
-                            <p className={cl.country__index}>{country.average__live__level}%</p>
-                            
+                            <p className={cl.country__indicator}>Average live level:</p>
+                            <p className={cl.country__index}>{country.average_live_level}%</p>
                         </div>
                         <div className={cl.country__budget}>
-                            <p className={cl.country__indicator}>Your <br/>Budget:</p>
+                            <p className={cl.country__indicator}>Your budget:</p>
                             <p className={cl.country__index}>{form.budget}$</p>
-                        </div>    
+                        </div>  
+                        <div className={cl.country__ecology}>
+                            <p className={cl.country__indicator}>Ecology:</p>
+                            <p className={cl.country__index}>{country.ecology}%</p>
+                        </div>  
                     </div> 
                 </section>
                 { isPresident.isPresident ? ( // For president and admin
@@ -133,15 +191,24 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
                                             <Tooltip text="Это подсказка для примера" />
                                         </div>
                                         <Checkbox 
-                                            formState={form.nuclear__program}
+                                            formState={form.nuclear_technology}
                                             price={500}
                                             budget={form.budget}
-                                            toggleStatus={() => dispatch(toggleNuclearStatus({ status: form.nuclear__program, price: 500}))} 
-                                            checked={country.nuclear__program}
+                                            toggleStatus={() => dispatch(toggleNuclearStatus({ status: form.nuclear_technology, price: 500}))} 
+                                            checked={country.nuclear_technology}
                                         >Develop nuclear program (500$)</Checkbox>
-                                        <div className={cl.country__input}>
-                                            <p className={cl.input__text}>Order nuclear bombs (150$):</p>
-                                            <input type="number" placeholder='2'/>
+                                        <div className={cl.country_input}>
+                                            <div className={cl.tooltip}>
+                                                <h3>Order nuclear bombs (150$);</h3>
+                                                <Tooltip text="Это подсказка для примера" />
+                                            </div>
+
+
+
+
+                                            <input type="number" min="0" max={possibleRocketLimit} onChange={changeRocketOrder} value={rocketOrder} />
+                                            <button type="button" onClick={activateRocketOrder}>Order</button>
+                                            <button type="button" onClick={cancelRocketOrder}>Cancel</button>
                                         </div>
                                     </div>
                                     <div className={cl.country__dev_col}>
@@ -163,7 +230,7 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
                                             <h3>Order to attack:</h3>
                                             <Tooltip text="Это подсказка для примера" />
                                         </div>
-                                        <span className={cl.country__bomb}> {form.bomb} </span>
+                                        <span className={cl.country__bomb}> {form.rockets} </span>
                                         <img src={bomb}/>
                                     </div>
                                     { form.enemies.map((enemy, index) => 
@@ -172,14 +239,14 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
                                             <div>
                                                 {enemy.cities.map((city, id) => 
                                                     <EnemyCheckbox 
-                                                    formState={form.enemies[index].cities[id].city__state}
+                                                    formState={form.enemies[index].cities[id].city_state}
                                                     indexCol={index}
                                                     id={id}
-                                                    key={city.city__name} 
-                                                    stateCity={country.enemies[index].cities[id].city__state}
-                                                    bombs={form.bomb}
-                                                    toggleStatus={() => dispatch(toggleEnemyCheckbox({status: form.enemies[index].cities[id].city__state, index: index, id: id}))}
-                                                    >{city.city__name}</EnemyCheckbox>
+                                                    key={city.city_name} 
+                                                    stateCity={country.enemies[index].cities[id].city_state}
+                                                    bombs={form.rockets}
+                                                    toggleStatus={() => dispatch(toggleEnemyCheckbox({status: form.enemies[index].cities[id].city_state, index: index, id: id}))}
+                                                    >{city.city_name}</EnemyCheckbox>
                                                 )}
                                             </div>
                                         </div>
@@ -215,10 +282,9 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
                                     </div>
                                 </div>
                                 <div className={cl.country__button}>
-                                    <button className={cl.button} type="submit">Send order</button>
+                                    <button className={cl.button} onClick={clickHandler} type="submit">Send order</button>
                                 </div>
-                            </section> 
-                            
+                            </section>     
                         </form>
                         <div className={cl.country__development}>
                             <form>
@@ -267,7 +333,7 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
                                 <h3>Nuclear program:</h3>
                                 <p className={cl.input__text}>Develop nuclear program (500$)</p>
                                 <p className={cl.input__text}>Order nuclear bombs (150$): 
-                                    <span className={cl.country__bomb}> {country.bomb} </span> (at this moment)
+                                    <span className={cl.country__bomb}> {country.rockets} </span> (at this moment)
                                 </p>  
                             </div>
                             <div className={cl.country__dev_col}>

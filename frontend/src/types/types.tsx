@@ -1,8 +1,8 @@
 // For country page (get) request ////////////////////////////////////////////// 
 export interface ICity{ // Информация по конкретному городу
     photo: string; // Ссылка на фото
-    city__name: string; // Название 
-    live__level: number; // Уровень жизни %
+    city_name: string; // Название 
+    live_level: number; // Уровень жизни %
     progress: number; // Развитие %
     profit: number;   // Доход %
     shield: boolean;  // Наличие щита
@@ -11,11 +11,12 @@ export interface ICity{ // Информация по конкретному го
 
 export interface ICountry{
     country: string; // Название страны
-    flag__photo: string; // Ссылка на фото флага
+    flag_photo: string; // Ссылка на фото флага
     budget: number; // Бюджет 
-    average__live__level: number; // Средний уровень жизни
-    nuclear__program: boolean; // Наличие ядерной программы
-    bomb: number; // Количество имеющихся бомб
+    average_live_level: number; // Средний уровень жизни
+    nuclear_technology: boolean; // Наличие ядерной программы
+    ecology: number;
+    rockets: number; // Количество имеющихся бомб
     cities: ICity[]; // Массив всех городов одной страны 
     enemies: IEnemy[];
 }
@@ -27,14 +28,14 @@ export interface ICountries{
 
 // For form (post) request //////////////////////////////////////////////
 export interface ICityForm{ // Изменения для конкретного города
-    city__name: string; // Для ориентирования
+    city_name: string; // Для ориентирования
     develop: boolean; // Развитие города
     shield: boolean; // Установка щита
 }
 
 export interface IEnemyCity{
-    city__name: string;
-    city__state: boolean;
+    city_name: string;
+    city_state: boolean;
 }
 
 export interface IEnemy{
@@ -46,10 +47,11 @@ export interface IEnemy{
 
 export interface IForm{ // Изменения вцелом для страны
     country: string; // Для ориентирования
-    nuclear__program: boolean; // Развитие ядерной программы
+    nuclear_technology: boolean; // Развитие ядерной программы
     ecology: boolean; // Инвестиция в экологию
     budget: number;
-    bomb: number; // Количество заказанных бомб
+    rocket_order: number;
+    rockets: number; // Количество заказанных бомб
     donate: IDonat;
     cities: ICityForm[]; // Массив изменений для городов
     enemies: IEnemy[]; // 
@@ -62,19 +64,20 @@ export interface IStatus { // Статус пользователя
 // Public information about countries//////////////////////////////////////////////////////////////////////////////
 
 export interface ICountriesPublicInfo{
+    ecology: number;
     countries: ICountryPublicInfo[]; // Все страны
 }
 
 export interface ICountryPublicInfo{
     country: string;
-    average__live__level: number; // Средний уровень жизни
+    average_live_level: number; // Средний уровень жизни
     cities: ICityPublicInfo[];
 }
 
 export interface ICityPublicInfo{
-    city__name: string; // Название 
-    live__level: number; // Уровень жизни %
-    city__state: boolean;
+    city_name: string; // Название 
+    live_level: number; // Уровень жизни %
+    city_state: boolean;
 }
 
 export interface IDonat {

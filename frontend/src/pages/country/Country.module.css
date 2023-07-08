@@ -32,20 +32,21 @@
 }
 .country__name{
     font-weight: 600;
-    font-size: 50px;
+    font-size: 40px;
     color: rgb(92, 92, 92);
 }
 .country__title{
     display:flex;
+    width: 30%;
 }
 .country__live_level{
     display:flex;
+    flex-direction: column;
     align-items: center;
-    margin-right: 30px;
 }
 .country__indicator{
     font-weight: 600;
-    font-size: 22px;
+    font-size: 20px;
     color: rgb(92, 92, 92);
     margin-right: 10px;
 }
@@ -53,17 +54,23 @@
     font-weight: 600;
     font-size: 56px;
     color: rgb(25, 163, 78);
-    width: 250px;
-
 }
 .country__stats{
     display:flex;
     align-items: center;
 }
 
+.country__info_stats{
+    width: 70%;
+    display:flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
 
 .country__budget{
     display:flex;
+    flex-direction: column;
     align-items: center;
 }
 .cities__info{

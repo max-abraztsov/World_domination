@@ -22,12 +22,12 @@ const City: FC<CityProps> = ({city, isPresident, id, budget}) => {
         return (
             <div className={cl.city}>
                 <div className={cl.city__block}>
-                    <img className={cl.city__photo} src={city.photo} alt={city.city__name +  " city"} />
-                    <h2 className={cl.city__name}>{city.city__name}</h2>
+                    <img className={cl.city__photo} src={city.photo} alt={city.city_name +  " city"} />
+                    <h2 className={cl.city__name}>{city.city_name}</h2>
                 </div>
                 <div className={cl.city__stats}>
                     <p className={cl.city__stat}><span>Progress</span><span>{city.progress}%</span></p><hr />
-                    <p className={cl.city__stat}><span>Live level</span><span>{city.live__level}%</span></p><hr />
+                    <p className={cl.city__stat}><span>Live level</span><span>{city.live_level}%</span></p><hr />
                     <p className={cl.city__stat}><span>Profit</span><span>{city.profit}$</span></p><hr />
                     <p className={cl.city__stat}><span>Shield</span>
                     { city.shield ? ( 
@@ -69,8 +69,8 @@ const City: FC<CityProps> = ({city, isPresident, id, budget}) => {
         return (
             <div className={cl.city_desroyed}>
                 <div className={cl.city__block_desroyed}>
-                    <img className={cl.city__photo} src={city.photo} alt={city.city__name +  " city"} />
-                    <h2 className={cl.city__name}>{city.city__name}</h2>
+                    <img className={cl.city__photo} src={city.photo} alt={city.city_name +  " city"} />
+                    <h2 className={cl.city__name}>{city.city_name}</h2>
                 </div>
                 <div className={cl.city__stats}>
                     <p className={cl.city__stat}><span>Progress</span><span> - </span></p><hr />
