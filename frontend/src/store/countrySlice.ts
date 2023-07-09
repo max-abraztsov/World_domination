@@ -401,9 +401,15 @@ const formSlice = createSlice({
                 alert("Not money");
             }
         },
-        toggleRocketOrder(state, action: PayloadAction<{order: number}>){
+        addRocketOrder(state, action: PayloadAction<{order: number}>){
+            state.budget = state.budget + (state.rocket_order * 150);
             state.rocket_order = action.payload.order;
+            state.budget = state.budget - (state.rocket_order * 150);
         },
+        removeRocketOrder(state){
+            state.budget = state.budget + (state.rocket_order * 150);
+            state.rocket_order = 0;
+        }
     },
 });
 
@@ -417,7 +423,8 @@ export const
     toggleEnemyCheckbox,
     toggleSanctionCheckbox,
     donatFromBudget,
-    toggleRocketOrder,
+    addRocketOrder,
+    removeRocketOrder
 } = formSlice.actions;
 
 export default {

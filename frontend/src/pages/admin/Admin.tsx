@@ -17,7 +17,7 @@ const Admin: FC = () => {
         datasets: [
             {
                 label: 'Average live level',
-                data: countriesPublic.countries.map( item => item.average__live__level),
+                data: countriesPublic.countries.map( item => item.average_live_level),
                 backgroundColor: '#55828B',
             },
         ],

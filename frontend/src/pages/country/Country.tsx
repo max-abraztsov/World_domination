@@ -1,7 +1,7 @@
 import {FC, useState, useEffect} from 'react';
 import { ICountry } from '../../types/types';
 import { useAppSelector, useAppDispatch } from '../../hook';
-import {toggleRocketOrder, toggleNuclearStatus, toggleEcologyDevelop, toggleEnemyCheckbox,toggleSanctionCheckbox, donatFromBudget } from '../../store/countrySlice';
+import {addRocketOrder, removeRocketOrder, toggleNuclearStatus, toggleEcologyDevelop, toggleEnemyCheckbox,toggleSanctionCheckbox, donatFromBudget } from '../../store/countrySlice';
 import cl from "./Country.module.css"
 import City from '../../components/city/City';
 import Checkbox from '../../components/UI/checkbox/Checkbox';
@@ -59,13 +59,13 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
 
     function activateRocketOrder(e: React.MouseEvent<HTMLButtonElement>){
         e.preventDefault();
-        if(rocketOrder <= possibleRocketLimit && form.rocket_order != 0){
-            console.log("you remove order with " + form.rocket_order + " rockets and ordered " + rocketOrder )
-            dispatch(toggleRocketOrder({order: rocketOrder}));
+        if(rocketOrder <= possibleRocketLimit && form.rocket_order != 0 && rocketOrder != 0){
+            dispatch(addRocketOrder({order: rocketOrder}));
             setRocketOrder(0);
+        } else if (rocketOrder == 0){
+            console.log("at this moment you not choose any rocket");
         } else if (rocketOrder <= possibleRocketLimit && form.rocket_order == 0){
-            console.log("you ordered " + rocketOrder );
-            setRocketOrder(possibleRocketLimit);
+            dispatch(addRocketOrder({order: rocketOrder}));
             setRocketOrder(0);
         } else {
             console.log("you no have money");
@@ -76,7 +76,7 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
         e.preventDefault();
         if (form.rocket_order != 0){
             console.log("you remove order with " + form.rocket_order + " rockets");
-            dispatch(toggleRocketOrder({order: 0}));
+            dispatch(removeRocketOrder());
             setRocketOrder(0);
         } else {
             console.log("you haven't got any order");
@@ -202,13 +202,10 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
                                                 <h3>Order nuclear bombs (150$);</h3>
                                                 <Tooltip text="Это подсказка для примера" />
                                             </div>
-
-
-
-
                                             <input type="number" min="0" max={possibleRocketLimit} onChange={changeRocketOrder} value={rocketOrder} />
                                             <button type="button" onClick={activateRocketOrder}>Order</button>
                                             <button type="button" onClick={cancelRocketOrder}>Cancel</button>
+                                            <span>In next round you will have {form.rocket_order} rockets</span>
                                         </div>
                                     </div>
                                     <div className={cl.country__dev_col}>
@@ -316,32 +313,91 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
                         </div>
                    </section> 
                 ):( // For simple users
-                    <section>
-                        <div className={cl.cities__info}>
+                <section>
+                    <form action="#" >
+                        <section className={cl.cities__info}>
                             {country.cities.map((item, index) => 
                                 <City 
+                                    budget={form.budget}
                                     key={index} 
                                     city={item} 
                                     id={index}
                                     isPresident={isPresident}
-                                    budget={form.budget}                                    
-                                />                    
+                                />                     
                             )}
-                        </div>
-                        <div className={cl.country__development}>
-                            <div className={cl.country__dev_col}>
-                                <h3>Nuclear program:</h3>
-                                <p className={cl.input__text}>Develop nuclear program (500$)</p>
-                                <p className={cl.input__text}>Order nuclear bombs (150$): 
-                                    <span className={cl.country__bomb}> {country.rockets} </span> (at this moment)
-                                </p>  
+                        </section>
+                        <section>
+                            <div className={cl.country__development}>
+                                <div className={cl.country__dev_col}>
+                                    <div className={cl.tooltip}>
+                                        <h3>Nuclear program:</h3>
+                                        <Tooltip text="Это подсказка для примера" />
+                                    </div>
+                                    
+                                    Develop nuclear program (500$)
+                                    
+                                    <div className={cl.tooltip}>
+                                        <h3>Nuclear bombs (150$);</h3>
+                                        <Tooltip text="Это подсказка для примера" />
+                                    </div>
+                                    Order nuclear bomb (150$)
+                                    
+                                </div>
+                                <div className={cl.country__dev_col}>
+                                    <div className={cl.tooltip}>
+                                        <h3>Ecology:</h3>
+                                        <Tooltip text="Это подсказка для примера" />
+                                    </div>
+                                    Develop ecology (200$)
+                                </div>
                             </div>
-                            <div className={cl.country__dev_col}>
-                                <h3>Ecology:</h3>
-                                <p className={cl.input__text}>Develop ecology (200$)</p>
+                            <div key={34} className={cl.country__development}>
+                                <div>
+                                    <div className={cl.tooltip}>
+                                        <h3>Order to attack:</h3>
+                                        <Tooltip text="Это подсказка для примера" />
+                                    </div>
+                                    <span className={cl.country__bomb}> {form.rockets} </span>
+                                    <img src={bomb}/>
+                                </div>
+                                { form.enemies.map((enemy, index) => 
+                                    <div>
+                                        <p>{enemy.country}</p>
+                                        <div>
+                                            {enemy.cities.map((city, id) => 
+                                                <EnemyCheckbox 
+                                                formState={form.enemies[index].cities[id].city_state}
+                                                indexCol={index}
+                                                id={id}
+                                                key={city.city_name} 
+                                                stateCity={country.enemies[index].cities[id].city_state}
+                                                bombs={form.rockets}
+                                                >{city.city_name}</EnemyCheckbox>
+                                            )}
+                                        </div>
+                                    </div>
+                                )}
                             </div>
-                        </div>
-                    </section>
+                            <div className={cl.country__development}>
+                                <div className={cl.country__sanctions}>
+                                    <div className={cl.country__sanction}>
+                                        <div className={cl.tooltip}>
+                                            <h3>Отношения с другими странами:</h3>
+                                            <Tooltip text="Это подсказка для примера" />
+                                        </div>
+                                        {form.enemies.map((enemy, index) => 
+                                            enemy.sanctinosFrom ? (
+                                                <p key={enemy.country}>{enemy.country}: Объявлены санкции</p>
+                                            ) : (
+                                                <p key={enemy.country}>{enemy.country}: Нормальные отношения</p> 
+                                            )
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+                        </section>     
+                    </form>
+                </section>                        
                 )}
             </div>
         </div>
