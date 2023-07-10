@@ -1,8 +1,6 @@
 from django.shortcuts import render
-from rest_framework.views import APIView
-from .models import Country
-from .serializer import LoginSerializer
-from rest_framework.response import Response
+from .models import country
+from .models import city
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
@@ -19,17 +17,18 @@ def login_page(request):
         pass_data = json.loads(pass_body)
         password = pass_data.get('password')
                 
-        print(request.POST)
-
         try:
-            country = Country.objects.get(EnterCode=logincode, Password=password)
+            Country = country.objects.get(EnterCode=logincode, Password=password)
+            city_objects = city.objects.filter(country_id=Country.id).values('photo', 'city_name', 'live_level', 'progress', 'profit', 'shield', 'state')
+            city_list = list(city_objects)
             response_data = {
-                'CountryName': country.CountryName,
-                'NuclearTechnology': country.NuclearTechnology,
-                'NuclearRockets': country.NuclearRockets,
-                'Budget': country.Budget,
-                'Round': country.Round,
-                'Earnings': country.Earnings
+                'country': Country.CountryName,
+                'flag_photo': Country.flag_photo,
+                'nuclear_technology': Country.NuclearTechnology,
+                'rockets': Country.NuclearRockets,
+                'budget': Country.Budget,
+                'ecology': 'not yet',
+                'cities': city_list
             }
             return JsonResponse(response_data)
         except Country.DoesNotExist:
@@ -37,46 +36,3 @@ def login_page(request):
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=500)
     return JsonResponse({'error': 'Invalid request method'}, status=405)
-
-
-    
-
-
-# class LoginView(APIView):
-#     def post(self, request):
-#         logincode = request.data.get('logincode')
-#         password = request.data.get('password')
-
-#         try:
-#             country = countryinfo.objects.get(logincode=logincode, password=password)
-#             response_data = {
-#                 'CountryName': country.CountryName,
-#                 'NuclearTechnology': country.NuclearTechnology,
-#                 'NuclearRockets': country.NuclearRockets,
-#                 'Budget': country.Budget,
-#                 'Round': country.Round,
-#                 'Earnings': country.Earnings
-#             }
-#             return JsonResponse(response_data)
-#         except countryinfo.DoesNotExist:
-#             return JsonResponse({'error': 'User not found'}, status=404)
-#         except Exception as e:
-#             return JsonResponse({'error': str(e)}, status=500)
-
-
-# class LoginView(APIView): 
-#     def get(self, request): 
-#         output = [ 
-#             { 
-#                 "logincode": output.logincode,  
-#                 "password": output.password 
-#             } for output in Login.objects.all() 
-#         ] 
-#         return Response(output) 
- 
-#     def post(self, request): 
-#         serializer = LoginSerializer(data=request.data) 
-#         if serializer.is_valid(raise_exception=True): 
-#             serializer.save() 
-#             return Response(serializer.data)
-
