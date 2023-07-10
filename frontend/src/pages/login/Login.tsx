@@ -1,6 +1,8 @@
-import React, {useState, FC} from 'react';
+import React, {FormEvent, useState, FC} from 'react';
 import cl from "./Login.module.css" ;
 import axios from 'axios';
+import { useAppDispatch } from '../../hook';
+import { loginUser } from '../../store/auth/actionCreators';
 
 interface UserProps {
     logincode: string;
@@ -21,32 +23,39 @@ const Login: FC = () => {
         setUserForm({...userForm, password: e.target.value});
     }
 
-    const clickHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const dispatch = useAppDispatch();
+
+    const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
-        postLogin();
-        setUserForm({logincode: "", password: "",});
+        dispatch(loginUser(userForm));
     }
 
-    async function postLogin(){
-        try{
-            console.log(userForm);
-            const response = await axios.post("http://127.0.0.1:8000/login_page", userForm);
-            console.log(response.data);
-            return response;
-        }catch (error){
-            if (axios.isAxiosError(error)) {
-                console.log('error message: ', error.message);
-                return error.message;
-            } else {
-                console.log('unexpected error: ', error);
-                return 'An unexpected error occurred';
-            }
-        }
-    }
+    // const clickHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
+    //     e.preventDefault();
+    //     postLogin();
+    //     setUserForm({logincode: "", password: "",});
+    // }
+
+    // async function postLogin(){
+    //     try{
+    //         console.log(userForm);
+    //         const response = await axios.post("http://127.0.0.1:8000/login_page", userForm);
+    //         console.log(response.data);
+    //         return response;
+    //     }catch (error){
+    //         if (axios.isAxiosError(error)) {
+    //             console.log('error message: ', error.message);
+    //             return error.message;
+    //         } else {
+    //             console.log('unexpected error: ', error);
+    //             return 'An unexpected error occurred';
+    //         }
+    //     }
+    // }
 
     return (
         <div className={cl.login__wrapper}>    
-            <form className={cl.login__form} action="" method="post">
+            <form className={cl.login__form} onSubmit={handleSubmit} method="post">
                 <h2 className={cl.login__title}>Sign in</h2>
                 <div className={cl.login__container}>
                     <label className={cl.login__label}>Login</label>
@@ -74,7 +83,7 @@ const Login: FC = () => {
                     <button 
                         className={cl.login__button}
                         type="submit" 
-                        onClick={clickHandler}
+                        // onClick={clickHandler}
                     >Sign in</button>
                 </div>
             </form>

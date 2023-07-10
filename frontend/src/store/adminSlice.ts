@@ -169,24 +169,24 @@ const initialState: ICountries = {
             ],
             enemies: [
                 {   
-                    country: "Russia",
+                    country: "Belarus",
                     sanctions: false,
                     sanctinosFrom: false,
                     cities: [
                         {
-                            city_name: "Moscow",
+                            city_name: "Minsk",
                             city_state: true, 
                         },
                         {
-                            city_name: "St. Petersburg",
-                            city_state: true,
+                            city_name: "Homel",
+                            city_state: false,
                         },
                         {
-                            city_name: "Sochi",
+                            city_name: "Grodno",
                             city_state: true, 
                         },
                         {
-                            city_name: "Ekaterinburg",
+                            city_name: "Brest",
                             city_state: true, 
                         },
                     ],
@@ -217,7 +217,7 @@ const initialState: ICountries = {
                 {
                     country: "USA",
                     sanctions: false,
-                    sanctinosFrom: true,
+                    sanctinosFrom: false,
                     cities: [
                         {
                             city_name: "New York",
@@ -310,25 +310,25 @@ const initialState: ICountries = {
                     ],
                 },
                 {
-                    country: "China", 
+                    country: "Belarus", 
                     sanctions: false,
                     sanctinosFrom: false,
                     cities: [
                         {
-                            city_name: "Hong Kong",
+                            city_name: "Minsk",
                             city_state: true, 
                         },
                         {
-                            city_name: "Shanghai",
-                            city_state: true, 
-                        },
-                        {
-                            city_name: "Beijing",
+                            city_name: "Homel",
                             city_state: false, 
                         },
                         {
-                            city_name: "Guangzhou",  
-                            city_state: false,
+                            city_name: "Grodno",
+                            city_state: true, 
+                        },
+                        {
+                            city_name: "Brest",  
+                            city_state: true,
                         },
                     ],
                 },
@@ -453,22 +453,22 @@ const initialState: ICountries = {
                 {
                     country: "Belarus",
                     sanctions: false,
-                    sanctinosFrom: true,
+                    sanctinosFrom: false,
                     cities: [
                         {
-                            city_name: "New York",
+                            city_name: "Minsk",
                             city_state: true,  
                         },
                         {
-                            city_name: "Chicago",
-                            city_state: true,  
+                            city_name: "Homel",
+                            city_state: false,  
                         },
                         {
-                            city_name: "Los Angeles",
+                            city_name: "Grodno",
                             city_state: true,   
                         },
                         {
-                            city_name: "Atlanta",
+                            city_name: "Brest",
                             city_state: false,
                         },
                     ],
