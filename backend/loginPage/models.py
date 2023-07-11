@@ -13,7 +13,7 @@ class country(models.Model):
     Earnings = models.IntegerField(validators=[MaxValueValidator(5000)])
 
     class Meta:
-        verbose_name_plural='Сountry'
+        verbose_name_plural = 'Сountry'
         db_table = 'country'
 
     def __str__(self):
@@ -30,9 +30,43 @@ class city(models.Model):
     country = models.ForeignKey(country, on_delete=models.CASCADE)
 
     class Meta:
-        verbose_name_plural='City'
+        verbose_name_plural = 'City'
         db_table = 'city'
 
     def __str__(self):
         return self.city_name
     
+class CountryList(models.Model):
+    CountryName = models.CharField(max_length=50)
+
+    class Meta:
+        verbose_name_plural = 'Country_list'
+        db_table = 'country_list'
+        managed = False
+    
+    def __str__(self):
+        return self.CountryName
+
+
+class sanction(models.Model):
+    sanctionFrom = models.ForeignKey(country, on_delete=models.CASCADE, related_name='sanctions_from')
+    sanctionFor = models.ForeignKey(CountryList, on_delete=models.CASCADE, related_name='sanctions_for')
+    class Meta:
+        verbose_name_plural='Sanctions'
+        db_table = 'sanctions'
+        managed = False
+    
+    def __str__(self):
+        return str(self.sanctionFrom) + ' => ' + str(self.sanctionFor)
+    
+class ecology(models.Model):
+    round = models.IntegerField(validators=[MaxValueValidator(6)])
+    level = models.IntegerField(validators=[MaxValueValidator(100)])
+
+    class Meta:
+        verbose_name_plural='Ecology'
+        db_table='ecology'
+        managed = False
+
+    def __str__(self):
+        return str(self.level) + "%"
