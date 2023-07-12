@@ -35,7 +35,7 @@ export interface ICityForm{ // Изменения для конкретного 
 
 export interface IEnemyCity{
     city_name: string;
-    city_state: boolean;
+    state: boolean;
 }
 
 export interface IEnemy{
@@ -77,7 +77,7 @@ export interface ICountryPublicInfo{
 export interface ICityPublicInfo{
     city_name: string; // Название 
     live_level: number; // Уровень жизни %
-    city_state: boolean;
+    state: boolean;
 }
 
 export interface IDonat {

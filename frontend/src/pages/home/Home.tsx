@@ -86,6 +86,9 @@ const Home: FC = () => {
 
                         Will you defend peaceful principles until the end or unleash a nuclear apocalypse on the planet? The decision is yours. In this game, you can do it all: engage in negotiations, bargain, bluff, and weave intrigues, or isolate yourself behind an iron curtain and secretly forge a weapon of retaliation. This thrilling mix of classic "Mafia" and turn-based political strategy will appeal to both those seeking fun and lovers of cunning tactics.
                                 </p>
+                                <div className={cl.game_join}>
+                                    <a href="#">Join the game</a>
+                                </div>
                             </div>
                         </div>
                         
