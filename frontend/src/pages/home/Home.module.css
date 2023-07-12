@@ -1,3 +1,227 @@
+@import url('https://fonts.googleapis.com/css2?family=Arimo:wght@400;700&display=swap');
+
 *{
     cursor: url(./../../assets/bomb-cursor.png); 
+}
+
+main{
+    background: #141644;
+}
+
+.main_overlay{
+    display: flex;
+    justify-content: center;
+    background-image: url(./../../assets/main-background-image.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    width: 100%;
+}
+
+.overlay{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.container{
+    width: 90%;
+    max-width: 1350px;
+}
+
+.main_screen{
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   height: 120vh;
+}
+
+.main_buttons{
+    display: flex;
+}
+
+.main_button{
+    border-radius: 19px;
+    background: #141644;
+    max-width: 210px;
+    margin-right: 20px;
+}
+
+.main_button__red{
+    border-radius: 19px;
+    background: #F2716B;
+    max-width: 245px;
+}
+
+.main_button a{
+    display: inline-block;
+    color: #FFF0EA;
+    font-family: Arimo;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    padding: 15px 53px;
+    text-decoration: none;
+}
+
+.main_button__red a{
+    display: inline-block;
+    color: #FFF0EA;
+    font-family: Arimo;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    padding: 15px 53px;
+    text-decoration: none;
+}
+
+.main_information h3{
+    color: #FFF;
+    font-family: Bebas Neue;
+    font-size: 36px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.main_information h1{
+    color: #FFF;
+    font-family: Bebas Neue;
+    font-size: 140px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 98.5%;
+}
+
+.main_information p{
+    padding: 0 0 26px 0;
+    max-width: 540px;
+    color: #FFF;
+    font-family: Arimo;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 120.5%;
+}
+
+.main_social{
+    margin-bottom: 44px;
+}
+
+.game_information{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 30px 0;
+}
+
+.game_general__items{
+    display: flex;
+    justify-content: space-between;
+    align-items: space-between;
+    width: 100%;
+    margin: 50px 0;
+}
+
+.game_general__item{
+    border-radius: 20px;
+    background: #FFF0EA;
+    text-align: center;
+    width: 27%;
+    max-width: 360px;
+    padding: 20px 0;
+    margin: 0 10px;
+}
+.game_general__item_red{
+    border-radius: 20px;
+    background: #FFB6A8;
+    text-align: center;
+    width: 27%;
+    width: 360px;
+    padding: 20px 0;
+    margin: 0 10px;
+}
+
+.game_general__text{
+    margin: 0 auto;
+    color: #000;
+    font-family: Arimo;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+.game_general__text span{
+    color: #000;
+    font-family: Arimo;
+    font-size: 30px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+.game_about{
+    display: flex;
+    margin: 50px 10px;
+}
+
+.game_information__grafic {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 24%;
+}
+
+.game_information__grafic h2{
+    color: #FFF;
+    text-align: center;
+    font-family: Bebas Neue;
+    font-size: 64px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 98.5%;
+}
+
+.game_information__devider{
+    background-color: #fff;
+    border-radius: 5px;
+    background: #F2716B;
+    width: 83px;
+    height: 5px;
+    border: none;
+}
+
+.game_information__text {
+    padding: 0 0 0 30px;
+    width: 76%;
+    color: #FFF;
+    font-family: Arimo;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 148.49%;
+}
+
+.game_information__image{
+    padding: 20px;
+}
+
+.game_join{
+    margin-top: 40px;
+    max-width: 340px;
+    padding: 20px 66px;
+    border-radius: 20px;
+    background: #F2716B;
+}
+
+.game_join a{
+    text-decoration: none;
+    color: #FFF;
+    font-family: Arimo;
+    font-size: 30px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
 }
