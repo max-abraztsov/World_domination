@@ -1,5 +1,4 @@
 from django.shortcuts import render
-from django.core import serializers
 from django.db.models import Q
 from .models import country
 from .models import city
