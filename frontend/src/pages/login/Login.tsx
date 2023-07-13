@@ -56,35 +56,57 @@ const Login: FC = () => {
     return (
         <div className={cl.login__wrapper}>    
             <form className={cl.login__form} onSubmit={handleSubmit} method="post">
-                <h2 className={cl.login__title}>Sign in</h2>
+                <h2 className={cl.login__title}>Login</h2>
+                <p className={cl.login__text}>Login to continue using the app</p>
                 <div className={cl.login__container}>
-                    <label className={cl.login__label}>Login</label>
-                    <input 
-                        className={cl.login__input}
-                        onChange={changeLogin} 
-                        type="text" 
-                        value={userForm.logincode} 
-                        placeholder="Enter your login" 
-                        name="ulogin" 
-                        required 
-                    />
+                    <div className={cl.form_control}>
+                        <input 
+                            className={cl.login__input}
+                            onChange={changeLogin} 
+                            type="text" 
+                            value={userForm.logincode}  
+                            name="ulogin" 
+                            required 
+                        />
+                        <label className={cl.login__label}>
+                            <span style={{transitionDelay: "0ms"}}>U</span>
+                            <span style={{transitionDelay: "50ms"}}>s</span>
+                            <span style={{transitionDelay: "100ms"}}>e</span>
+                            <span style={{transitionDelay: "150ms"}}>r</span>
+                            <span style={{transitionDelay: "200ms"}}>n</span>
+                            <span style={{transitionDelay: "250ms"}}>a</span>
+                            <span style={{transitionDelay: "300ms"}}>m</span>
+                            <span style={{transitionDelay: "350ms"}}>e</span>
+                        </label>
+                    </div>
 
-                    <label className={cl.login__label}>Password</label>
-                    <input 
-                        className={cl.login__input}
-                        onChange={changePassword} 
-                        type="text" 
-                        value={userForm.password} 
-                        placeholder="Enter your password" 
-                        name="upassword" 
-                        required 
-                    />
+                    <div className={cl.form_control}>
+                        <input 
+                            className={cl.login__input}
+                            onChange={changePassword} 
+                            type="text" 
+                            value={userForm.password} 
+                            name="upassword" 
+                            required 
+                        />
+                        <label className={cl.login__label}>
+                            <span style={{transitionDelay: "0ms"}}>P</span>
+                            <span style={{transitionDelay: "50ms"}}>a</span>
+                            <span style={{transitionDelay: "100ms"}}>s</span>
+                            <span style={{transitionDelay: "150ms"}}>s</span>
+                            <span style={{transitionDelay: "200ms"}}>w</span>
+                            <span style={{transitionDelay: "250ms"}}>o</span>
+                            <span style={{transitionDelay: "300ms"}}>r</span>
+                            <span style={{transitionDelay: "350ms"}}>d</span>
+                        </label>
+                    </div>
 
-                    <button 
-                        className={cl.login__button}
-                        type="submit" 
-                        // onClick={clickHandler}
-                    >Sign in</button>
+                    <button type="submit">
+                        Login
+                        <div className={cl.arrow_wrapper}>
+                            <div className={cl.arrow}></div>
+                        </div>
+                    </button>
                 </div>
             </form>
         </div>

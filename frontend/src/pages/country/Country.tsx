@@ -137,7 +137,7 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
                             </div>
                             <div>
                                 { country.cities.map((city, index) => 
-                                city.city_state ? (
+                                city.state ? (
                                     <p key={city.city_name}>{city.city_name}: {city.live_level}%</p>
                                 ) : (
                                     <p key={city.city_name}>{city.city_name}: <img className={cl.city__destoyed} src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Cross_red_circle.svg/800px-Cross_red_circle.svg.png" alt="cross" /></p> 
@@ -236,11 +236,11 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
                                             <div>
                                                 {enemy.cities.map((city, id) => 
                                                     <EnemyCheckbox 
-                                                    formState={form.enemies[index].cities[id].city_state}
+                                                    formState={form.enemies[index].cities[id].state}
                                                     indexCol={index}
                                                     id={id}
                                                     key={city.city_name} 
-                                                    stateCity={country.enemies[index].cities[id].city_state}
+                                                    stateCity={country.enemies[index].cities[id].state}
                                                     bombs={form.rockets}
                                                     toggleStatus={() => dispatch(toggleEnemyCheckbox({status: form.enemies[index].cities[id].city_state, index: index, id: id}))}
                                                     >{city.city_name}</EnemyCheckbox>
@@ -259,6 +259,7 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
                                             { form.enemies.map((enemy, index) => 
                                                 <SanctionCheckbox 
                                                 key={index}
+                                                checked={enemy.sanctions}
                                                 toggleStatus={() => dispatch(toggleSanctionCheckbox({status: form.enemies[index].sanctions, index: index}))}
                                                 >{enemy.country}</SanctionCheckbox> 
                                             )}
@@ -366,11 +367,11 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
                                         <div>
                                             {enemy.cities.map((city, id) => 
                                                 <EnemyCheckbox 
-                                                formState={form.enemies[index].cities[id].city_state}
+                                                formState={form.enemies[index].cities[id].state}
                                                 indexCol={index}
                                                 id={id}
                                                 key={city.city_name} 
-                                                stateCity={country.enemies[index].cities[id].city_state}
+                                                stateCity={country.enemies[index].cities[id].state}
                                                 bombs={form.rockets}
                                                 >{city.city_name}</EnemyCheckbox>
                                             )}

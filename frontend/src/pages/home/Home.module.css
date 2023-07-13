@@ -14,6 +14,7 @@ main{
     background-image: url(./../../assets/main-background-image.jpg);
     background-size: cover;
     background-repeat: no-repeat;
+    background-attachment: fixed;
     width: 100%;
 }
 
@@ -44,12 +45,20 @@ main{
     background: #141644;
     max-width: 210px;
     margin-right: 20px;
+    transition: 0.3s;
 }
+
+.main_button__red:hover, .main_button:hover{
+    background: #38758E;
+    transition: 0.3s;
+}
+
 
 .main_button__red{
     border-radius: 19px;
     background: #F2716B;
     max-width: 245px;
+    transition: 0.3s;
 }
 
 .main_button a{
@@ -214,6 +223,12 @@ main{
     padding: 20px 66px;
     border-radius: 20px;
     background: #F2716B;
+    transition: 0.3s;
+}
+
+.game_join:hover{
+    background: #38758E;
+    transition: 0.3s;
 }
 
 .game_join a{
