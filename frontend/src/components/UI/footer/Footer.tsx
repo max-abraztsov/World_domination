@@ -1,4 +1,4 @@
-import {FC, useState, useEffect} from 'react';
+import {FC} from 'react';
 import {Link} from "react-router-dom"
 import cl from "./Footer.module.css"
 
