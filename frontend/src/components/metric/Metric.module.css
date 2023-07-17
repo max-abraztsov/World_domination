@@ -1,0 +1,21 @@
+.metric{
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    margin-left: 50px;
+}
+.indicator{
+    color: #343333;
+    font-family: Arimo;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+.index{
+    font-family: Bebas Neue;
+    font-size: 30px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}

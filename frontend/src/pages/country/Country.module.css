@@ -1,77 +1,108 @@
+@import url('https://fonts.googleapis.com/css2?family=Arimo:wght@400;700&family=Bebas+Neue&display=swap');
 .country{
     display:flex;
     flex-direction: column;
     align-items: center;
-    background-color: #FBFBFB;
-    /* width: 100vw; */
+    background-color: #B79279;
 }
 .container{
-    max-width: 960px;
+    max-width: 1350px;
+    width: 100%;
     margin: 0 20px;
 }
 .country__info{
     display: flex;
     justify-content: space-between;
     width: 100%;
-    margin: 40px 0;
+    margin-bottom: 34px;
 }
+.hr_black{
+    width: 100px;
+    height: 2px;
+    background: #343333;
+}
+
+
+.country__your{
+    width: 90%;
+    max-width: 763px;
+    background-color: #fff;
+    padding: 20px 30px;
+}
+.country__metrics{
+    width: 70%;
+    display:flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+.country__title{
+    display:flex;
+    align-items: center;
+    width: 30%;
+}
+.country__flag{
+    border-radius: 5px;
+    width: 76px;
+    height: 43px;
+    flex-shrink: 0;
+    margin-right: 20px;
+}
+.country__name{
+    color: #343333;
+    font-family: Bebas Neue;
+    font-size: 36px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 98.5%;
+    margin-top: 5px;
+}
+.cities__information{
+    display:flex;
+    justify-content: space-between;
+}
+.cities__info > div:nth-child(4){
+    margin-right: 0;
+}
+
+.country__table{
+    display: flex;
+    margin-top: 40px;
+}
+
+.country__print{
+    width: 35%;
+}
+
+.country__documents{
+    width: 65%;
+
+}
+
+.printer{
+    
+    max-width: 350px;
+    display: flex;
+    flex-direction: column;
+    margin: 0 70px;
+}
+
+
+
+
 
 .country__enemies{
     display: flex;
     flex-direction: column;
 }
-
-.country__title{
-    display:flex;
-    align-items: center;
-}
-.country__flag{
-    border-radius: 10px;
-    width: 120px;
-    margin-right: 30px;
-}
-.country__name{
-    font-weight: 600;
-    font-size: 40px;
-    color: rgb(92, 92, 92);
-}
-.country__title{
-    display:flex;
-    width: 30%;
-}
-.country__live_level{
-    display:flex;
-    flex-direction: column;
-    align-items: center;
-}
-.country__indicator{
-    font-weight: 600;
-    font-size: 20px;
-    color: rgb(92, 92, 92);
-    margin-right: 10px;
-}
-.country__index{
-    font-weight: 600;
-    font-size: 56px;
-    color: rgb(25, 163, 78);
-}
 .country__stats{
     display:flex;
     align-items: center;
 }
-
 .country__info_stats{
     width: 70%;
     display:flex;
     align-items: center;
     justify-content: space-around;
-}
-
-
-.country__budget{
-    display:flex;
-    flex-direction: column;
-    align-items: center;
 }
 .cities__info{
     display:flex;
@@ -92,7 +123,6 @@
 .country__button{
     text-align: center;
 }
-
 .country__dev_col h3{
     display: inline-block;
     margin-bottom: 8px;
@@ -102,15 +132,12 @@
     display: flex;
     justify-content: space-between;
 }
-
 .country__sanction{
     margin-right: 80px;
 }
-
 .country__enemy{
     display: flex;
 }
-
 .button{
     margin-top: 30px;
     padding: 15px 40px;
@@ -136,12 +163,10 @@
     width: 60px;
     margin-left: 10px;
 }
-
 .input__text{
     font-weight: 600;
     font-size: 22px;
 }
-
 .country__bomb{
     font-weight: 600;
     font-size: 55px;
@@ -150,12 +175,10 @@
     margin-top: 10px;
     margin-left: 30px;
 }
-
 .tooltip{
     display: flex;
     position: relative;
 }
-
 .city__destoyed{
     position: relative;
     top: 2px;

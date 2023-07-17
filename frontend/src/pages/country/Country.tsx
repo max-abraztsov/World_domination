@@ -8,7 +8,10 @@ import Checkbox from '../../components/UI/checkbox/Checkbox';
 import EnemyCheckbox from '../../components/UI/enemyCheckbox/EnemyCheckbox';
 import SanctionCheckbox from '../../components/UI/sanctionsCheckbox/SanctionCheckbox';
 import Tooltip from '../../components/UI/tooltip/Tooltip';
+import Metric from '../../components/metric/Metric';
 import axios from 'axios';
+import PrinterTop from "./../../assets/print-top.svg"
+import PrinterBottom from "./../../assets/print-bottom.svg"
 import BarChart from '../../components/UI/charts/BarChart';
 import { Chart as ChartJS, registerables } from 'chart.js';
 import { Chart } from 'react-chartjs-2'
@@ -105,11 +108,11 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
     }
 
     async function postForm(){
-        try{
+        try {
             const response = await axios.post("http://127.0.0.1:8000/round_form", form);
             console.log(response.data);
             return response;
-        }catch (error){
+        } catch (error) {
             if (axios.isAxiosError(error)) {
                 console.log('error message: ', error.message);
                 return error.message;
@@ -123,66 +126,112 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
     return (
         <div className={cl.country}>
             <div className={cl.container}>
-                <section>
-                {forAdmin ? (
-                    <div></div>  
-                ) : (
-                    <BarChart data={chartData}/>   
-                )}
-                <div className={cl.countires__information}>
-                    {countriesPublic.countries.map( (country, index) => 
-                        <div key={country.country}>
-                            <div>
-                                <h3>{country.country}</h3>
-                            </div>
-                            <div>
-                                { country.cities.map((city, index) => 
-                                city.state ? (
-                                    <p key={city.city_name}>{city.city_name}: {city.live_level}%</p>
+                <div className={cl.country__table}>
+                    <section className={cl.country__print}>
+                        <div className={cl.printer}>
+                            <img src={PrinterTop} />
+                            <img src={PrinterBottom} />
+                        </div>
+                    </section>
+                    <section className={cl.country__documents}>
+                        <section className={cl.country__other}>
+                            {/* <section>
+                                {forAdmin ? (
+                                    <div></div>  
                                 ) : (
-                                    <p key={city.city_name}>{city.city_name}: <img className={cl.city__destoyed} src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Cross_red_circle.svg/800px-Cross_red_circle.svg.png" alt="cross" /></p> 
-                                )
+                                    <BarChart data={chartData}/>   
                                 )}
-                            </div>
-                        </div>
-                    )}
+                                <div className={cl.countires__information}>
+                                    {countriesPublic.countries.map( (country, index) => 
+                                        <div key={country.country}>
+                                            <div>
+                                                <h3>{country.country}</h3>
+                                            </div>
+                                            <div>
+                                                { country.cities.map((city, index) => 
+                                                city.state ? (
+                                                    <p key={city.city_name}>{city.city_name}: {city.live_level}%</p>
+                                                ) : (
+                                                    <p key={city.city_name}>{city.city_name}: <img className={cl.city__destoyed} src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Cross_red_circle.svg/800px-Cross_red_circle.svg.png" alt="cross" /></p> 
+                                                )
+                                                )}
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+                            </section> */}
+                        </section>
+                        <section className={cl.country__your}>
+                            <section className={cl.country__info}>
+                                <div className={cl.country__title}>
+                                    <img className={cl.country__flag} src={country.flag_photo} />
+                                    <h2 className={cl.country__name}>{country.country}</h2>
+                                </div>
+                                <div className={cl.country__metrics}>
+                                    <Metric 
+                                        indicator={"Average live level"}
+                                        index={country.average_live_level}
+                                        unit={"%"}
+                                    ></Metric>
+                                    <Metric 
+                                        indicator={"Ecology"}
+                                        index={country.ecology}
+                                        unit={"%"}
+                                    ></Metric>
+                                    <Metric 
+                                        indicator={"Budget"}
+                                        index={form.budget}
+                                        unit={"$"}
+                                    ></Metric> 
+                                </div> 
+                            </section>
+                            <section>
+                                <form action="#" >
+                                    <section className={cl.cities__information}>
+                                        {country.cities.map((item, index) => 
+                                            <City 
+                                                budget={form.budget}
+                                                key={index} 
+                                                city={item} 
+                                                id={index}
+                                                isPresident={isPresident}
+                                            />                     
+                                        )}
+                                    </section>
+                                </form>
+                            </section>
+                        </section>
+                    </section>
                 </div>
-                
-                </section>
-                <section className={cl.country__info}>
-                    <div className={cl.country__title}>
-                        <img className={cl.country__flag} src={country.flag_photo} />
-                        <h2 className={cl.country__name}>{country.country}</h2>
+                {/* <section>
+                    {forAdmin ? (
+                        <div></div>  
+                    ) : (
+                        <BarChart data={chartData}/>   
+                    )}
+                    <div className={cl.countires__information}>
+                        {countriesPublic.countries.map( (country, index) => 
+                            <div key={country.country}>
+                                <div>
+                                    <h3>{country.country}</h3>
+                                </div>
+                                <div>
+                                    { country.cities.map((city, index) => 
+                                    city.state ? (
+                                        <p key={city.city_name}>{city.city_name}: {city.live_level}%</p>
+                                    ) : (
+                                        <p key={city.city_name}>{city.city_name}: <img className={cl.city__destoyed} src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Cross_red_circle.svg/800px-Cross_red_circle.svg.png" alt="cross" /></p> 
+                                    )
+                                    )}
+                                </div>
+                            </div>
+                        )}
                     </div>
-                    <div className={cl.country__info_stats}>
-                        <div className={cl.country__live_level}>
-                            <p className={cl.country__indicator}>Average live level:</p>
-                            <p className={cl.country__index}>{country.average_live_level}%</p>
-                        </div>
-                        <div className={cl.country__budget}>
-                            <p className={cl.country__indicator}>Your budget:</p>
-                            <p className={cl.country__index}>{form.budget}$</p>
-                        </div>  
-                        <div className={cl.country__ecology}>
-                            <p className={cl.country__indicator}>Ecology:</p>
-                            <p className={cl.country__index}>{country.ecology}%</p>
-                        </div>  
-                    </div> 
-                </section>
+                
+                </section> */}
                 { isPresident.isPresident ? ( // For president and admin
                     <section>
                         <form action="#" >
-                            <section className={cl.cities__info}>
-                                {country.cities.map((item, index) => 
-                                    <City 
-                                        budget={form.budget}
-                                        key={index} 
-                                        city={item} 
-                                        id={index}
-                                        isPresident={isPresident}
-                                    />                     
-                                )}
-                            </section>
                             <section>
                                 <div className={cl.country__development}>
                                     <div className={cl.country__dev_col}>

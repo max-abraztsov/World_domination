@@ -4,6 +4,7 @@ import { useAppSelector, useAppDispatch } from '../../hook';
 import { toggleProtect, toggleCityDevelop } from '../../store/countrySlice';
 import { ICity, IStatus } from '../../types/types';
 import cl from "./City.module.css"
+import redCross from "./../../assets/not-shield14.svg"
 
 interface CityProps{
    city: ICity;
@@ -21,32 +22,32 @@ const City: FC<CityProps> = ({city, isPresident, id, budget}) => {
     if (city.state){
         return (
             <div className={cl.city}>
-                <div className={cl.city__block}>
-                    <img className={cl.city__photo} src={city.photo} alt={city.city_name +  " city"} />
-                    <h2 className={cl.city__name}>{city.city_name}</h2>
-                </div>
-                <div className={cl.city__stats}>
-                    <p className={cl.city__stat}><span>Progress</span><span>{city.progress}%</span></p><hr />
-                    <p className={cl.city__stat}><span>Live level</span><span>{city.live_level}%</span></p><hr />
-                    <p className={cl.city__stat}><span>Profit</span><span>{city.profit}$</span></p><hr />
-                    <p className={cl.city__stat}><span>Shield</span>
+                <h2 className={cl.city__name}>{city.city_name}</h2>
+                <img className={cl.city__photo} src={city.photo} alt={city.city_name +  " city"} />
+                <div className={cl.city__metrics}>
+                    <p className={cl.city__metric}><span>Progress</span><span>{city.progress}%</span></p>
+                    <hr className={cl.hr_black}/>
+                    <p className={cl.city__metric}><span>Live level</span><span>{city.live_level}%</span></p>
+                    <hr className={cl.hr_black}/>
+                    <p className={cl.city__metric}><span>Profit</span><span>{city.profit}$</span></p>
+                    <hr className={cl.hr_black}/>
+                    <p className={cl.city__metric}><span>Shield</span>
                     { city.shield ? ( 
                         <img src="https://cdn-icons-png.flaticon.com/512/18/18442.png" alt="tick" />
                     ) : (
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Cross_red_circle.svg/800px-Cross_red_circle.svg.png" alt="cross" />
+                        <img src={redCross} alt="cross" />
                     )}</p>
-                    
-                    <hr />
+                    <hr className={cl.hr_black}/>
                 </div>
                 <div>
                     { isPresident.isPresident ? ( // For president and admin
-                        <div className={cl.city__prices}>
+                        <div>
                             <Checkbox 
                                 formState={form.cities[id].develop}
                                 price={150}
                                 budget={budget}
                                 toggleStatus={() => dispatch(toggleCityDevelop({status:form.cities[id].develop, id: id, price: 150}))}
-                            >Develop the city (150$)</Checkbox>
+                            >Develop (150$)</Checkbox>
                             <Checkbox 
                                 formState={form.cities[id].shield}
                                 price={300}
@@ -56,7 +57,7 @@ const City: FC<CityProps> = ({city, isPresident, id, budget}) => {
                             >Protect (300$)</Checkbox>
                         </div>
                     ) : ( // For simple users
-                        <div className={cl.city__prices}>
+                        <div >
                             <p className={cl.city__price}>Develop the city (150$)</p>
                             <p className={cl.city__price}>Protect (300$)</p>
                         </div>
@@ -67,15 +68,18 @@ const City: FC<CityProps> = ({city, isPresident, id, budget}) => {
         );
     } else {
         return (
-            <div className={cl.city_desroyed}>
-                <div className={cl.city__block_desroyed}>
-                    <img className={cl.city__photo} src={city.photo} alt={city.city_name +  " city"} />
-                    <h2 className={cl.city__name}>{city.city_name}</h2>
-                </div>
-                <div className={cl.city__stats}>
-                    <p className={cl.city__stat}><span>Progress</span><span> - </span></p><hr />
-                    <p className={cl.city__stat}><span>Live level</span><span> - </span></p><hr />
-                    <p className={cl.city__stat}><span>Profit</span><span> - </span></p><hr />
+            <div style={{backgroundColor: "#FFDFE1"}} className={cl.city}>
+                <h2 style={{color: "#DD7474"}} className={cl.city__name}>{city.city_name}</h2>
+                <img className={cl.city__photo} src={city.photo} alt={city.city_name +  " city"} />
+                <div className={cl.city__metrics}>
+                    <p style={{color: "#DD7474"}} className={cl.city__metric}><span>Progress</span><span> - </span></p>
+                    <hr style={{borderColor: "#DD7474"}} className={cl.hr_black}/>
+                    <p style={{color: "#DD7474"}} className={cl.city__metric}><span>Live level</span><span> - </span></p>
+                    <hr style={{borderColor: "#DD7474"}} className={cl.hr_black}/>
+                    <p style={{color: "#DD7474"}} className={cl.city__metric}><span>Profit</span><span> - </span></p>
+                    <hr style={{borderColor: "#DD7474"}} className={cl.hr_black}/>
+                    <p style={{color: "#DD7474"}} className={cl.city__metric}><span>Shield</span> <img src={redCross} alt="cross" /></p>
+                    <hr style={{borderColor: "#DD7474"}} className={cl.hr_black}/>
                 </div>
                 <div className={cl.city__state_block}>
                     <p className={cl.city__state}>Destroyed</p>
