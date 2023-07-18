@@ -1,4 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Arimo:wght@400;700&family=Bebas+Neue&display=swap');
+*{
+    margin: 0;
+    padding: 0;
+} 
+
 .country{
     display:flex;
     flex-direction: column;
@@ -14,12 +19,20 @@
     display: flex;
     justify-content: space-between;
     width: 100%;
-    margin-bottom: 34px;
 }
 .hr_black{
-    width: 100px;
-    height: 2px;
+    width: 100%;
+    height: 1px;
     background: #343333;
+}
+
+.hr_big{
+    display: block;
+    background: #343333;
+    width: 100%;
+    height: 2px;
+    border-radius: 1px;
+    margin: 15px 0;
 }
 
 
@@ -78,14 +91,113 @@
 
 }
 
+.section__columns{
+    display: flex;
+    justify-content: space-between;
+}
+
+/* Printer--------------------------------------- */
 .printer{
-    
+    position: relative;
     max-width: 350px;
     display: flex;
     flex-direction: column;
-    margin: 0 70px;
+    margin: 0 auto;
+}
+.printer__form{
+    position: absolute;
+    top: 65%;
+    left: 6%;
+    display: flex;
+    max-width:350px;
 }
 
+.printer__form div {
+    margin-right: 10px;
+}
+.printer__input {
+    display: block;
+    background-color: #383838;
+    border: 1ex solid none;
+    border-top-width: 1.7em;
+    margin: 0;
+    padding: 0;
+    color: #383838;
+    word-wrap: break-word;
+    outline: 7px solid #383838;
+    height: 30px;
+    font-size: 17px;
+    text-align: center;
+    transition: all 1s;
+    max-width: 90px;
+    
+    font-weight: bold;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.printer__input:hover {
+    border-top-width: 0.2em;
+    background-color: #5a5a5a;
+}
+
+.printer__input:focus {
+    border-top-width: 0.2em;
+    background-color: #5a5a5a;
+    color: white;
+}
+
+#country{
+    border-color: #212121;
+    border-bottom-width: 2px;
+    border-bottom-color: #767676; 
+    border-right-width: 3px;
+    border-right-color: #767676;
+
+}
+
+.printer__input option{
+    background-color: #383838;
+}
+
+#printer__button_container{
+    margin-left: 30px;
+    display: block;
+    position: relative;
+    top: 3px;
+    left: 0;
+
+}
+
+#printer__button{
+    position: absolute;
+    top: -3px;
+    left: 0;
+    border: none;
+    z-index: 5;
+    padding: 4px 10px;
+    color: #C3C3C3;
+    font-family: Arial;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    border-radius: 2px;
+    background: #527153;
+}
+
+.printer__button_bottom{
+    position: absolute;
+    top: ;
+    left: 0;
+    border: none;
+    z-index: 0;
+    width: 61px;
+    height: 29px;
+    border-radius: 2px;
+    background: #313D32;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+}
+/* ---------------------------------------------- */
 
 
 
@@ -123,11 +235,13 @@
 .country__button{
     text-align: center;
 }
-.country__dev_col h3{
+
+
+/* .country__dev_col h3{
     display: inline-block;
     margin-bottom: 8px;
     font-size: 22px;
-}
+} */
 .country__sanctions{
     display: flex;
     justify-content: space-between;
@@ -167,18 +281,44 @@
     font-weight: 600;
     font-size: 22px;
 }
-.country__bomb{
-    font-weight: 600;
-    font-size: 55px;
-    color:rgb(25, 163, 78);
-    margin-right: -10px;
-    margin-top: 10px;
+
+.rocket__counter{
+    display: flex;
+}
+
+.enemies{
+    display: flex;
+}
+.enemy{
     margin-left: 30px;
 }
-.tooltip{
-    display: flex;
-    position: relative;
+.enemy__country{
+    color: #343333;
+    font-family: Bebas Neue;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 98.5%;
 }
+.country__bomb{
+    color: #5ACA85;
+    font-family: Bebas Neue;
+    font-size: 60px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 98.5%; /* 29.55px */
+}
+
+.relationship{
+    color: #343333;
+    font-family: Arimo;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 98.5%; 
+    margin: 7px 0 11px 0;
+}
+
 .city__destoyed{
     position: relative;
     top: 2px;

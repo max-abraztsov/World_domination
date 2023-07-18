@@ -1,8 +1,12 @@
 .checkbox{
-    display:block;
-    font-weight: 600;
-    font-size: 22px;
-    margin-bottom: 5px; 
+    display:flex;
+    color: #343333;
+    font-family: Arimo;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 98.5%;
+    margin: 7px 0px 5px 6px; 
     position: relative;
 }
 .real_checkbox{
@@ -24,6 +28,7 @@
     background-color: white;
     border-radius: 4px;
     vertical-align: sub;
+    border: 1px solid #343333;
     margin-right: 5px;
 }
 

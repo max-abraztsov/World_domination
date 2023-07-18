@@ -1,0 +1,23 @@
+.tooltip_button {
+  position: relative;
+  top: -6px;
+  left: 0;
+  margin-left: 4px;
+}
+  .tooltip__content {
+  position: absolute;
+  top: 20%;
+  left: 320%;
+  transform: translateX(-50%);
+  background-color: #343333;
+  color: #fff;
+  font-family: Arimo;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  padding: 6px;
+  border-radius: 4px;
+  z-index:4;
+}
+  
