@@ -84,6 +84,10 @@
 
 .country__print{
     width: 35%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .country__documents{
@@ -111,7 +115,6 @@
     display: flex;
     max-width:350px;
 }
-
 .printer__form div {
     margin-right: 10px;
 }
@@ -134,18 +137,15 @@
     font-weight: bold;
     font-family: 'Courier New', Courier, monospace;
 }
-
 .printer__input:hover {
     border-top-width: 0.2em;
     background-color: #5a5a5a;
 }
-
 .printer__input:focus {
     border-top-width: 0.2em;
     background-color: #5a5a5a;
     color: white;
 }
-
 #country{
     border-color: #212121;
     border-bottom-width: 2px;
@@ -154,11 +154,9 @@
     border-right-color: #767676;
 
 }
-
 .printer__input option{
     background-color: #383838;
 }
-
 #printer__button_container{
     margin-left: 30px;
     display: block;
@@ -167,7 +165,6 @@
     left: 0;
 
 }
-
 #printer__button{
     position: absolute;
     top: -3px;
@@ -184,22 +181,54 @@
     border-radius: 2px;
     background: #527153;
 }
-
 .printer__button_bottom{
     position: absolute;
-    top: ;
+    top: 0;
     left: 0;
     border: none;
     z-index: 0;
     width: 61px;
     height: 29px;
     border-radius: 2px;
-    background: #313D32;
+    background:#313D32;
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
 }
 /* ---------------------------------------------- */
+/* Fire Button ---------------------------------- */
+#fire__button{
+    border: none;
+    background-color:transparent;
+    position: relative;
+    top: 0;
+    left: 0;
+}
+.fire__top{
+    position: absolute;
+    top:calc(50% - 31px);
+    left:50%;
+    transform:translate(-50%, -50%);
+    transition: .2s cubic-bezier(0.6, -0.28, 0.735, 0.045);
+}
+.fire__top:hover{
+    top:calc(50% - 27px);  
+    transition: .2s cubic-bezier(0.6, -0.28, 0.735, 0.045);
+}
+#fire__button:active .fire__top{
+    top:calc(50% - 16px);  
+    transition: .2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
 
+/* ---------------------------------------------- */
 
+.paragraph{
+    color: #343333;
+    font-family: Arimo;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 98.5%;
+    margin: 5px 0;
+}
 
 
 .country__enemies{

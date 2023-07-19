@@ -60,8 +60,13 @@
 }
 
 .city__price{
-    font-weight: 600;
-    font-size: 22px;
+    color: #343333;
+    font-family: Arimo;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 98.5%;
+    margin: 5px 0;
 }
 
 .city_desroyed{

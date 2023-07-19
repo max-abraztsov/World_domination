@@ -379,9 +379,10 @@ const formSlice = createSlice({
             if(action.payload.status) state.budget = state.budget + action.payload.price;
             else state.budget = state.budget - action.payload.price;
         },
-        toggleEnemyCheckbox(state, action: PayloadAction<{status: boolean, index: number, id: number}>){
-            state.enemies[action.payload.index].cities[action.payload.id].state = !action.payload.status;
-            if(action.payload.status) state.rockets += 1;   
+        toggleEnemyCheckbox(state, action: PayloadAction<{ index: number, id: number}>){
+            const status = state.enemies[action.payload.index].cities[action.payload.id].state;
+            state.enemies[action.payload.index].cities[action.payload.id].state = !status;
+            if(status) state.rockets += 1;   
             else state.rockets -= 1;
         },
         toggleSanctionCheckbox(state, action: PayloadAction<{status: boolean, index: number}>){
@@ -401,15 +402,11 @@ const formSlice = createSlice({
                 alert("Not money");
             }
         },
-        addRocketOrder(state, action: PayloadAction<{order: number}>){
+        toggleRocketOrder(state, action: PayloadAction<{order: number}>){
             state.budget = state.budget + (state.rocket_order * 150);
             state.rocket_order = action.payload.order;
             state.budget = state.budget - (state.rocket_order * 150);
         },
-        removeRocketOrder(state){
-            state.budget = state.budget + (state.rocket_order * 150);
-            state.rocket_order = 0;
-        }
     },
 });
 
@@ -423,8 +420,7 @@ export const
     toggleEnemyCheckbox,
     toggleSanctionCheckbox,
     donatFromBudget,
-    addRocketOrder,
-    removeRocketOrder
+    toggleRocketOrder,
 } = formSlice.actions;
 
 export default {

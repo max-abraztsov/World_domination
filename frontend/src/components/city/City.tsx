@@ -41,7 +41,7 @@ const City: FC<CityProps> = ({city, isPresident, id, budget}) => {
                 </div>
                 <div>
                     { isPresident.isPresident ? ( // For president and admin
-                        <div>
+                        <div style={{marginLeft: "6px"}}>
                             <Checkbox 
                                 formState={form.cities[id].develop}
                                 price={150}
@@ -58,7 +58,7 @@ const City: FC<CityProps> = ({city, isPresident, id, budget}) => {
                         </div>
                     ) : ( // For simple users
                         <div >
-                            <p className={cl.city__price}>Develop the city (150$)</p>
+                            <p className={cl.city__price}>Develop (150$)</p>
                             <p className={cl.city__price}>Protect (300$)</p>
                         </div>
                     )}
