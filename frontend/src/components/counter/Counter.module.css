@@ -1,0 +1,22 @@
+.counter{
+    display: flex;
+    margin: 4px 0 0 0;
+}
+.counter__minus{
+    border: none;
+    background-color: transparent;
+    margin-right: 7px;
+}
+.counter__text{
+    color: #5ACA85;
+    font-family: Bebas Neue;
+    font-size: 30px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 98.5%;
+}
+.counter__plus{
+    border: none;
+    background-color: transparent;
+    margin-left: 7px;
+}

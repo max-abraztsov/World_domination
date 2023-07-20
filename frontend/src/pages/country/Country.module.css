@@ -1,77 +1,279 @@
+@import url('https://fonts.googleapis.com/css2?family=Arimo:wght@400;700&family=Bebas+Neue&display=swap');
+*{
+    margin: 0;
+    padding: 0;
+} 
+
 .country{
     display:flex;
     flex-direction: column;
     align-items: center;
-    background-color: #FBFBFB;
-    /* width: 100vw; */
+    background-color: #B79279;
 }
 .container{
-    max-width: 960px;
+    max-width: 1350px;
+    width: 100%;
     margin: 0 20px;
 }
 .country__info{
     display: flex;
     justify-content: space-between;
     width: 100%;
-    margin: 40px 0;
 }
+.hr_black{
+    width: 100%;
+    height: 1px;
+    background: #343333;
+}
+
+.hr_big{
+    display: block;
+    background: #343333;
+    width: 100%;
+    height: 2px;
+    border-radius: 1px;
+    margin: 15px 0;
+}
+
+.country__documents{
+    position: relative;
+    top: 0;
+    left: 0;
+    max-width: 789px;
+    width: 65%;
+    padding: 5px 8px 15px 18px;
+    border-radius: 5px;
+    background: #DFBE68;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+}
+
+.country__your{
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 763px;
+    background-color: #fff;
+    padding: 20px 30px;
+}
+
+.country__other{
+    position: absolute;
+    z-index: 1;
+    top: -10px;
+    right: 18px; 
+    width: 100%;
+    max-width: 763px;
+    background-color: #C1C1C1;
+    padding: 20px 30px;
+}
+
+
+.country__metrics{
+    width: 70%;
+    display:flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+.country__title{
+    display:flex;
+    align-items: center;
+    width: 30%;
+}
+.country__flag{
+    border-radius: 5px;
+    width: 76px;
+    height: 43px;
+    flex-shrink: 0;
+    margin-right: 20px;
+}
+.country__name{
+    color: #343333;
+    font-family: Bebas Neue;
+    font-size: 36px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 98.5%;
+    margin-top: 5px;
+}
+.cities__information{
+    display:flex;
+    justify-content: space-between;
+}
+.cities__info > div:nth-child(4){
+    margin-right: 0;
+}
+
+.country__table{
+    display: flex;
+    margin-top: 100px;
+    margin-bottom: 100px;
+}
+
+.country__print{
+    width: 35%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.section__columns{
+    display: flex;
+    justify-content: space-between;
+}
+
+/* Printer--------------------------------------- */
+.printer{
+    position: relative;
+    max-width: 350px;
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+}
+.printer__form{
+    position: absolute;
+    top: 65%;
+    left: 6%;
+    display: flex;
+    max-width:350px;
+}
+.printer__form div {
+    margin-right: 10px;
+}
+.printer__input {
+    display: block;
+    background-color: #383838;
+    border: 1ex solid none;
+    border-top-width: 1.7em;
+    margin: 0;
+    padding: 0;
+    color: #383838;
+    word-wrap: break-word;
+    outline: 7px solid #383838;
+    height: 30px;
+    font-size: 17px;
+    text-align: center;
+    transition: all 1s;
+    max-width: 90px;
+    
+    font-weight: bold;
+    font-family: 'Courier New', Courier, monospace;
+}
+.printer__input:hover {
+    border-top-width: 0.2em;
+    background-color: #5a5a5a;
+}
+.printer__input:focus {
+    border-top-width: 0.2em;
+    background-color: #5a5a5a;
+    color: white;
+}
+#country{
+    border-color: #212121;
+    border-bottom-width: 2px;
+    border-bottom-color: #767676; 
+    border-right-width: 3px;
+    border-right-color: #767676;
+
+}
+.printer__input option{
+    background-color: #383838;
+}
+#printer__button_container{
+    margin-left: 30px;
+    display: block;
+    position: relative;
+    top: 3px;
+    left: 0;
+
+}
+#printer__button{
+    position: absolute;
+    top: -3px;
+    left: 0;
+    border: none;
+    z-index: 5;
+    padding: 4px 10px;
+    color: #C3C3C3;
+    font-family: Arial;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    border-radius: 2px;
+    background: #527153;
+}
+.printer__button_bottom{
+    position: absolute;
+    top: 0;
+    left: 0;
+    border: none;
+    z-index: 0;
+    width: 61px;
+    height: 29px;
+    border-radius: 2px;
+    background:#313D32;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+}
+/* ---------------------------------------------- */
+/* Fire Button ---------------------------------- */
+#fire__button{
+    border: none;
+    background-color:transparent;
+    position: relative;
+    top: 0;
+    left: 0;
+}
+.fire__top{
+    position: absolute;
+    top:calc(50% - 31px);
+    left:50%;
+    transform:translate(-50%, -50%);
+    transition: .2s cubic-bezier(0.6, -0.28, 0.735, 0.045);
+}
+.fire__top:hover{
+    top:calc(50% - 27px);  
+    transition: .2s cubic-bezier(0.6, -0.28, 0.735, 0.045);
+}
+#fire__button:active .fire__top{
+    top:calc(50% - 16px);  
+    transition: .2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* ---------------------------------------------- */
+/* Pen ------------------------------------------ */
+
+#pen{
+   transform: translateX(40px) rotate(-15deg);
+}
+
+
+/* ---------------------------------------------- */
+
+.paragraph{
+    color: #343333;
+    font-family: Arimo;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 98.5%;
+    margin: 5px 0;
+}
+
 
 .country__enemies{
     display: flex;
     flex-direction: column;
 }
-
-.country__title{
-    display:flex;
-    align-items: center;
-}
-.country__flag{
-    border-radius: 10px;
-    width: 120px;
-    margin-right: 30px;
-}
-.country__name{
-    font-weight: 600;
-    font-size: 40px;
-    color: rgb(92, 92, 92);
-}
-.country__title{
-    display:flex;
-    width: 30%;
-}
-.country__live_level{
-    display:flex;
-    flex-direction: column;
-    align-items: center;
-}
-.country__indicator{
-    font-weight: 600;
-    font-size: 20px;
-    color: rgb(92, 92, 92);
-    margin-right: 10px;
-}
-.country__index{
-    font-weight: 600;
-    font-size: 56px;
-    color: rgb(25, 163, 78);
-}
 .country__stats{
     display:flex;
     align-items: center;
 }
-
 .country__info_stats{
     width: 70%;
     display:flex;
     align-items: center;
     justify-content: space-around;
-}
-
-
-.country__budget{
-    display:flex;
-    flex-direction: column;
-    align-items: center;
 }
 .cities__info{
     display:flex;
@@ -89,38 +291,85 @@
     border-radius: 15px;
     margin-bottom: 20px;
 }
-.country__button{
-    text-align: center;
+
+.country__position{
+    align-self: flex-end;
+    padding-bottom: 20px;
 }
 
-.country__dev_col h3{
+.position__text{
+    color: #343333;
+    font-family: Arimo;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 98.5%; 
+    margin: 7px 0 11px 0;
+}
+
+.country__button{
+    text-align: end;
+    position: relative;
+    top: -20px;
+    right: 40px;
+}
+
+/* Stamp -------------------------------------------- */
+
+.stamp__grey_blue, .stamp__grey_red{
+    cursor: url(./../../assets/stamp.png), auto;
+    width: 190px;
+    height: 190px;
+    background: url(./../../assets/stamp-grey.png);
+    transition: .4s;
+    border-radius: 50%; 
+}
+
+.stamp__grey_blue:hover{
+    background: url(./../../assets/stamp-blue.png);
+    opacity: 0.6;
+    transition: .4s;
+}
+
+.stamp__grey_blue:active{
+    background: url(./../../assets/stamp-blue.png);
+    opacity: 1;
+    transition: .2s;
+}
+
+.stamp__grey_red:hover{
+    background: url(./../../assets/stamp-red.png);
+    opacity: 0.6;
+    transition: .4s;
+}
+
+.stamp__grey_red:active{
+    background: url(./../../assets/stamp-red.png);
+    opacity: 1;
+    transition: .2s;
+}
+
+/* ------------------------------------------------ */
+
+
+/* .country__dev_col h3{
     display: inline-block;
     margin-bottom: 8px;
     font-size: 22px;
-}
+} */
 .country__sanctions{
     display: flex;
     justify-content: space-between;
 }
-
 .country__sanction{
     margin-right: 80px;
 }
-
 .country__enemy{
     display: flex;
 }
-
 .button{
-    margin-top: 30px;
-    padding: 15px 40px;
-    font-weight: 600;
-    font-size: 28px;
-    color: white;
-    background-color: rgb(25, 163, 78);
     border: none;
-    border-radius: 20px;
-    margin: 20px 0;
+    background-color: transparent;
 }
 .country__input{
     margin-top: 8px;
@@ -136,24 +385,46 @@
     width: 60px;
     margin-left: 10px;
 }
-
 .input__text{
     font-weight: 600;
     font-size: 22px;
 }
 
-.country__bomb{
-    font-weight: 600;
-    font-size: 55px;
-    color:rgb(25, 163, 78);
-    margin-right: -10px;
-    margin-top: 10px;
-    margin-left: 30px;
+.rocket__counter{
+    display: flex;
 }
 
-.tooltip{
+.enemies{
     display: flex;
-    position: relative;
+}
+.enemy{
+    margin-left: 30px;
+}
+.enemy__country{
+    color: #343333;
+    font-family: Bebas Neue;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 98.5%;
+}
+.country__bomb{
+    color: #5ACA85;
+    font-family: Bebas Neue;
+    font-size: 60px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 98.5%; /* 29.55px */
+}
+
+.relationship{
+    color: #343333;
+    font-family: Arimo;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 98.5%; 
+    margin: 8px 0 11px 0;
 }
 
 .city__destoyed{

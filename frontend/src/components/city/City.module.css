@@ -1,9 +1,15 @@
 .city{
-    margin-right: 30px;
+    padding: 4px 4px 0px 4px;
     width: 25%;
+    max-width: 148px;
+    background-color: white;
+    border-radius: 10px;
 }
 .city__photo{
     width:100%;
+    border-radius: 5px;
+    max-width: 140px;
+    height: 80px;
     object-fit: cover; 
 }
 .city__block{
@@ -16,30 +22,33 @@
 }
 .city__name{
     display: inline-block;
-    padding: 10px 0;
-    font-size: 30px;
-    color: white;
+    font-family: Bebas Neue;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 98.5%; 
+    margin-left: 6px;
 }
-.city__stats{
-    padding: 20px 20px;
+.city__metrics{
 }
-.city__stats span{
+.city__metrics span{
     display: inline-block;
 }
-.city__stat{
+.city__metric{
     display: flex;
     justify-content: space-between;
-    font-weight: 600;
-    font-size: 22px;
-    color: rgb(92, 92, 92);
-    margin-right: 10px;
+    align-items: center;
+    color: #343333;
+    font-family: Arimo;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 98.5%;
+    padding: 5px 6px 3px 5px;
 }
-.city__stat img{
-    position: relative;
-    top: 3px;
-    left: 0;
-    width: 20px;
-    height: 20px;
+.city__metric img{
+    width: 14px;
+    height: 14px;
 }
 
 .city__prices{
@@ -51,8 +60,13 @@
 }
 
 .city__price{
-    font-weight: 600;
-    font-size: 22px;
+    color: #343333;
+    font-family: Arimo;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 98.5%;
+    margin: 5px 0;
 }
 
 .city_desroyed{
@@ -79,8 +93,11 @@
 }
 .city__state{
     display: inline-block;
-    padding: 10px 0;
+    margin-top: 22px;
+    color: #DD7474;
+    font-family: Bebas Neue;
     font-size: 30px;
-    color: rgb(255, 82, 82);
-    font-weight: 600;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 98.5%;
 }

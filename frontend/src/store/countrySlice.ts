@@ -379,37 +379,39 @@ const formSlice = createSlice({
             if(action.payload.status) state.budget = state.budget + action.payload.price;
             else state.budget = state.budget - action.payload.price;
         },
-        toggleEnemyCheckbox(state, action: PayloadAction<{status: boolean, index: number, id: number}>){
-            state.enemies[action.payload.index].cities[action.payload.id].state = !action.payload.status;
-            if(action.payload.status) state.rockets += 1;   
+        toggleEnemyCheckbox(state, action: PayloadAction<{ index: number, id: number}>){
+            const status = state.enemies[action.payload.index].cities[action.payload.id].state;
+            state.enemies[action.payload.index].cities[action.payload.id].state = !status;
+            if(status) state.rockets += 1;   
             else state.rockets -= 1;
         },
         toggleSanctionCheckbox(state, action: PayloadAction<{status: boolean, index: number}>){
             state.enemies[action.payload.index].sanctions = !action.payload.status;
         },
         donatFromBudget(state, action: PayloadAction<{ amount: number, countryTo: string}>){
-            if(state.budget > action.payload.amount){
-                state.donate.to = action.payload.countryTo;
-                state.donate.amount = action.payload.amount;
-                state.budget = state.budget - action.payload.amount;
-                // Иммитация высылки данных на сервер
-                console.log(state.donate.to, state.donate.amount, "Sum:", state.budget);
-                state.donate.to = "";
-                state.donate.amount = 0;
-                console.log(state.donate.to, state.donate.amount, "Sum:", state.budget);
+            if (action.payload.amount && action.payload.countryTo){
+                if(state.budget > action.payload.amount){
+                    state.donate.to = action.payload.countryTo;
+                    state.donate.amount = action.payload.amount;
+                    state.budget = state.budget - action.payload.amount;
+                    // Иммитация высылки данных на сервер
+                    console.log(state.donate.to, state.donate.amount, "Sum:", state.budget);
+                    state.donate.to = "";
+                    state.donate.amount = 0;
+                    console.log(state.donate.to, state.donate.amount, "Sum:", state.budget);
+                } else {
+                    alert("Not money");
+                } 
             } else {
-                alert("Not money");
+                alert("Сomplete the form!");
             }
+            
         },
-        addRocketOrder(state, action: PayloadAction<{order: number}>){
+        toggleRocketOrder(state, action: PayloadAction<{order: number}>){
             state.budget = state.budget + (state.rocket_order * 150);
             state.rocket_order = action.payload.order;
             state.budget = state.budget - (state.rocket_order * 150);
         },
-        removeRocketOrder(state){
-            state.budget = state.budget + (state.rocket_order * 150);
-            state.rocket_order = 0;
-        }
     },
 });
 
@@ -423,8 +425,7 @@ export const
     toggleEnemyCheckbox,
     toggleSanctionCheckbox,
     donatFromBudget,
-    addRocketOrder,
-    removeRocketOrder
+    toggleRocketOrder,
 } = formSlice.actions;
 
 export default {

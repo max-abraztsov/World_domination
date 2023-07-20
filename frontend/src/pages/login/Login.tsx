@@ -101,7 +101,7 @@ const Login: FC = () => {
                         </label>
                     </div>
 
-                    <button type="submit">
+                    <button id={cl.login__button} type="submit">
                         Login
                         <div className={cl.arrow_wrapper}>
                             <div className={cl.arrow}></div>

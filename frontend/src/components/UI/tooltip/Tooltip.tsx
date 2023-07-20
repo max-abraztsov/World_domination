@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import cl from './Tooltip.module.css'; // Подключение файла с отделенными стилями
 
 interface TooltipProps {
   text: string;
@@ -7,61 +8,21 @@ interface TooltipProps {
 const Tooltip: React.FC<TooltipProps> = ({ text }) => {
   const [isTooltipVisible, setIsTooltipVisible] = useState(false);
 
-  const handleMouseEnter = () => {
-    setIsTooltipVisible(true);
-  };
-
-  const handleMouseLeave = () => {
-    setIsTooltipVisible(false);
+  const handleButtonClick = () => {
+    setIsTooltipVisible(!isTooltipVisible);
   };
 
   return (
-    <div
-      style={{ position: 'relative', display: 'inline-block', zIndex: "20" }}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-    >
-      <div
-        style={{
-          display: 'inline-block',
-          position: "relative",   
-          top: "0",
-          left: "20px", 
-
-        }}
-      >
-        <div
-          style={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            backgroundColor: '#55828B',
-            color: '#fff',
-            width: '20px',
-            height: '20px',
-            borderRadius: '50%',
-            textAlign: 'center',
-            cursor: 'pointer',
-          }}
-        >
-          <span style={{ fontSize: '14px', lineHeight: '20px', display: 'block' }}>i</span>
-        </div>
+    <div style={{ position: 'relative', display: 'inline-block' }}>
+      <div className={cl.tooltip_button} onClick={handleButtonClick}>
+        <svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 7 7" fill="none">
+            <circle cx="3.5" cy="3.5" r="3.5" fill="#343333"/>
+            <rect x="3" y="3" width="1" height="3" rx="0.5" fill="white"/>
+            <rect x="3" y="1" width="1" height="1" rx="0.5" fill="white"/>
+        </svg>
       </div>
       {isTooltipVisible && (
-        <div
-          style={{
-            position: 'absolute',
-            top: '100%',
-            left: '50%',
-            transform: 'translateX(-50%)',
-            backgroundColor: '#55828B',
-            color: '#fff',
-            padding: '8px',
-            borderRadius: '4px',
-            fontSize: '14px',
-          }}
-        >
+        <div className={cl.tooltip__content}>
           {text}
         </div>
       )}

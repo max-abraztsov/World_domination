@@ -55,20 +55,7 @@
     margin-bottom: 10px;
 }
 
-.login__button{
-    display:inline-block;
-    width: 80px;
-    border:none;
-    padding:5px 10px;
-    border-radius: 20px;
-    background-color: rgb(68, 106, 107);
-    color: white;
-    font-weight: 600;
-    margin-top: 8px;
-    font-size: 16px;
-}
-
-button {
+#login__button {
     width: max-content;
     box-sizing: border-box;
     border: 0;
@@ -85,13 +72,13 @@ button {
     margin-top: 20px;
 }
 
-button .arrow_wrapper {
+#login__button .arrow_wrapper {
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-button .arrow {
+#login__button .arrow {
     margin-top: 1px;
     width: 10px;
     background: #F2716B;
@@ -100,7 +87,7 @@ button .arrow {
     transition: 0.3s;
 }
 
-button .arrow::before {
+#login__button .arrow::before {
     content: "";
     box-sizing: border-box;
     position: absolute;
@@ -114,19 +101,17 @@ button .arrow::before {
     transform: rotate(-45deg);
 }
 
-button:hover {
+#login__button:hover {
     background-color: #0E1030;
 }
 
-button:hover .arrow {
+#login__button:hover .arrow {
     background: #fff;
 }
 
-button:hover .arrow:before {
+#login__button:hover .arrow:before {
     right: 0;
 }
-
-
 
 .form_control {
     position: relative;

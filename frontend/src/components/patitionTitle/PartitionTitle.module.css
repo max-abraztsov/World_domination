@@ -1,0 +1,13 @@
+.partition__title_block{
+    display: flex;
+    align-items: center;
+}
+.partition__title{
+    color: #343333;
+    font-family: Bebas Neue;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 98.5%;
+    margin: 0;
+}
