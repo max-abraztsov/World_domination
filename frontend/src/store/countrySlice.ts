@@ -389,18 +389,23 @@ const formSlice = createSlice({
             state.enemies[action.payload.index].sanctions = !action.payload.status;
         },
         donatFromBudget(state, action: PayloadAction<{ amount: number, countryTo: string}>){
-            if(state.budget > action.payload.amount){
-                state.donate.to = action.payload.countryTo;
-                state.donate.amount = action.payload.amount;
-                state.budget = state.budget - action.payload.amount;
-                // Иммитация высылки данных на сервер
-                console.log(state.donate.to, state.donate.amount, "Sum:", state.budget);
-                state.donate.to = "";
-                state.donate.amount = 0;
-                console.log(state.donate.to, state.donate.amount, "Sum:", state.budget);
+            if (action.payload.amount && action.payload.countryTo){
+                if(state.budget > action.payload.amount){
+                    state.donate.to = action.payload.countryTo;
+                    state.donate.amount = action.payload.amount;
+                    state.budget = state.budget - action.payload.amount;
+                    // Иммитация высылки данных на сервер
+                    console.log(state.donate.to, state.donate.amount, "Sum:", state.budget);
+                    state.donate.to = "";
+                    state.donate.amount = 0;
+                    console.log(state.donate.to, state.donate.amount, "Sum:", state.budget);
+                } else {
+                    alert("Not money");
+                } 
             } else {
-                alert("Not money");
+                alert("Сomplete the form!");
             }
+            
         },
         toggleRocketOrder(state, action: PayloadAction<{order: number}>){
             state.budget = state.budget + (state.rocket_order * 150);

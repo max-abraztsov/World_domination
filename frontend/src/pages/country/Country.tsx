@@ -21,6 +21,8 @@ import PrinterTop from "./../../assets/print-top.svg"
 import PrinterBottom from "./../../assets/print-bottom.svg"
 import ButtonBottom from "./../../assets/button-fire.png"
 import FireTop from "./../../assets/fire-top.png"
+import Pen from "./../../assets/Pen.svg"
+import Stamp from "./../../assets/stamp.svg"
 
 interface CountryProps{
     forAdmin?: ICountry;
@@ -131,7 +133,10 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
                                 
                             </form>
                         </div>
-                        <button id={cl.fire__button}>
+                        <div id={cl.pen}>
+                            <img src={Pen} />
+                        </div>
+                        <button id={cl.fire__button} onClick={clickHandler} type="submit">
                             <img src={ButtonBottom} alt="" />
                             <img className={cl.fire__top} src={FireTop}></img>
                         </button>
@@ -139,7 +144,7 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
                     { isPresident.isPresident ? (
                         <section className={cl.country__documents}>
                             <section className={cl.country__other}>
-                                {/* <section>
+                                <section>
                                     {forAdmin ? (
                                         <div></div>  
                                     ) : (
@@ -163,7 +168,7 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
                                             </div>
                                         )}
                                     </div>
-                                </section> */}
+                                </section>
                             </section>
                             <section className={cl.country__your}>
                                 <section className={cl.country__info}>
@@ -264,17 +269,26 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
                                                     <PartitionTitle  title="Relations with other countries" text="Это подсказка для примера"/>
                                                     {form.enemies.map((enemy, index) => 
                                                         enemy.sanctinosFrom ? (
-                                                            <p className={cl.relationship} key={enemy.country}>{enemy.country}: Объявлены санкции</p>
+                                                            <p className={cl.relationship} key={enemy.country}>{enemy.country}: Sanctions have been announced...</p>
                                                         ) : (
-                                                            <p className={cl.relationship} key={enemy.country}>{enemy.country}: Нормальные отношения</p> 
+                                                            <p className={cl.relationship} key={enemy.country}>{enemy.country}: Good relationship...</p> 
                                                         )
                                                     )}
                                                 </div>
                                             </div>
                                         </section>
-                                        <section>
+                                        <section className={cl.section__columns}>
+                                            <div className={cl.country__position}>
+                                                <p className={cl.position__text}>The President of the<br/> Republic of Belarus </p>
+                                            </div>
                                             <div className={cl.country__button}>
-                                                <button className={cl.button} onClick={clickHandler} type="submit">Send order</button>
+                                                <button className={cl.button} onClick={clickHandler} type="submit">
+                                                    { country.rockets > form.rockets ? (
+                                                        <div className={cl.stamp__grey_red}></div>
+                                                    ) : (
+                                                        <div className={cl.stamp__grey_blue}></div>
+                                                    )}
+                                                </button>
                                             </div>
                                         </section> 
                                     </form>
@@ -319,7 +333,7 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
                                             <PartitionTitle  title="Ecology" text="Это подсказка для примера"/>
                                             <p className={cl.paragraph}>Develop ecology (200$)</p>
                                         </div>
-                                    </section >
+                                    </section>
                                     <span className={cl.hr_big}></span>
                                     <section className={cl.section__columns}>
                                         <div>
@@ -367,9 +381,9 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
                                                 <PartitionTitle  title="Relations with other countries" text="Это подсказка для примера"/>
                                                 {form.enemies.map((enemy, index) => 
                                                     enemy.sanctinosFrom ? (
-                                                        <p className={cl.relationship} key={enemy.country}>{enemy.country}: Объявлены санкции</p>
+                                                        <p className={cl.relationship} key={enemy.country}>{enemy.country}: Sanctions have been announced...</p>
                                                     ) : (
-                                                        <p className={cl.relationship} key={enemy.country}>{enemy.country}: Нормальные отношения</p> 
+                                                        <p className={cl.relationship} key={enemy.country}>{enemy.country}: Good relationship...</p> 
                                                     )
                                                 )}
                                             </div>

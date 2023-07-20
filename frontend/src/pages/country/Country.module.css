@@ -35,13 +35,39 @@
     margin: 15px 0;
 }
 
+.country__documents{
+    position: relative;
+    top: 0;
+    left: 0;
+    max-width: 789px;
+    width: 65%;
+    padding: 5px 8px 15px 18px;
+    border-radius: 5px;
+    background: #DFBE68;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+}
 
 .country__your{
-    width: 90%;
+    position: relative;
+    z-index: 2;
+    width: 100%;
     max-width: 763px;
     background-color: #fff;
     padding: 20px 30px;
 }
+
+.country__other{
+    position: absolute;
+    z-index: 1;
+    top: -10px;
+    right: 18px; 
+    width: 100%;
+    max-width: 763px;
+    background-color: #C1C1C1;
+    padding: 20px 30px;
+}
+
+
 .country__metrics{
     width: 70%;
     display:flex;
@@ -79,7 +105,8 @@
 
 .country__table{
     display: flex;
-    margin-top: 40px;
+    margin-top: 100px;
+    margin-bottom: 100px;
 }
 
 .country__print{
@@ -88,11 +115,6 @@
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
-}
-
-.country__documents{
-    width: 65%;
-
 }
 
 .section__columns{
@@ -219,6 +241,14 @@
 }
 
 /* ---------------------------------------------- */
+/* Pen ------------------------------------------ */
+
+#pen{
+   transform: translateX(40px) rotate(-15deg);
+}
+
+
+/* ---------------------------------------------- */
 
 .paragraph{
     color: #343333;
@@ -261,9 +291,65 @@
     border-radius: 15px;
     margin-bottom: 20px;
 }
-.country__button{
-    text-align: center;
+
+.country__position{
+    align-self: flex-end;
+    padding-bottom: 20px;
 }
+
+.position__text{
+    color: #343333;
+    font-family: Arimo;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 98.5%; 
+    margin: 7px 0 11px 0;
+}
+
+.country__button{
+    text-align: end;
+    position: relative;
+    top: -20px;
+    right: 40px;
+}
+
+/* Stamp -------------------------------------------- */
+
+.stamp__grey_blue, .stamp__grey_red{
+    cursor: url(./../../assets/stamp.png), auto;
+    width: 190px;
+    height: 190px;
+    background: url(./../../assets/stamp-grey.png);
+    transition: .4s;
+    border-radius: 50%; 
+}
+
+.stamp__grey_blue:hover{
+    background: url(./../../assets/stamp-blue.png);
+    opacity: 0.6;
+    transition: .4s;
+}
+
+.stamp__grey_blue:active{
+    background: url(./../../assets/stamp-blue.png);
+    opacity: 1;
+    transition: .2s;
+}
+
+.stamp__grey_red:hover{
+    background: url(./../../assets/stamp-red.png);
+    opacity: 0.6;
+    transition: .4s;
+}
+
+.stamp__grey_red:active{
+    background: url(./../../assets/stamp-red.png);
+    opacity: 1;
+    transition: .2s;
+}
+
+/* ------------------------------------------------ */
 
 
 /* .country__dev_col h3{
@@ -282,15 +368,8 @@
     display: flex;
 }
 .button{
-    margin-top: 30px;
-    padding: 15px 40px;
-    font-weight: 600;
-    font-size: 28px;
-    color: white;
-    background-color: rgb(25, 163, 78);
     border: none;
-    border-radius: 20px;
-    margin: 20px 0;
+    background-color: transparent;
 }
 .country__input{
     margin-top: 8px;
@@ -345,7 +424,7 @@
     font-style: normal;
     font-weight: 400;
     line-height: 98.5%; 
-    margin: 7px 0 11px 0;
+    margin: 8px 0 11px 0;
 }
 
 .city__destoyed{
