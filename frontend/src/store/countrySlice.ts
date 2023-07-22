@@ -3,6 +3,8 @@ import { ICountriesPublicInfo, ICountry, IForm, IDonat } from "../types/types";
 import CSS from "csstype"
 
 const initialStateCountry: ICountry = {
+    is_president: true,
+    round: 2,
     country: "Belarus",
     flag_photo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQNcell8SvcD2oHdkfnzK_q_hZ7LSyjc7UyAPeZtyATwYoD5HOGYtq-tOGyVpxE7YLhb0&usqp=CAU",
     budget: 1000,
@@ -122,6 +124,7 @@ const initialStateCountry: ICountry = {
 }
 
 const formResult: IForm = {
+    round: initialStateCountry.round,
     country: initialStateCountry.country,
     nuclear_technology: initialStateCountry.nuclear_technology,
     ecology: false,
@@ -158,18 +161,22 @@ const formResult: IForm = {
             cities: [
                 {
                     city_name: "Moscow",
+                    is_attacked: false,
                     state: false, 
                 },
                 {
                     city_name: "St. Petersburg",
+                    is_attacked: false,
                     state: false,
                 },
                 {
                     city_name: "Sochi",
+                    is_attacked: false,
                     state: false, 
                 },
                 {
                     city_name: "Ekaterinburg",
+                    is_attacked: false,
                     state: false, 
                 },
             ],
@@ -181,18 +188,22 @@ const formResult: IForm = {
             cities: [
                 {
                     city_name: "Hong Kong",
+                    is_attacked: false,
                     state: false, 
                 },
                 {
                     city_name: "Shanghai",
+                    is_attacked: false,
                     state: false, 
                 },
                 {
                     city_name: "Beijing",
+                    is_attacked: false,
                     state: true, 
                 },
                 {
-                    city_name: "Guangzhou",  
+                    city_name: "Guangzhou", 
+                    is_attacked: false, 
                     state: true,
                 },
             ],
@@ -204,18 +215,22 @@ const formResult: IForm = {
             cities: [
                 {
                     city_name: "New York",
+                    is_attacked: false,
                     state: false,  
                 },
                 {
                     city_name: "Chicago",
+                    is_attacked: false,
                     state: false,  
                 },
                 {
                     city_name: "Los Angeles",
+                    is_attacked: false,
                     state: false,   
                 },
                 {
                     city_name: "Atlanta",
+                    is_attacked: false,
                     state: true,
                 },
             ],
@@ -269,7 +284,7 @@ const initialStateCountriesPublic: ICountriesPublicInfo = {
         },
         {
             country: "Russia",
-            average_live_level: 57, 
+            average_live_level: 34, 
             cities: [
                 {
                     city_name: "Moscow",
@@ -345,6 +360,32 @@ const initialStateCountriesPublic: ICountriesPublicInfo = {
                 },
             ],
         },
+        {
+            country: "Germany",
+            average_live_level: 34, 
+            cities: [
+                {
+                    city_name: "Moscow",
+                    live_level: 60, 
+                    state: true, 
+                },
+                {
+                    city_name: "St. Petersburg",
+                    live_level: 59,  
+                    state: true,
+                },
+                {
+                    city_name: "Sochi",
+                    live_level: 55, 
+                    state: true, 
+                },
+                {
+                    city_name: "Ekaterinburg",
+                    live_level: 56, 
+                    state: true, 
+                },
+            ],
+        },
     ]
 }
 
@@ -380,8 +421,8 @@ const formSlice = createSlice({
             else state.budget = state.budget - action.payload.price;
         },
         toggleEnemyCheckbox(state, action: PayloadAction<{ index: number, id: number}>){
-            const status = state.enemies[action.payload.index].cities[action.payload.id].state;
-            state.enemies[action.payload.index].cities[action.payload.id].state = !status;
+            const status = state.enemies[action.payload.index].cities[action.payload.id].is_attacked;
+            state.enemies[action.payload.index].cities[action.payload.id].is_attacked = !status;
             if(status) state.rockets += 1;   
             else state.rockets -= 1;
         },

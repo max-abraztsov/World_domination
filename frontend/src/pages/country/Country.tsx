@@ -1,28 +1,25 @@
-import {FC, useState, useEffect} from 'react';
+import {FC, useState } from 'react';
 import { ICountry } from '../../types/types';
 import { useAppSelector, useAppDispatch } from '../../hook';
-import {rocketOrder, toggleNuclearStatus, toggleEcologyDevelop, toggleEnemyCheckbox,toggleSanctionCheckbox, donatFromBudget } from '../../store/countrySlice';
+import { toggleNuclearStatus, toggleEcologyDevelop, toggleEnemyCheckbox,toggleSanctionCheckbox } from '../../store/countrySlice';
 import cl from "./Country.module.css"
 import City from '../../components/city/City';
 import Checkbox from '../../components/UI/checkbox/Checkbox';
 import EnemyCheckbox from '../../components/UI/enemyCheckbox/EnemyCheckbox';
 import SanctionCheckbox from '../../components/UI/sanctionsCheckbox/SanctionCheckbox';
-import Tooltip from '../../components/UI/tooltip/Tooltip';
 import Metric from '../../components/metric/Metric';
 import axios from 'axios';
 import PartitionTitle from '../../components/patitionTitle/PartitionTitle';
 import Counter from '../../components/counter/Counter';
+import Printer from '../../components/Printer/printer';
 import BarChart from '../../components/UI/charts/BarChart';
 import { Chart as ChartJS, registerables } from 'chart.js';
 import { Chart } from 'react-chartjs-2'
 
 import bomb from "../../assets/rocket-counter.svg"
-import PrinterTop from "./../../assets/print-top.svg"
-import PrinterBottom from "./../../assets/print-bottom.svg"
 import ButtonBottom from "./../../assets/button-fire.png"
 import FireTop from "./../../assets/fire-top.png"
 import Pen from "./../../assets/Pen.svg"
-import Stamp from "./../../assets/stamp.svg"
 
 interface CountryProps{
     forAdmin?: ICountry;
@@ -37,36 +34,27 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
     const dispatch = useAppDispatch();
 
     const countriesPublic = useAppSelector(state => state.countriesPublic);
+
+    const getColorByValue = (value: number): string => {
+        if (value <= 35) {
+          return '#DD7474'; 
+        } else if (value > 35 && value < 70) {
+          return '#E1BC5C'; 
+        } else {
+          return '#5ACA85'; 
+        }
+    };
+
     const chartData = {
         labels: countriesPublic.countries.map( item => item.country),
         datasets: [
             {
                 label: 'Average live level',
                 data: countriesPublic.countries.map( item => item.average_live_level),
-                backgroundColor: '#55828B',
-            },
+                backgroundColor: countriesPublic.countries.map(item => getColorByValue(item.average_live_level)),
+            }, 
         ],
     };
-
-    const [donateForm, setDonateForm] = useState({
-        to: "",
-        amount: 0,
-    })
-
-    function donate(e: React.MouseEvent<HTMLButtonElement>){
-        e.preventDefault();
-        dispatch(donatFromBudget({amount: donateForm.amount, countryTo: donateForm.to}));
-        console.log(donateForm);
-        setDonateForm({ to: "", amount: 0, });
-    }
-
-    function handleChangeAmount(e: React.ChangeEvent<HTMLInputElement>) {
-        setDonateForm({ ...donateForm, amount: Number(e.target.value)});
-    }
-
-    function handleChangeTo(e: React.ChangeEvent<HTMLSelectElement>) {
-        setDonateForm({ ...donateForm, to: e.target.value});
-    }
 
     const clickHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
         console.log(form);
@@ -90,49 +78,23 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
         }
     }
 
-    
+    const [pageState, setPageState] = useState({
+        zIndex: 1,
+    });
+
+    // const [colors, setColors] = useState({
+    //     your: "#fff",
+    //     other: "#C1C1C1",
+    // });
+
+
 
     return (
         <div className={cl.country}>
             <div className={cl.container}>
                 <div className={cl.country__table}>
                     <section className={cl.country__print}>
-                        <div className={cl.printer}>
-                            <img src={PrinterTop} />
-                            <img src={PrinterBottom}></img>
-                            <form className={cl.printer__form}>
-                                <div>
-                                    <select id={cl.country} name="country" className={cl.printer__input} value={donateForm.to} onChange={handleChangeTo}>
-                                        <option value="">Choose country...</option>
-                                        {form.enemies.map( enemy => 
-                                            <option 
-                                            key={enemy.country} 
-                                            value={enemy.country}>{enemy.country}</option>
-                                        )}
-                                    </select>
-                                </div>
-                                <div>
-                                    <input 
-                                        type="number" 
-                                        id="amount" 
-                                        name="amount" 
-                                        value={donateForm.amount} 
-                                        onChange={handleChangeAmount}
-                                        placeholder="Enter an amount " 
-                                        className={cl.printer__input}
-                                        required 
-                                    /> 
-                                </div>
-                                
-                                <div id={cl.printer__button_container}>
-                                    <button id={cl.printer__button} type="submit" onClick={donate}>
-                                        Print
-                                    </button>
-                                    <div className={cl.printer__button_bottom}></div>
-                                </div>
-                                
-                            </form>
-                        </div>
+                        <Printer />
                         <div id={cl.pen}>
                             <img src={Pen} />
                         </div>
@@ -143,7 +105,12 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
                     </section>
                     { isPresident.isPresident ? (
                         <section className={cl.country__documents}>
-                            <section className={cl.country__other}>
+                            <section style={pageState} className={cl.country__other}>
+                                <div className={[cl.bookmark__grey, cl.bookmark__other].join(" ")}> 
+                                    <div onClick={() => setPageState({zIndex: 3})} className={cl.bookmark__text}>
+                                        Other countries
+                                    </div>
+                                </div>
                                 <section>
                                     {forAdmin ? (
                                         <div></div>  
@@ -171,6 +138,11 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
                                 </section>
                             </section>
                             <section className={cl.country__your}>
+                                <div className={[cl.bookmark, cl.bookmark__your].join(" ")}> 
+                                    <div onClick={() => setPageState({zIndex: 1})} className={cl.bookmark__text}>
+                                        Your country
+                                    </div>
+                                </div>
                                 <section className={cl.country__info}>
                                     <div className={cl.country__title}>
                                         <img className={cl.country__flag} src={country.flag_photo} />
@@ -179,7 +151,7 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
                                     <div className={cl.country__metrics}>
                                         <Metric indicator={"Average live level"} index={country.average_live_level} unit={"%"} />
                                         <Metric indicator={"Ecology"} index={country.ecology} unit={"%"}/>
-                                        <Metric indicator={"Budget"} index={form.budget} unit={"$"}/>
+                                        <Metric indicator={"Budget"} index={form.budget} unit={"$"} width={"65px"}/>
                                     </div> 
                                 </section>
                                 <span className={cl.hr_big}></span>
@@ -238,7 +210,7 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
                                                     <div>
                                                         {enemy.cities.map((city, id) => 
                                                             <EnemyCheckbox 
-                                                                formState={form.enemies[index].cities[id].state}
+                                                                formState={form.enemies[index].cities[id].is_attacked}
                                                                 indexCol={index}
                                                                 id={id}
                                                                 key={city.city_name} 
