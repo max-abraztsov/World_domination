@@ -5,9 +5,10 @@ interface MetricProps{
     indicator: string,
     index: number,
     unit: string,
+    width?: string;
 }
 
-const Metric: FC<MetricProps> = ({indicator, index, unit}) => {
+const Metric: FC<MetricProps> = ({indicator, index, unit, width}) => {
 
     const colors = {
         green: "#5ACA85",
@@ -28,7 +29,7 @@ const Metric: FC<MetricProps> = ({indicator, index, unit}) => {
     return (
         <div className={cl.metric}>
             <p className={cl.indicator}>{indicator}</p>
-            <p style={{color: indexColor}} className={cl.index}>{index}{unit}</p>
+            <p style={{color: indexColor, width: width}} className={cl.index}>{index}{unit}</p>
         </div>
     );
 };

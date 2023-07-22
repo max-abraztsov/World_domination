@@ -10,6 +10,8 @@ export interface ICity{ // Информация по конкретному го
 }
 
 export interface ICountry{
+    is_president: boolean;
+    round: number;
     country: string; // Название страны
     flag_photo: string; // Ссылка на фото флага
     budget: number; // Бюджет 
@@ -19,18 +21,6 @@ export interface ICountry{
     rockets: number; // Количество имеющихся бомб
     cities: ICity[]; // Массив всех городов одной страны 
     enemies: IEnemy[];
-}
-
-// For general page request /////////////////////////////////////////////
-export interface ICountries{
-    countries: ICountry[]; // Все страны
-}
-
-// For form (post) request //////////////////////////////////////////////
-export interface ICityForm{ // Изменения для конкретного города
-    city_name: string; // Для ориентирования
-    develop: boolean; // Развитие города
-    shield: boolean; // Установка щита
 }
 
 export interface IEnemyCity{
@@ -45,7 +35,34 @@ export interface IEnemy{
     cities: IEnemyCity[]; //
 }
 
+// For general page request /////////////////////////////////////////////
+export interface ICountries{
+    countries: ICountry[]; // Все страны
+}
+
+// For form (post) request //////////////////////////////////////////////
+
+export interface ICityForm{ // Изменения для конкретного города
+    city_name: string; // Для ориентирования
+    develop: boolean; // Развитие города
+    shield: boolean; // Установка щита
+}
+
+export interface IEnemyCityForm{
+    city_name: string;
+    is_attacked: boolean,
+    state: boolean;
+}
+
+export interface IEnemyForm{
+    country: string; //
+    sanctions: boolean;
+    sanctinosFrom: boolean;
+    cities: IEnemyCityForm[]; //
+}
+
 export interface IForm{ // Изменения вцелом для страны
+    round: number;
     country: string; // Для ориентирования
     nuclear_technology: boolean; // Развитие ядерной программы
     ecology: boolean; // Инвестиция в экологию
@@ -54,7 +71,7 @@ export interface IForm{ // Изменения вцелом для страны
     rockets: number; // Количество заказанных бомб
     donate: IDonat;
     cities: ICityForm[]; // Массив изменений для городов
-    enemies: IEnemy[]; // 
+    enemies: IEnemyForm[]; // 
 }
 // For login page
 export interface IStatus { // Статус пользователя

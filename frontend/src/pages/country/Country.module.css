@@ -48,23 +48,79 @@
 }
 
 .country__your{
+    border-radius: 5px 0 5px 5px;
     position: relative;
     z-index: 2;
     width: 100%;
     max-width: 763px;
     background-color: #fff;
     padding: 20px 30px;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+}
+
+.bookmark, .bookmark__grey {
+    position: absolute;
+    z-index: 3;
+    top: -33px; 
+    perspective: 200px;
+    display: inline-block;
+    width: 200px;
+    height: 33px;
+}
+
+.bookmark__your{ 
+    right: 0;
+}
+
+.bookmark__other{
+    right: 180px;
+}
+
+.bookmark:before {
+    transform: rotateX(40deg);
+    transform-origin: 50% 100%;
+    border-radius: 7px 7px 0 0;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    content: '';
+    background-color: #fff;
+}
+
+.bookmark__grey:before{
+    transform: rotateX(40deg);
+    transform-origin: 50% 100%;
+    border-radius: 7px 7px 0 0;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    content: '';
+    background-color: #C1C1C1;
+}
+
+.bookmark__text {
+    padding: 15px 20px 5px;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+    font-family: Bebas Neue;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 98.5%;
 }
 
 .country__other{
+    border-radius: 5px;
     position: absolute;
-    z-index: 1;
-    top: -10px;
+    top: 3px;
     right: 18px; 
     width: 100%;
+    height: calc(100% - 22px);
     max-width: 763px;
     background-color: #C1C1C1;
     padding: 20px 30px;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
 }
 
 
@@ -122,100 +178,6 @@
     justify-content: space-between;
 }
 
-/* Printer--------------------------------------- */
-.printer{
-    position: relative;
-    max-width: 350px;
-    display: flex;
-    flex-direction: column;
-    margin: 0 auto;
-}
-.printer__form{
-    position: absolute;
-    top: 65%;
-    left: 6%;
-    display: flex;
-    max-width:350px;
-}
-.printer__form div {
-    margin-right: 10px;
-}
-.printer__input {
-    display: block;
-    background-color: #383838;
-    border: 1ex solid none;
-    border-top-width: 1.7em;
-    margin: 0;
-    padding: 0;
-    color: #383838;
-    word-wrap: break-word;
-    outline: 7px solid #383838;
-    height: 30px;
-    font-size: 17px;
-    text-align: center;
-    transition: all 1s;
-    max-width: 90px;
-    
-    font-weight: bold;
-    font-family: 'Courier New', Courier, monospace;
-}
-.printer__input:hover {
-    border-top-width: 0.2em;
-    background-color: #5a5a5a;
-}
-.printer__input:focus {
-    border-top-width: 0.2em;
-    background-color: #5a5a5a;
-    color: white;
-}
-#country{
-    border-color: #212121;
-    border-bottom-width: 2px;
-    border-bottom-color: #767676; 
-    border-right-width: 3px;
-    border-right-color: #767676;
-
-}
-.printer__input option{
-    background-color: #383838;
-}
-#printer__button_container{
-    margin-left: 30px;
-    display: block;
-    position: relative;
-    top: 3px;
-    left: 0;
-
-}
-#printer__button{
-    position: absolute;
-    top: -3px;
-    left: 0;
-    border: none;
-    z-index: 5;
-    padding: 4px 10px;
-    color: #C3C3C3;
-    font-family: Arial;
-    font-size: 18px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: normal;
-    border-radius: 2px;
-    background: #527153;
-}
-.printer__button_bottom{
-    position: absolute;
-    top: 0;
-    left: 0;
-    border: none;
-    z-index: 0;
-    width: 61px;
-    height: 29px;
-    border-radius: 2px;
-    background:#313D32;
-    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
-}
-/* ---------------------------------------------- */
 /* Fire Button ---------------------------------- */
 #fire__button{
     border: none;
