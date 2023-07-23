@@ -81,8 +81,13 @@ export interface IStatus { // Статус пользователя
 // Public information about countries//////////////////////////////////////////////////////////////////////////////
 
 export interface ICountriesPublicInfo{
-    ecology: number;
+    ecology: IEcologyPublicInfo[];
     countries: ICountryPublicInfo[]; // Все страны
+}
+
+export interface IEcologyPublicInfo{
+    round: string;
+    value: number | null;
 }
 
 export interface ICountryPublicInfo{

@@ -1,4 +1,4 @@
-import {FC, useState } from 'react';
+import {FC, useState, useEffect } from 'react';
 import { ICountry } from '../../types/types';
 import { useAppSelector, useAppDispatch } from '../../hook';
 import { toggleNuclearStatus, toggleEcologyDevelop, toggleEnemyCheckbox,toggleSanctionCheckbox } from '../../store/countrySlice';
@@ -11,7 +11,7 @@ import Metric from '../../components/metric/Metric';
 import axios from 'axios';
 import PartitionTitle from '../../components/patitionTitle/PartitionTitle';
 import Counter from '../../components/counter/Counter';
-import Printer from '../../components/Printer/printer';
+import Printer from '../../components/Printer/Printer';
 import BarChart from '../../components/UI/charts/BarChart';
 import { Chart as ChartJS, registerables } from 'chart.js';
 import { Chart } from 'react-chartjs-2'
@@ -20,6 +20,7 @@ import bomb from "../../assets/rocket-counter.svg"
 import ButtonBottom from "./../../assets/button-fire.png"
 import FireTop from "./../../assets/fire-top.png"
 import Pen from "./../../assets/Pen.svg"
+import GrowthChart from '../../components/UI/charts/GrowthChart';
 
 interface CountryProps{
     forAdmin?: ICountry;
@@ -35,14 +36,16 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
 
     const countriesPublic = useAppSelector(state => state.countriesPublic);
 
-    const getColorByValue = (value: number): string => {
-        if (value <= 35) {
-          return '#DD7474'; 
-        } else if (value > 35 && value < 70) {
-          return '#E1BC5C'; 
+    const getColorByValue = (value: number | null): string | null => {
+        if (value != null && value <= 35) {
+            return '#DD7474'; 
+        } else if (value != null && value > 35 && value < 70) {
+            return '#E1BC5C'; 
+        } else if (value != null && value >= 70){
+            return '#5ACA85'; 
         } else {
-          return '#5ACA85'; 
-        }
+            return null;
+        }      
     };
 
     const chartData = {
@@ -55,6 +58,30 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
             }, 
         ],
     };
+
+    const ecologyData = [
+        { round: "Round 1", value: 80 },
+        { round: "Round 2", value: 95 },
+        { round: "Round 3", value: 75 },
+        { round: "Round 4", value: 53 },
+        { round: "Round 5", value: 20 },
+        { round: "Round 6", value: 13 },
+        // Добавьте или измените данные, как вам необходимо
+    ];
+
+    const metricData = {
+        labels: ecologyData.map( item => item.round),
+        datasets: [
+            {
+                label: 'Ecology',
+                data: ecologyData.map( item => item.value),
+                backgroundColor: ecologyData.map(item => getColorByValue(item.value)),
+            }, 
+        ],
+    };
+
+    
+      
 
     const clickHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
         console.log(form);
@@ -78,36 +105,60 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
         }
     }
 
-    const [pageState, setPageState] = useState({
-        zIndex: 1,
+    const [pageState, setPageState] = useState(1);
+    const [otherBookmarkColorStyle, setOtherBookmarkColorStyle] = useState([cl.bookmark__grey, cl.bookmark__other]);
+    const [yourBookmarkColorStyle, setYourBookmarkColorStyle] = useState([cl.bookmark, cl.bookmark__your]);
+    const [pagesColors, setPagesColors] = useState({
+        other: "#C1C1C1",
+        your: "#fff"
     });
 
-    // const [colors, setColors] = useState({
-    //     your: "#fff",
-    //     other: "#C1C1C1",
-    // });
+    function otherMain(){
+        if(pageState != 3){
+            setPageState(3);
+            setOtherBookmarkColorStyle([cl.bookmark__other, cl.bookmark ]);
+            setYourBookmarkColorStyle([cl.bookmark__your, cl.bookmark__grey ]);
+            setPagesColors({other: "#fff", your: "#C1C1C1"});
+        }
+    }
 
+    function yourMain(){
+        if(pageState != 1){
+            setPageState(1);
+            setOtherBookmarkColorStyle([cl.bookmark__other, cl.bookmark__grey ]);
+            setYourBookmarkColorStyle([cl.bookmark__your, cl.bookmark ]);
+            setPagesColors({other: "#C1C1C1", your: "#fff"}); 
+        }
+    }
 
+    const [buttonPosition, setButtonPosition] = useState({transform: "translateX(-100vw)", transition: ".4s"})
 
+    useEffect(() => {
+        if(country.rockets > form.rockets) setButtonPosition({transform: "translateX(0px)", transition: ".4s"});
+        else setButtonPosition({transform: "translateX(-100vw)", transition: ".4s"});   
+    }, [form.rockets]);    
+    
     return (
         <div className={cl.country}>
             <div className={cl.container}>
                 <div className={cl.country__table}>
                     <section className={cl.country__print}>
-                        <Printer />
-                        <div id={cl.pen}>
-                            <img src={Pen} />
-                        </div>
-                        <button id={cl.fire__button} onClick={clickHandler} type="submit">
-                            <img src={ButtonBottom} alt="" />
+                        <div>
+                            <Printer />
+                            <div id={cl.pen}>
+                                <img src={Pen} />
+                            </div>
+                        </div>                       
+                        <button style={buttonPosition} id={cl.fire__button} onClick={clickHandler} type="submit">
+                            <img src={ButtonBottom} alt="button fire" />
                             <img className={cl.fire__top} src={FireTop}></img>
                         </button>
                     </section>
                     { isPresident.isPresident ? (
                         <section className={cl.country__documents}>
-                            <section style={pageState} className={cl.country__other}>
-                                <div className={[cl.bookmark__grey, cl.bookmark__other].join(" ")}> 
-                                    <div onClick={() => setPageState({zIndex: 3})} className={cl.bookmark__text}>
+                            <section style={{background: pagesColors.other, zIndex: pageState }}  className={cl.country__other}>
+                                <div className={otherBookmarkColorStyle.join(" ")}> 
+                                    <div onClick={otherMain} className={cl.bookmark__text}>
                                         Other countries
                                     </div>
                                 </div>
@@ -115,31 +166,37 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
                                     {forAdmin ? (
                                         <div></div>  
                                     ) : (
-                                        <BarChart data={chartData}/>   
+                                        <div>
+                                            <GrowthChart data={metricData}/> 
+                                            <BarChart data={chartData}/>  
+                                        </div> 
                                     )}
-                                    <div className={cl.countires__information}>
+                                    <div className={cl.countries__information}>
                                         {countriesPublic.countries.map( (country, index) => 
                                             <div key={country.country}>
                                                 <div>
-                                                    <h3>{country.country}</h3>
+                                                    <h3 className={cl.countries__name}>{country.country}</h3>
                                                 </div>
                                                 <div>
                                                     { country.cities.map((city, index) => 
                                                     city.state ? (
-                                                        <p key={city.city_name}>{city.city_name}: {city.live_level}%</p>
+                                                        <p className={cl.countries__city} key={city.city_name}>{city.city_name}: {city.live_level}%</p>
                                                     ) : (
-                                                        <p key={city.city_name}>{city.city_name}: <img className={cl.city__destoyed} src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Cross_red_circle.svg/800px-Cross_red_circle.svg.png" alt="cross" /></p> 
+                                                        <p className={cl.countries__city} key={city.city_name}>
+                                                            {city.city_name}: <img className={cl.city__destoyed} src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Cross_red_circle.svg/800px-Cross_red_circle.svg.png" alt="cross" />
+                                                        </p> 
                                                     )
                                                     )}
                                                 </div>
                                             </div>
                                         )}
                                     </div>
+                    
                                 </section>
                             </section>
-                            <section className={cl.country__your}>
-                                <div className={[cl.bookmark, cl.bookmark__your].join(" ")}> 
-                                    <div onClick={() => setPageState({zIndex: 1})} className={cl.bookmark__text}>
+                            <section style={{background: pagesColors.your}} className={cl.country__your}>
+                                <div className={yourBookmarkColorStyle.join(" ")}> 
+                                    <div onClick={yourMain} className={cl.bookmark__text}>
                                         Your country
                                     </div>
                                 </div>

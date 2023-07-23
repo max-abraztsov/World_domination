@@ -254,7 +254,14 @@ const countrySlice = createSlice({
 });
 
 const initialStateCountriesPublic: ICountriesPublicInfo = {
-    ecology: 80,
+    ecology: [
+        { round: "Round 1", value: 80 },
+        { round: "Round 2", value: 95 },
+        { round: "Round 3", value: 75 },
+        { round: "Round 4", value: 53 },
+        { round: "Round 5", value: null },
+        { round: "Round 6", value: null },
+    ],
     countries: [
         {
             country: "Belarus",

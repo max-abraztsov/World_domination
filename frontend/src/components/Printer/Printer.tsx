@@ -1,4 +1,4 @@
-import React, {useState, FC} from 'react';
+import React, {useState, FC, useEffect} from 'react';
 import { donatFromBudget } from '../../store/countrySlice';
 import { useAppSelector, useAppDispatch } from '../../hook';
 import cl from  "./Printer.module.css"
@@ -20,7 +20,12 @@ const Printer: FC = () => {
         e.preventDefault();
         dispatch(donatFromBudget({amount: donateForm.amount, countryTo: donateForm.to}));
         console.log(donateForm);
-        setDonateForm({ to: "", amount: 0, });
+        setAnimation(true);
+        setTimeout(() => {
+            setDonateForm({ to: "", amount: 0, });
+            setAnimation(false);
+        }, 3000);
+        
     }
 
     function handleChangeAmount(e: React.ChangeEvent<HTMLInputElement>) {
@@ -31,10 +36,26 @@ const Printer: FC = () => {
         setDonateForm({ ...donateForm, to: e.target.value});
     }
 
+    const [animation, setAnimation] = useState(false);
+
+    const [paperStyles, setPaperStyles] = useState([cl.printer__paper]);
+
+    useEffect(() => {
+        if(animation) setPaperStyles([cl.printer__paper, cl.animate]);
+        else setPaperStyles([cl.printer__paper]);
+    }, [animation])
+    
     return (
         <div className={cl.printer}>
-            <img src={PrinterTop} />
-            <img src={PrinterBottom}></img>
+            <img className={cl.printer__top} src={PrinterTop} />
+            <img className={cl.printer__bottom} src={PrinterBottom}></img>
+            <div className={paperStyles.join(" ")} >
+                <h4>Interstate transfer</h4>
+                <p>Round: {form.round}</p>
+                <p>Sender: {form.country}</p>
+                <p>Recipient: {donateForm.to}</p>
+                <p>Amount: {donateForm.amount}</p>
+            </div>
             <form className={cl.printer__form}>
                 <div>
                     <select id={cl.country} name="country" className={cl.printer__input} value={donateForm.to} onChange={handleChangeTo}>
@@ -60,7 +81,7 @@ const Printer: FC = () => {
                 </div>
                 
                 <div id={cl.printer__button_container}>
-                    <button id={cl.printer__button} type="submit" onClick={donate}>
+                    <button  id={cl.printer__button} type="submit" onClick={donate}>
                         Print
                     </button>
                     <div className={cl.printer__button_bottom}></div>
