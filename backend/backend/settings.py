@@ -28,6 +28,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles', 
     'loginPage', 
     'generalData',
+    'round',
+    'donate',
     'rest_framework', 
     'corsheaders', 
 ] 

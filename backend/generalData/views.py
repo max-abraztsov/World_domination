@@ -12,7 +12,7 @@ def general_data(request):
             #Data about all countries
             country_object = country.objects.filter().values('CountryName', 'id')
             country_list = list(country_object)
-            chosen_countries=['Belarus', 'Ukraine', 'Poland', 'Russia']
+            chosen_countries=['Belarus', 'Ukraine', 'Poland', 'Lithuania']
             AllCountries_list=[]
             for chosen in country_list:
                 if chosen['CountryName'] in chosen_countries:
