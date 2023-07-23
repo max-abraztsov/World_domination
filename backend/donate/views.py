@@ -23,10 +23,10 @@ def donate(request):
             country_from.Budget -= donate_amount
             country_to.Budget += donate_amount
 
-            country_from.save()
-            country_to.save()
+            country_from.save()   
+            country_to.save()       
 
-            
+            return JsonResponse({'budget': country_from.Budget}) 
         except country.DoesNotExist:
             if country_from is None:
                 return JsonResponse({'error': 'Country[from] not found'}, status=404)
@@ -35,4 +35,5 @@ def donate(request):
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=500)
     return JsonResponse({'error': 'Invalid request method'}, status=405)
+
 

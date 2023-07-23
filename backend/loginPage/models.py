@@ -68,7 +68,7 @@ class ecology(models.Model):
         managed = False
 
     def __str__(self):
-        return str(self.level) + "%"
+        return "Round " + str(self.round) + ": " + str(self.level) + "%"
     
 class RoleChoices(Enum):
     ADMIN = 'admin'
