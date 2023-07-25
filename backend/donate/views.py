@@ -12,6 +12,8 @@ def donate(request):
         donate_from = request_data.get('from')
         donate_to = request_data.get('to')
         donate_amount = request_data.get('amount')
+
+        
         
         country_from = None
         country_to = None

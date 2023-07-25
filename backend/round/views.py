@@ -4,6 +4,8 @@ from backend import settings
 from loginPage.models import country
 from loginPage.models import ecology
 from loginPage.models import city
+from loginPage.models import sanction
+from .models import attacked_cities
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from donate.views import donate
@@ -27,21 +29,46 @@ def end_round(request):
         n_round = request_data.get('round')
         ecology_dev = request_data.get('ecology')
         cities = request_data.get('cities')
+        enemies = request_data.get('enemies')
         
+        
+
         try:
             Country = country.objects.get(CountryName=country_name)
             Ecology = ecology.objects.get(round=Country.Round)
-            #send request to the app "donate"
-            # donate_response = requests.post('http://127.0.0.1:8000/donate', json=donate_data)
-            # response_data = donate_response.json()
-            # Country.Budget = response_data.get('budget')
             
-            #up round 
-            # if Country.Round<7:
-            #     Country.Round += 1
-            # else:
-            #     Country.Round = 6
+            #send request to the app "donate" ========================================================================
+            '''
+            if donate_data['from'] != '' and donate_data['to'] != '':
+                donate_response = requests.post('http://127.0.0.1:8000/donate', json=donate_data)
+                response_data = donate_response.json()
+                Country.Budget = response_data.get('budget')
+            '''
             
+            #add to database(attacked_cities) all cities under attack =================================================
+            '''
+            for enemy in enemies:
+                for enemy_city in enemy['cities']:
+                    if enemy_city['is_attacked'] == True:
+                        Ecology.level -= 2
+                        city_from_db = city.objects.filter(city_name=enemy_city['city_name']).values('id')
+                        attacked_city = attacked_cities(city_name_id=city_from_db[0]['id'])
+                        attacked_city.save()
+            '''
+
+            # add sanctions from this country =========================================================================
+            '''
+            for enemy in enemies:
+                if enemy['sanctions'] == True:
+                    country_under_sanction = country.objects.filter(CountryName=enemy['country']).values('id')
+                    new_sanction = sanction(sanctionFrom_id = Country.id, sanctionFor_id = country_under_sanction[0]['id'])
+                    new_sanction.save()
+            '''
+                
+            
+            
+            #
+            '''
             sum_profit = 0
             for one_request_city in cities:
                 City = city.objects.get(country_id=Country.id, state=True, city_name=one_request_city['city_name'])
@@ -55,25 +82,51 @@ def end_round(request):
                     City.profit = City.live_level*3
                 sum_profit += City.profit
                 City.save()
+            '''
 
-
-            Country.Earnings = sum_profit
+            #up round ===========================================================================================
+            '''
+            if Country.Round<7:
+                Country.Round += 1
+            else:
+                Country.Round = 6
+            '''
             
-            #update ecology level
-            # if ecology_dev == True:
-            #     Ecology.level += 5
-            #     Ecology.round = Country.Round
-            #     if Ecology.level > 100:
-            #         Ecology.level = 100
+            #update ecology level ===================================================================================
+            '''
+            if ecology_dev == True:
+                Country.Budget -= 200
+                Ecology.level += 5
+                Ecology.round = Country.Round
+                if Ecology.level > 100:
+                    Ecology.level = 100
+            '''
+            
 
-            #==============================================================================
-
-            # if(nuclear_technology==True):
-            #     Country.NuclearTechnology = nuclear_technology
-            #     Country.NuclearRockets += nuclear_rockets
+            #set nuclear technology and order new rockets ==================================================
+            '''
+            if(nuclear_technology == True):
+                if nuclear_technology == True and Country.NuclearTechnology == False:
+                    Country.Budget -= 500
+                    Ecology.level -= 3
+                    Country.NuclearTechnology = nuclear_technology
+                Country.NuclearRockets += nuclear_rockets
+                Country.Budget -= nuclear_rockets * 150
                 
-            # elif(nuclear_technology==False):
-            #     Country.NuclearRockets = 0
+            elif(nuclear_technology==False):
+                Country.NuclearRockets = 0
+            '''
+
+
+            #sanctions count =================================================================================
+            '''
+            Sanction = sanction.objects.filter(sanctionFor_id=Country.id)
+            Sanctions_array = list(Sanction)
+            '''
+            
+            #Budget ==========================================================================================
+            #Country.Budget += Country.Earnings - 20 * len(Sanctions_array)
+            #Country.Earnings = sum_profit
                 
             Country.save()
             Ecology.save()
