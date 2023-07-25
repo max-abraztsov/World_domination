@@ -3,7 +3,7 @@ import { IStatus } from "../types/types"
 
 
 const initialStateStatus: IStatus = {
-    isPresident: true,
+    isPresident: false,
 }
 
 const statusSlice = createSlice({

@@ -10,7 +10,7 @@ interface ChartData {
 interface ChartDataset {
     label: string;
     data: number[];
-    backgroundColor: string;
+    backgroundColor: () => string;
 }
   
 interface Props {

@@ -22,7 +22,7 @@ const Footer: FC = () => {
                             <Link className={cl.footer_link} to="/">Home</Link>
                             <Link className={cl.footer_link} to="/country">Your country</Link>
                             <Link className={cl.footer_link} to="/login">Sign in</Link>
-                            <Link className={cl.footer_link} to="/wd-admin">Admin</Link>
+                            {/* <Link className={cl.footer_link} to="/wd-admin">Admin</Link> */}
                         </ul> 
                         <div className={cl.footer_kontakt}>
                             <p><span>Kontakt</span><br/>

@@ -69,6 +69,16 @@
     height: 33px;
 }
 
+.only__price{
+    margin-top: 6px;
+    color: #343333;
+    font-family: Arimo;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 98.5%;
+}
+
 .bookmark__your{ 
     right: 0;
 }
