@@ -67,10 +67,6 @@ footer{
     line-height: 104.49%;
 }
 
-.footer_socials{
-    
-}
-
 .footer_social{
     display: flex;
     align-items: center;
@@ -90,8 +86,8 @@ footer{
 }
 
 .copyright{
-    margin-top: 30px;
-    color: #FFF;
+    margin-top: 40px;
+    color: #918f8f;
     font-family: Arimo;
     font-size: 18px;
     font-style: normal;
@@ -99,3 +95,23 @@ footer{
     line-height: normal;
     align-self: center;
 }
+
+@media (max-width: 1024px){
+    .footer_information{
+        flex-direction: column;
+    }
+    .footer_kontakt{
+        margin-top: 20px;
+    }
+    .footer_logo{
+        margin-bottom: 15px;
+    }
+}
+
+@media (max-width: 550px){
+    .footer_social p{
+        display: none;
+    }
+}
+
+

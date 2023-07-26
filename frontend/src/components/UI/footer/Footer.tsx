@@ -31,21 +31,21 @@ const Footer: FC = () => {
                         </div>
                     </div>
                     <div className={cl.footer_socials}>
-                        <div className={cl.footer_social}>
+                        <a className={cl.footer_social}>
                             <p>@world.domination</p><img src={instagram}/>
-                        </div>
-                        <div className={cl.footer_social}>
+                        </a>
+                        <a className={cl.footer_social}>
                             <p>@world.domination</p><img src={facebook}/>
-                        </div>
-                        <div className={cl.footer_social}>
+                        </a>
+                        <a className={cl.footer_social}>
                             <p>@world.domination</p><img src={discord}/>
-                        </div>
-                        <div className={cl.footer_social}>
+                        </a>
+                        <a className={cl.footer_social}>
                             <p>@world.domination</p><img src={telegram}/>
-                        </div>
-                        <div className={cl.footer_social}>
+                        </a>
+                        <a className={cl.footer_social}>
                             <p>@world.domination</p><img src={tiktok}/>
-                        </div>
+                        </a>
                     </div>
                 </div>
                 <div className={cl.copyright}>

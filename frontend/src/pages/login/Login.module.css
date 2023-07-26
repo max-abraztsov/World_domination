@@ -19,9 +19,11 @@
 
 .login__form {
     max-width: 500px;
+    width: 100%;
     background-color: rgba(6, 7, 22, 0.5);
     padding: 25px;
     border-radius: 15px;
+    margin: 0 20px;
 }
 
 .login__title{
@@ -116,7 +118,8 @@
 .form_control {
     position: relative;
     margin: 20px 0 15px;
-    width: 400px;
+    max-width: 100%;
+
 }
 
 .form_control input {
