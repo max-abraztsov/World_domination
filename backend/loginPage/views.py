@@ -116,9 +116,9 @@ def login_page(request):
                 'enemies': other_countries
             }
 
-            token = generate_jwt_token(response_data)
+            #token = generate_jwt_token(response_data)
 
-            return JsonResponse({'token': token})
+            return JsonResponse(response_data)
         except User.DoesNotExist:
             return JsonResponse({'error': 'User not found'}, status=404)
         except Exception as e:
