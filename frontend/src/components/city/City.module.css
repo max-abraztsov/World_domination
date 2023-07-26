@@ -93,7 +93,7 @@
 }
 .city__state{
     display: inline-block;
-    margin-top: 22px;
+    margin: 15px 0 10px 0;
     color: #DD7474;
     font-family: Bebas Neue;
     font-size: 30px;

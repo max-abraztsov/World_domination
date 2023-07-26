@@ -2,13 +2,13 @@ import {FC, useEffect} from 'react';
 import Checkbox from '../UI/checkbox/Checkbox';
 import { useAppSelector, useAppDispatch } from '../../hook';
 import { toggleProtect, toggleCityDevelop } from '../../store/countrySlice';
-import { ICity, IStatus } from '../../types/types';
+import { ICity } from '../../types/types';
 import cl from "./City.module.css"
 import redCross from "./../../assets/not-shield14.svg"
 
 interface CityProps{
    city: ICity;
-   isPresident: IStatus; 
+   isPresident: boolean; 
    id: number;
    budget: number;
 }
@@ -17,6 +17,7 @@ const City: FC<CityProps> = ({city, isPresident, id, budget}) => {
     
     const dispatch = useAppDispatch();
     const form = useAppSelector(state => state.form);
+    const country = useAppSelector(state => state.country);
 
 
     if (city.state){
@@ -40,7 +41,7 @@ const City: FC<CityProps> = ({city, isPresident, id, budget}) => {
                     <hr className={cl.hr_black}/>
                 </div>
                 <div>
-                    { isPresident.isPresident ? ( // For president and admin
+                    { country.is_president ? ( // For president and admin
                         <div style={{marginLeft: "6px"}}>
                             <Checkbox 
                                 formState={form.cities[id].develop}
@@ -57,7 +58,7 @@ const City: FC<CityProps> = ({city, isPresident, id, budget}) => {
                             >Protect (300$)</Checkbox>
                         </div>
                     ) : ( // For simple users
-                        <div >
+                        <div style={{marginLeft: "6px"}}>
                             <p className={cl.city__price}>Develop (150$)</p>
                             <p className={cl.city__price}>Protect (300$)</p>
                         </div>

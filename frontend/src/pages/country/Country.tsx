@@ -1,4 +1,7 @@
-import {FC, useState } from 'react';
+import { Chart as ChartJS, registerables } from 'chart.js';
+import { Chart } from 'react-chartjs-2';
+import axios from 'axios';
+import {FC, useState, useEffect } from 'react';
 import { ICountry } from '../../types/types';
 import { useAppSelector, useAppDispatch } from '../../hook';
 import { toggleNuclearStatus, toggleEcologyDevelop, toggleEnemyCheckbox,toggleSanctionCheckbox } from '../../store/countrySlice';
@@ -8,13 +11,12 @@ import Checkbox from '../../components/UI/checkbox/Checkbox';
 import EnemyCheckbox from '../../components/UI/enemyCheckbox/EnemyCheckbox';
 import SanctionCheckbox from '../../components/UI/sanctionsCheckbox/SanctionCheckbox';
 import Metric from '../../components/metric/Metric';
-import axios from 'axios';
 import PartitionTitle from '../../components/patitionTitle/PartitionTitle';
 import Counter from '../../components/counter/Counter';
-import Printer from '../../components/Printer/printer';
+import Printer from '../../components/Printer/Printer';
 import BarChart from '../../components/UI/charts/BarChart';
-import { Chart as ChartJS, registerables } from 'chart.js';
-import { Chart } from 'react-chartjs-2'
+import GrowthChart from '../../components/UI/charts/GrowthChart';
+
 
 import bomb from "../../assets/rocket-counter.svg"
 import ButtonBottom from "./../../assets/button-fire.png"
@@ -28,21 +30,22 @@ interface CountryProps{
 const Country: FC<CountryProps> = ({forAdmin}) => {
 
     const form = useAppSelector(state => state.form);
-    const isPresident = useAppSelector(state => state.status);
     let country = useAppSelector(state => state.country);
     if (forAdmin) country = forAdmin;
     const dispatch = useAppDispatch();
 
     const countriesPublic = useAppSelector(state => state.countriesPublic);
 
-    const getColorByValue = (value: number): string => {
-        if (value <= 35) {
-          return '#DD7474'; 
-        } else if (value > 35 && value < 70) {
-          return '#E1BC5C'; 
+    const getColorByValue = (value: number | null): string | null => {
+        if (value != null && value <= 35) {
+            return '#DD7474'; 
+        } else if (value != null && value > 35 && value < 70) {
+            return '#E1BC5C'; 
+        } else if (value != null && value >= 70){
+            return '#5ACA85'; 
         } else {
-          return '#5ACA85'; 
-        }
+            return null;
+        }      
     };
 
     const chartData = {
@@ -56,7 +59,19 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
         ],
     };
 
-    const clickHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const metricData = {
+        labels: countriesPublic.ecology.map( item =>  item.round),
+        datasets: [
+            {
+                label: 'Ecology',
+                data: countriesPublic.ecology.map( item => item.value),
+                backgroundColor: countriesPublic.ecology.map(item => getColorByValue(item.value)),
+                
+            }, 
+        ],
+    };
+
+     const clickHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
         console.log(form);
         e.preventDefault();
         postForm();
@@ -78,197 +93,105 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
         }
     }
 
-    const [pageState, setPageState] = useState({
-        zIndex: 1,
+    const [pageState, setPageState] = useState(1);
+    const [otherBookmarkColorStyle, setOtherBookmarkColorStyle] = useState([cl.bookmark__grey, cl.bookmark__other]);
+    const [yourBookmarkColorStyle, setYourBookmarkColorStyle] = useState([cl.bookmark, cl.bookmark__your]);
+    const [pagesColors, setPagesColors] = useState({
+        other: "#C1C1C1",
+        your: "#fff"
     });
 
-    // const [colors, setColors] = useState({
-    //     your: "#fff",
-    //     other: "#C1C1C1",
-    // });
+    function otherMain(){
+        if(pageState != 3){
+            setPageState(3);
+            setOtherBookmarkColorStyle([cl.bookmark__other, cl.bookmark ]);
+            setYourBookmarkColorStyle([cl.bookmark__your, cl.bookmark__grey ]);
+            setPagesColors({other: "#fff", your: "#C1C1C1"});
+        }
+    }
 
+    function yourMain(){
+        if(pageState != 1){
+            setPageState(1);
+            setOtherBookmarkColorStyle([cl.bookmark__other, cl.bookmark__grey ]);
+            setYourBookmarkColorStyle([cl.bookmark__your, cl.bookmark ]);
+            setPagesColors({other: "#C1C1C1", your: "#fff"}); 
+        }
+    }
 
+    const [buttonPosition, setButtonPosition] = useState({transform: "translateX(-100vw)", transition: ".4s"})
 
+    useEffect(() => {
+        if(country.rockets > form.rockets) setButtonPosition({transform: "translateX(0px)", transition: ".4s"});
+        else setButtonPosition({transform: "translateX(-100vw)", transition: ".4s"});   
+    }, [form.rockets]);    
+    
     return (
         <div className={cl.country}>
             <div className={cl.container}>
-                <div className={cl.country__table}>
-                    <section className={cl.country__print}>
-                        <Printer />
-                        <div id={cl.pen}>
-                            <img src={Pen} />
-                        </div>
-                        <button id={cl.fire__button} onClick={clickHandler} type="submit">
-                            <img src={ButtonBottom} alt="" />
-                            <img className={cl.fire__top} src={FireTop}></img>
-                        </button>
-                    </section>
-                    { isPresident.isPresident ? (
-                        <section className={cl.country__documents}>
-                            <section style={pageState} className={cl.country__other}>
-                                <div className={[cl.bookmark__grey, cl.bookmark__other].join(" ")}> 
-                                    <div onClick={() => setPageState({zIndex: 3})} className={cl.bookmark__text}>
-                                        Other countries
-                                    </div>
+                <div className={cl.country__table}>  
+                    { country.is_president ? (             
+                        <section className={cl.country__print}>
+                            <div>
+                                <Printer />
+                                <div id={cl.pen}>
+                                    <img src={Pen} />
                                 </div>
-                                <section>
-                                    {forAdmin ? (
-                                        <div></div>  
-                                    ) : (
-                                        <BarChart data={chartData}/>   
-                                    )}
-                                    <div className={cl.countires__information}>
-                                        {countriesPublic.countries.map( (country, index) => 
-                                            <div key={country.country}>
-                                                <div>
-                                                    <h3>{country.country}</h3>
-                                                </div>
-                                                <div>
-                                                    { country.cities.map((city, index) => 
-                                                    city.state ? (
-                                                        <p key={city.city_name}>{city.city_name}: {city.live_level}%</p>
-                                                    ) : (
-                                                        <p key={city.city_name}>{city.city_name}: <img className={cl.city__destoyed} src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Cross_red_circle.svg/800px-Cross_red_circle.svg.png" alt="cross" /></p> 
-                                                    )
-                                                    )}
-                                                </div>
-                                            </div>
-                                        )}
-                                    </div>
-                                </section>
-                            </section>
-                            <section className={cl.country__your}>
-                                <div className={[cl.bookmark, cl.bookmark__your].join(" ")}> 
-                                    <div onClick={() => setPageState({zIndex: 1})} className={cl.bookmark__text}>
-                                        Your country
-                                    </div>
+                            </div>                     
+                            <button style={buttonPosition} id={cl.fire__button} onClick={clickHandler} type="submit">
+                                <img src={ButtonBottom} alt="button fire" />
+                                <img className={cl.fire__top} src={FireTop}></img>
+                            </button>                                                                  
+                        </section>  
+                    ):(
+                        <div></div>
+                    )}
+                    { country.is_president ? (
+                    <section className={cl.country__documents}>
+                        <section style={{background: pagesColors.other, zIndex: pageState }}  className={cl.country__other}>
+                            <div className={otherBookmarkColorStyle.join(" ")}> 
+                                <div onClick={otherMain} className={cl.bookmark__text}>
+                                    Other countries
                                 </div>
-                                <section className={cl.country__info}>
-                                    <div className={cl.country__title}>
-                                        <img className={cl.country__flag} src={country.flag_photo} />
-                                        <h2 className={cl.country__name}>{country.country}</h2>
-                                    </div>
-                                    <div className={cl.country__metrics}>
-                                        <Metric indicator={"Average live level"} index={country.average_live_level} unit={"%"} />
-                                        <Metric indicator={"Ecology"} index={country.ecology} unit={"%"}/>
-                                        <Metric indicator={"Budget"} index={form.budget} unit={"$"} width={"65px"}/>
+                            </div>
+                            <section>
+                                {forAdmin ? (
+                                    <div></div>  
+                                ) : (
+                                    <div>
+                                        <GrowthChart data={metricData}/> 
+                                        <BarChart data={chartData}/>  
                                     </div> 
-                                </section>
-                                <span className={cl.hr_big}></span>
-                                <section>
-                                    <form action="#" >
-                                        <section className={cl.cities__information}>
-                                            {country.cities.map((item, index) => 
-                                                <City 
-                                                    budget={form.budget}
-                                                    key={index} 
-                                                    city={item} 
-                                                    id={index}
-                                                    isPresident={isPresident}
-                                                />                     
-                                            )}
-                                        </section>
-                                        <span className={cl.hr_big}></span>
-                                        <section className={cl.section__columns}>
-                                            <div className={cl.section__column}>
-                                                <PartitionTitle  title="Nuclear technology" text="Это подсказка для примера"/>
-                                                <Checkbox 
-                                                    formState={form.nuclear_technology}
-                                                    price={500}
-                                                    budget={form.budget}
-                                                    toggleStatus={() => dispatch(toggleNuclearStatus({ status: form.nuclear_technology, price: 500}))} 
-                                                    checked={country.nuclear_technology}
-                                                >Develop nuclear program (500$)</Checkbox>
-                                                <div style={{marginTop: "10px"}}></div>
-                                                <PartitionTitle title="Order nuclear rockets" text="Это подсказка для примера"/>
-                                                <Counter/>                  
-                                            </div>
-                                            <div className={cl.section__column}>
-                                                <PartitionTitle  title="Ecology" text="Это подсказка для примера"/>
-                                                <Checkbox 
-                                                    formState={form.ecology}
-                                                    price={200}
-                                                    budget={form.budget}
-                                                    toggleStatus={() => dispatch(toggleEcologyDevelop({status: form.ecology, price: 200}))}
-                                                >Develop ecology (200$)</Checkbox>
-                                            </div>
-                                        </section >
-                                        <span className={cl.hr_big}></span>
-                                        <section className={cl.section__columns}>
+                                )}
+                                <div className={cl.countries__information}>
+                                    {countriesPublic.countries.map( (country, index) => 
+                                        <div key={country.country}>
                                             <div>
-                                                <PartitionTitle  title="Order to attack" text="Это подсказка для примера"/>
-                                                <div className={cl.rocket__counter}>
-                                                    <span className={cl.country__bomb}> {form.rockets}/{country.rockets} </span>
-                                                    <img src={bomb}/>
-                                                </div>
-                                                
+                                                <h3 className={cl.countries__name}>{country.country}</h3>
                                             </div>
-                                            <div className={cl.enemies}>
-                                            { form.enemies.map((enemy, index) => 
-                                                <div className={cl.enemy}>
-                                                    <p className={cl.enemy__country}>{enemy.country}</p>
-                                                    <div>
-                                                        {enemy.cities.map((city, id) => 
-                                                            <EnemyCheckbox 
-                                                                formState={form.enemies[index].cities[id].is_attacked}
-                                                                indexCol={index}
-                                                                id={id}
-                                                                key={city.city_name} 
-                                                                stateCity={country.enemies[index].cities[id].state}
-                                                                bombs={form.rockets}
-                                                                toggleStatus={() => dispatch(toggleEnemyCheckbox({index: index, id: id}))}
-                                                            >{city.city_name}</EnemyCheckbox>
-                                                        )}
-                                                    </div>
-                                                </div>
-                                            )}
+                                            <div>
+                                                { country.cities.map((city, index) => 
+                                                city.state ? (
+                                                    <p className={cl.countries__city} key={city.city_name}>{city.city_name}: {city.live_level}%</p>
+                                                ) : (
+                                                    <p className={cl.countries__city} key={city.city_name}>
+                                                        {city.city_name}: <img className={cl.city__destoyed} src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Cross_red_circle.svg/800px-Cross_red_circle.svg.png" alt="cross" />
+                                                    </p> 
+                                                )
+                                                )}
                                             </div>
-                                        </section>
-                                        <span className={cl.hr_big}></span>
-                                        <section>
-                                            <div className={cl.country__sanctions}>
-                                                <div className={cl.country__sanction}>
-                                                    <PartitionTitle  title="Introduction of sanctions" text="Это подсказка для примера"/>
-                                                    { form.enemies.map((enemy, index) => 
-                                                        <SanctionCheckbox 
-                                                        key={index}
-                                                        checked={enemy.sanctions}
-                                                        toggleStatus={() => dispatch(toggleSanctionCheckbox({status: form.enemies[index].sanctions, index: index}))}
-                                                        >{enemy.country}</SanctionCheckbox> 
-                                                    )}
-                                                </div>
-                                                <div className={cl.country__sanction}>
-                                                    <PartitionTitle  title="Relations with other countries" text="Это подсказка для примера"/>
-                                                    {form.enemies.map((enemy, index) => 
-                                                        enemy.sanctinosFrom ? (
-                                                            <p className={cl.relationship} key={enemy.country}>{enemy.country}: Sanctions have been announced...</p>
-                                                        ) : (
-                                                            <p className={cl.relationship} key={enemy.country}>{enemy.country}: Good relationship...</p> 
-                                                        )
-                                                    )}
-                                                </div>
-                                            </div>
-                                        </section>
-                                        <section className={cl.section__columns}>
-                                            <div className={cl.country__position}>
-                                                <p className={cl.position__text}>The President of the<br/> Republic of Belarus </p>
-                                            </div>
-                                            <div className={cl.country__button}>
-                                                <button className={cl.button} onClick={clickHandler} type="submit">
-                                                    { country.rockets > form.rockets ? (
-                                                        <div className={cl.stamp__grey_red}></div>
-                                                    ) : (
-                                                        <div className={cl.stamp__grey_blue}></div>
-                                                    )}
-                                                </button>
-                                            </div>
-                                        </section> 
-                                    </form>
-                                </section>
+                                        </div>
+                                    )}
+                                </div>
+                
                             </section>
                         </section>
-                    ):( // For simple users
-                        <section className={cl.country__your}>
+                        <section style={{background: pagesColors.your}} className={cl.country__your}>
+                            <div className={yourBookmarkColorStyle.join(" ")}> 
+                                <div onClick={yourMain} className={cl.bookmark__text}>
+                                    Your country
+                                </div>
+                            </div>
                             <section className={cl.country__info}>
                                 <div className={cl.country__title}>
                                     <img className={cl.country__flag} src={country.flag_photo} />
@@ -277,12 +200,12 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
                                 <div className={cl.country__metrics}>
                                     <Metric indicator={"Average live level"} index={country.average_live_level} unit={"%"} />
                                     <Metric indicator={"Ecology"} index={country.ecology} unit={"%"}/>
-                                    <Metric indicator={"Budget"} index={form.budget} unit={"$"}/>
+                                    <Metric indicator={"Budget"} index={form.budget} unit={"$"} width={"65px"}/>
                                 </div> 
                             </section>
                             <span className={cl.hr_big}></span>
                             <section>
-                                <form action="#" >
+                                <form action="#">
                                     <section className={cl.cities__information}>
                                         {country.cities.map((item, index) => 
                                             <City 
@@ -290,7 +213,7 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
                                                 key={index} 
                                                 city={item} 
                                                 id={index}
-                                                isPresident={isPresident}
+                                                isPresident={country.is_president}
                                             />                     
                                         )}
                                     </section>
@@ -298,14 +221,27 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
                                     <section className={cl.section__columns}>
                                         <div className={cl.section__column}>
                                             <PartitionTitle  title="Nuclear technology" text="Это подсказка для примера"/>
-                                            <p className={cl.paragraph}>Develop nuclear program (500$)</p>
-                                            <p className={cl.paragraph}>Nuclear rocket (150$) </p>                
+                                            <Checkbox 
+                                                formState={form.nuclear_technology}
+                                                price={500}
+                                                budget={form.budget}
+                                                toggleStatus={() => dispatch(toggleNuclearStatus({ status: form.nuclear_technology, price: 500}))} 
+                                                checked={country.nuclear_technology}
+                                            >Develop nuclear program (500$)</Checkbox>
+                                            <div style={{marginTop: "10px"}}></div>
+                                            <PartitionTitle title="Order nuclear rockets" text="Это подсказка для примера"/>
+                                            <Counter/>                  
                                         </div>
                                         <div className={cl.section__column}>
                                             <PartitionTitle  title="Ecology" text="Это подсказка для примера"/>
-                                            <p className={cl.paragraph}>Develop ecology (200$)</p>
+                                            <Checkbox 
+                                                formState={form.ecology}
+                                                price={200}
+                                                budget={form.budget}
+                                                toggleStatus={() => dispatch(toggleEcologyDevelop({status: form.ecology, price: 200}))}
+                                            >Develop ecology (200$)</Checkbox>
                                         </div>
-                                    </section>
+                                    </section >
                                     <span className={cl.hr_big}></span>
                                     <section className={cl.section__columns}>
                                         <div>
@@ -314,6 +250,7 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
                                                 <span className={cl.country__bomb}> {form.rockets}/{country.rockets} </span>
                                                 <img src={bomb}/>
                                             </div>
+                                            
                                         </div>
                                         <div className={cl.enemies}>
                                         { form.enemies.map((enemy, index) => 
@@ -322,7 +259,7 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
                                                 <div>
                                                     {enemy.cities.map((city, id) => 
                                                         <EnemyCheckbox 
-                                                            formState={form.enemies[index].cities[id].state}
+                                                            formState={form.enemies[index].cities[id].is_attacked}
                                                             indexCol={index}
                                                             id={id}
                                                             key={city.city_name} 
@@ -361,9 +298,171 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
                                             </div>
                                         </div>
                                     </section>
+                                    <section className={cl.section__columns}>
+                                        <div className={cl.country__position}>
+                                            <p className={cl.position__text}>The President of the<br/> Republic of Belarus </p>
+                                        </div>
+                                        <div className={cl.country__button}>
+                                            <button className={cl.button} onClick={clickHandler} type="submit">
+                                                { country.rockets > form.rockets ? (
+                                                    <div className={cl.stamp__grey_red}></div>
+                                                ) : (
+                                                    <div className={cl.stamp__grey_blue}></div>
+                                                )}
+                                            </button>
+                                        </div>
+                                    </section> 
                                 </form>
                             </section>
-                        </section>                       
+                        </section>
+                    </section>
+                    ):( // For simple users
+                    <section style={{marginLeft: "19%"}} className={cl.country__documents}>
+                        <section style={{background: pagesColors.other, zIndex: pageState }}  className={cl.country__other}>
+                            <div className={otherBookmarkColorStyle.join(" ")}> 
+                                <div onClick={otherMain} className={cl.bookmark__text}>
+                                    Other countries
+                                </div>
+                            </div>
+                            <section>
+                                {forAdmin ? (
+                                    <div></div>  
+                                ) : (
+                                    <div>
+                                        <GrowthChart data={metricData}/> 
+                                        <BarChart data={chartData}/>  
+                                    </div> 
+                                )}
+                                <div className={cl.countries__information}>
+                                    {countriesPublic.countries.map( (country, index) => 
+                                        <div key={country.country}>
+                                            <div>
+                                                <h3 className={cl.countries__name}>{country.country}</h3>
+                                            </div>
+                                            <div>
+                                                { country.cities.map((city, index) => 
+                                                city.state ? (
+                                                    <p className={cl.countries__city} key={city.city_name}>{city.city_name}: {city.live_level}%</p>
+                                                ) : (
+                                                    <p className={cl.countries__city} key={city.city_name}>
+                                                        {city.city_name}: <img className={cl.city__destoyed} src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Cross_red_circle.svg/800px-Cross_red_circle.svg.png" alt="cross" />
+                                                    </p> 
+                                                )
+                                                )}
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+                
+                            </section>
+                        </section>
+                        <section style={{background: pagesColors.your}} className={cl.country__your}>
+                            <div className={yourBookmarkColorStyle.join(" ")}> 
+                                <div onClick={yourMain} className={cl.bookmark__text}>
+                                    Your country
+                                </div>
+                            </div>
+                            <section className={cl.country__info}>
+                                <div className={cl.country__title}>
+                                    <img className={cl.country__flag} src={country.flag_photo} />
+                                    <h2 className={cl.country__name}>{country.country}</h2>
+                                </div>
+                                <div className={cl.country__metrics}>
+                                    <Metric indicator={"Average live level"} index={country.average_live_level} unit={"%"} />
+                                    <Metric indicator={"Ecology"} index={country.ecology} unit={"%"}/>
+                                    <Metric indicator={"Budget"} index={form.budget} unit={"$"} width={"65px"}/>
+                                </div> 
+                            </section>
+                            <span className={cl.hr_big}></span>
+                            <section>
+                                <form action="#" >
+                                    <section className={cl.cities__information}>
+                                        {country.cities.map((item, index) => 
+                                            <City 
+                                                budget={form.budget}
+                                                key={index} 
+                                                city={item} 
+                                                id={index}
+                                                isPresident={country.is_president}
+                                            />                     
+                                        )}
+                                    </section>
+                                    <span className={cl.hr_big}></span>
+                                    <section className={cl.section__columns}>
+                                        <div className={cl.section__column}>
+                                            <PartitionTitle  title="Nuclear technology" text="Это подсказка для примера"/>
+                                            <p className={cl.only__price}>Develop nuclear program (500$)</p>              
+                                        </div>
+                                        <div className={cl.section__column}>
+                                            <PartitionTitle  title="Ecology" text="Это подсказка для примера"/>
+                                            <p className={cl.only__price}>Develop ecology (200$)</p>
+                                        </div>
+                                    </section>
+                                    <span className={cl.hr_big}></span>
+                                    <section className={cl.section__columns}>
+                                        <div>
+                                            <PartitionTitle  title="Order to attack" text="Это подсказка для примера"/>
+                                            <div className={cl.rocket__counter}>
+                                                <span className={cl.country__bomb}> {form.rockets}/{country.rockets} </span>
+                                                <img src={bomb}/>
+                                            </div>
+                                            
+                                        </div>
+                                        <div className={cl.enemies}>
+                                        { form.enemies.map((enemy, index) => 
+                                            <div className={cl.enemy}>
+                                                <p className={cl.enemy__country}>{enemy.country}</p>
+                                                <div>
+                                                    {enemy.cities.map((city, id) => 
+                                                        <EnemyCheckbox 
+                                                            formState={form.enemies[index].cities[id].is_attacked}
+                                                            indexCol={index}
+                                                            id={id}
+                                                            key={city.city_name} 
+                                                            stateCity={country.enemies[index].cities[id].state}
+                                                            bombs={form.rockets}
+                                                            toggleStatus={() => dispatch(toggleEnemyCheckbox({index: index, id: id}))}
+                                                        >{city.city_name}</EnemyCheckbox>
+                                                    )}
+                                                </div>
+                                            </div>
+                                        )}
+                                        </div>
+                                    </section>
+                                    <span className={cl.hr_big}></span>
+                                    <section>
+                                        <div className={cl.country__sanctions}>
+                                            <div className={cl.country__sanction}>
+                                                <PartitionTitle  title="Introduction of sanctions" text="Это подсказка для примера"/>
+                                                { form.enemies.map((enemy, index) => 
+                                                    <SanctionCheckbox 
+                                                    key={index}
+                                                    checked={enemy.sanctions}
+                                                    toggleStatus={() => dispatch(toggleSanctionCheckbox({status: form.enemies[index].sanctions, index: index}))}
+                                                    >{enemy.country}</SanctionCheckbox> 
+                                                )}
+                                            </div>
+                                            <div className={cl.country__sanction}>
+                                                <PartitionTitle  title="Relations with other countries" text="Это подсказка для примера"/>
+                                                {form.enemies.map((enemy, index) => 
+                                                    enemy.sanctinosFrom ? (
+                                                        <p className={cl.relationship} key={enemy.country}>{enemy.country}: Sanctions have been announced...</p>
+                                                    ) : (
+                                                        <p className={cl.relationship} key={enemy.country}>{enemy.country}: Good relationship...</p> 
+                                                    )
+                                                )}
+                                            </div>
+                                        </div>
+                                    </section>
+                                    <section style={{marginTop: "100px"}} className={cl.section__columns}>
+                                        <div className={cl.country__position}>
+                                            <p className={cl.position__text}>The Minister</p>
+                                        </div>
+                                    </section> 
+                                </form>
+                            </section>
+                        </section>
+                    </section>                       
                     )}
                 </div>
             </div>

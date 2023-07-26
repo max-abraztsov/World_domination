@@ -2,6 +2,7 @@
 *{
     margin: 0;
     padding: 0;
+    font-family: sans-serif;
 } 
 
 .country{
@@ -66,6 +67,16 @@
     display: inline-block;
     width: 200px;
     height: 33px;
+}
+
+.only__price{
+    margin-top: 6px;
+    color: #343333;
+    font-family: Arimo;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 98.5%;
 }
 
 .bookmark__your{ 
@@ -155,6 +166,10 @@
     display:flex;
     justify-content: space-between;
 }
+
+
+
+
 .cities__info > div:nth-child(4){
     margin-right: 0;
 }
@@ -185,6 +200,7 @@
     position: relative;
     top: 0;
     left: 0;
+    transition: .4s cubic-bezier(0.075, 0.82, 0.18, 1);
 }
 .fire__top{
     position: absolute;
@@ -206,9 +222,8 @@
 /* Pen ------------------------------------------ */
 
 #pen{
-   transform: translateX(40px) rotate(-15deg);
+    transform: translateX(40px) translateY(65px) rotate(-15deg);
 }
-
 
 /* ---------------------------------------------- */
 
@@ -313,12 +328,6 @@
 
 /* ------------------------------------------------ */
 
-
-/* .country__dev_col h3{
-    display: inline-block;
-    margin-bottom: 8px;
-    font-size: 22px;
-} */
 .country__sanctions{
     display: flex;
     justify-content: space-between;
@@ -376,7 +385,7 @@
     font-size: 60px;
     font-style: normal;
     font-weight: 400;
-    line-height: 98.5%; /* 29.55px */
+    line-height: 98.5%;
 }
 
 .relationship{
@@ -391,12 +400,35 @@
 
 .city__destoyed{
     position: relative;
-    top: 2px;
-    left: 0; 
+    top: 0;
+    left: 2px; 
     width: 15px;
     height: 15px;
 }
-.countires__information{
+.countries__information{
     display: flex;
     justify-content: space-around;
+}
+
+.countries__information p{
+    color: #343333;
+    font-family: Arimo;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 98.5%;
+    height: 20px;
+}
+
+.countries__city{
+    display: flex;
+    align-items: center;
+}
+
+.countries__name{
+    font-family: Bebas Neue;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 98.5%; 
 }

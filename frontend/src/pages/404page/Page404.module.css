@@ -1,0 +1,22 @@
+.nomatch{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #FFB6A8;
+    width: 100vw;
+    height: calc(100vh - 100px);
+}
+
+.nomatch__error{
+    display: block;
+    margin-right: 20px;
+    font-family: Bebas Neue, sans-serif;
+    font-size: 180px;
+    color: #db4e47;
+}
+
+.nomatch__message{
+    font-family: Bebas Neue, sans-serif;
+    font-size: 56px;
+    color: #db4e47;
+}

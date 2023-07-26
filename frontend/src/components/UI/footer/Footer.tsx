@@ -22,7 +22,7 @@ const Footer: FC = () => {
                             <Link className={cl.footer_link} to="/">Home</Link>
                             <Link className={cl.footer_link} to="/country">Your country</Link>
                             <Link className={cl.footer_link} to="/login">Sign in</Link>
-                            <Link className={cl.footer_link} to="/wd-admin">Admin</Link>
+                            {/* <Link className={cl.footer_link} to="/wd-admin">Admin</Link> */}
                         </ul> 
                         <div className={cl.footer_kontakt}>
                             <p><span>Kontakt</span><br/>
@@ -31,21 +31,21 @@ const Footer: FC = () => {
                         </div>
                     </div>
                     <div className={cl.footer_socials}>
-                        <div className={cl.footer_social}>
+                        <a className={cl.footer_social}>
                             <p>@world.domination</p><img src={instagram}/>
-                        </div>
-                        <div className={cl.footer_social}>
+                        </a>
+                        <a className={cl.footer_social}>
                             <p>@world.domination</p><img src={facebook}/>
-                        </div>
-                        <div className={cl.footer_social}>
+                        </a>
+                        <a className={cl.footer_social}>
                             <p>@world.domination</p><img src={discord}/>
-                        </div>
-                        <div className={cl.footer_social}>
+                        </a>
+                        <a className={cl.footer_social}>
                             <p>@world.domination</p><img src={telegram}/>
-                        </div>
-                        <div className={cl.footer_social}>
+                        </a>
+                        <a className={cl.footer_social}>
                             <p>@world.domination</p><img src={tiktok}/>
-                        </div>
+                        </a>
                     </div>
                 </div>
                 <div className={cl.copyright}>

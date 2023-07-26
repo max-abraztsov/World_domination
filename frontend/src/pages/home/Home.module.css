@@ -13,6 +13,7 @@ main{
     justify-content: center;
     background-image: url(./../../assets/main-background-image.jpg);
     background-size: cover;
+    background-position: 50% 50%;
     background-repeat: no-repeat;
     background-attachment: fixed;
     width: 100%;
@@ -33,7 +34,7 @@ main{
    display: flex;
    justify-content: space-between;
    align-items: center;
-   height: 120vh;
+   height: 100vh;
 }
 
 .main_buttons{
@@ -116,6 +117,90 @@ main{
 
 .main_social{
     margin-bottom: 44px;
+}
+
+@media (max-width: 1024px){
+    .main_information h3{
+        font-size: 26px;
+    }
+    .main_information p{
+        padding: 0 0 26px 0;
+        max-width: 400px;
+        font-size: 16px;
+    }
+    .main_information h1{
+        font-size: 80px;
+    }
+    .main_social{
+        margin-bottom: 20px;  
+    }
+    .main_social img{
+        width: 24px;   
+    }
+    .main_button a{       
+        font-size: 16px;       
+        padding: 16px 40px;
+    }
+    .main_button__red a{
+        font-size: 16px;       
+        padding: 16px 40px;
+    }
+}
+
+@media (max-width: 768px){
+    .main_information h3{
+        font-size: 24px;
+    }
+    .main_information p{
+        padding: 0 0 26px 0;
+        max-width: 400px;
+        font-size: 16px;
+    }
+    .main_information h1{
+        font-size: 70px;
+    }
+    .main_socials{
+        display: flex;
+        flex-direction: row;
+        justify-self:flex-end;
+        position: absolute;
+        bottom: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    .main_social{
+        margin-bottom: 20px;  
+        margin: 0 10px;
+    }
+    .main_social img{
+        width: 24px;   
+    }
+    .main_buttons{
+        flex-direction: column;
+    }
+    .main_button{
+        max-width: max-content;
+        margin-bottom: 20px;
+    }
+    .main_button__red{
+        max-width: max-content; 
+    }
+    .main_button a{       
+        font-size: 16px;       
+        padding: 16px 40px;   
+    }
+    .main_button__red a{
+        font-size: 16px;       
+        padding: 16px 40px;
+    }
+    .main_screen{
+        display: flex;
+        position: relative;
+        flex-direction: column;
+        justify-content: center;
+        align-items: normal;
+        height: 100vh;
+    }
 }
 
 .game_information{
@@ -239,4 +324,82 @@ main{
     font-style: normal;
     font-weight: 700;
     line-height: normal;
+}
+
+@media (max-width: 1024px){
+    .game_general__items{
+        margin: 20px 0;
+    }
+    .game_general__item{
+        padding: 15px 0;
+    }
+    .game_general__item_red{
+        padding: 15px 0;
+    }
+    .game_general__text{ 
+        font-size: 18px;   
+    }
+    .game_general__text span{
+        font-size: 26px;
+    }
+    .game_information__text {
+        font-size: 16px;   
+    }
+    .game_information__grafic h2{
+        font-size: 40px;
+    }
+    .game_join{
+        margin-top: 30px;
+        max-width: 215px;
+        padding: 15px 40px;
+    }
+    .game_join a{
+        font-size: 20px;
+    }
+    .game_information__image img{
+        max-width: 150px
+    }
+}
+
+@media (max-width: 650px){
+    .game_general__items{
+        margin: 20px 0;
+        flex-direction: column;
+    }
+    .game_general__item{
+        padding: 6px 0;
+        width: 95%;
+        margin-bottom: 15px;
+        max-width: 100%;
+    }
+    .game_general__item_red{
+        padding: 6px 0;
+        width: 95%;
+        margin-bottom: 15px; 
+    }
+    .game_general__text{ 
+        font-size: 16px;   
+    }
+    .game_general__text span{
+        font-size: 20px;
+    }
+    .game_about{
+        display: flex;
+        flex-direction: column;
+        margin: 50px 0px;
+    }
+    .game_information__grafic{
+        width: 95%;
+    }
+    .game_information__text {
+        font-size: 16px;  
+        width: 95%; 
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        align-items:center;
+    }
+    .game_information__grafic h2{
+        font-size: 40px;
+    }
 }
