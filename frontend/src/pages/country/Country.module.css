@@ -166,20 +166,14 @@
     display:flex;
     justify-content: space-between;
 }
-
-
-
-
 .cities__info > div:nth-child(4){
     margin-right: 0;
 }
-
 .country__table{
     display: flex;
     margin-top: 100px;
     margin-bottom: 100px;
 }
-
 .country__print{
     width: 35%;
     display: flex;
@@ -194,7 +188,7 @@
 }
 
 /* Fire Button ---------------------------------- */
-#fire__button{
+.fire__button{
     border: none;
     background-color:transparent;
     position: relative;
@@ -213,16 +207,18 @@
     top:calc(50% - 27px);  
     transition: .2s cubic-bezier(0.6, -0.28, 0.735, 0.045);
 }
-#fire__button:active .fire__top{
+.fire__button:active .fire__top{
     top:calc(50% - 16px);  
     transition: .2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 /* ---------------------------------------------- */
+
+
 /* Pen ------------------------------------------ */
 
 #pen{
-    transform: translateX(40px) translateY(65px) rotate(-15deg);
+    transform: translateY(65px) rotate(-27deg);
 }
 
 /* ---------------------------------------------- */
@@ -236,7 +232,6 @@
     line-height: 98.5%;
     margin: 5px 0;
 }
-
 
 .country__enemies{
     display: flex;
@@ -420,6 +415,10 @@
     height: 20px;
 }
 
+.countries__cities{
+
+}
+
 .countries__city{
     display: flex;
     align-items: center;
@@ -432,3 +431,141 @@
     font-weight: 400;
     line-height: 98.5%; 
 }
+
+.mobile__button{
+    display: none;
+}
+
+@media (max-width: 1060px){
+    .country__table{
+        flex-direction: column;
+    }
+    #pen{
+        display: none;
+    }
+    .country__documents{
+        margin: 30px auto;
+        width: 100%;
+    }
+    .country__print .fire__button{
+        display: none;
+    }
+    .mobile__button{
+        display: block;
+    }
+    .mobile__button .fire__button{
+        width: 100%;
+        margin-top: 20px; 
+    }
+    .country__print{
+        width: 100%;
+    }
+    
+}
+
+@media (max-width: 768px){
+    .countries__information{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        margin-left: 15px;
+    }
+    .countries__country{
+        margin-top: 20px;
+        margin-left: 10px;
+    }
+    .stamp__grey_blue, .stamp__grey_red{
+        width: 120px;
+        height: 120px;
+        background-size: contain;
+    }
+    .country__other{ 
+        right: 12px;
+        max-width: 713px;
+    }
+    .enemies{
+        flex-wrap: wrap;
+        justify-content: flex-start;
+    }
+}
+
+@media (max-width: 688px){
+    .section__columns{
+        flex-direction: column;
+    }
+    .enemy{
+        margin-left: 0px;
+        margin-right: 20px;
+    }
+    .enemies{
+       margin-top: 10px;
+    }
+    .country__sanctions{
+        flex-direction: column;
+    }
+    .country__sanction{
+        margin-bottom: 15px;
+    }
+    .section__columns_row{
+        flex-direction: row;
+    }
+    .country__title{
+        width: 20%;
+    }
+    .country__flag{
+        border-radius: 3px;
+        width: 58px;
+        height: 36px;
+        margin-right: 10px;
+    }
+    .country__name{
+        font-size: 28px;
+    }
+    .cities__information{
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    .country__your{
+        padding: 10px 10px;
+        width: 100%;
+    }
+    .country__other{ 
+        max-width: 623px;
+        padding: 10px 15px;
+    }
+    .countries__country{
+        width: 50%;
+        margin-left: 0;
+    }
+    .country__documents{
+        padding: 6px 0;
+    }
+}
+
+@media (max-width: 560px){
+    .country__info{
+        flex-direction: column;
+        justify-content: center;
+    }
+    .country__metrics{
+        width: 100%;
+        justify-content: space-between;
+        margin-top: 10px;
+    }
+    .bookmark, .bookmark__grey {
+        width: 160px;
+    }
+    .country__other{ 
+        right: 0px; 
+    }
+}
+
+
+
+
+
+
+
+
+
+

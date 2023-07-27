@@ -1,8 +1,11 @@
 .partition__title_block{
     display: flex;
     align-items: center;
+    flex-shrink: 0;
 }
 .partition__title{
+    display: inline-block;
+    width: maxcontent;
     color: #343333;
     font-family: Bebas Neue;
     font-size: 20px;

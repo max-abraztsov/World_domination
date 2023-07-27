@@ -138,7 +138,7 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
                                     <img src={Pen} />
                                 </div>
                             </div>                     
-                            <button style={buttonPosition} id={cl.fire__button} onClick={clickHandler} type="submit">
+                            <button style={buttonPosition} className={cl.fire__button} onClick={clickHandler} type="submit">
                                 <img src={ButtonBottom} alt="button fire" />
                                 <img className={cl.fire__top} src={FireTop}></img>
                             </button>                                                                  
@@ -165,11 +165,11 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
                                 )}
                                 <div className={cl.countries__information}>
                                     {countriesPublic.countries.map( (country, index) => 
-                                        <div key={country.country}>
-                                            <div>
+                                        <div className={cl.countries__country} key={country.country}>
+                                            <div> 
                                                 <h3 className={cl.countries__name}>{country.country}</h3>
                                             </div>
-                                            <div>
+                                            <div className={cl.countries__cities}>
                                                 { country.cities.map((city, index) => 
                                                 city.state ? (
                                                     <p className={cl.countries__city} key={city.city_name}>{city.city_name}: {city.live_level}%</p>
@@ -183,7 +183,6 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
                                         </div>
                                     )}
                                 </div>
-                
                             </section>
                         </section>
                         <section style={{background: pagesColors.your}} className={cl.country__your}>
@@ -212,7 +211,7 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
                                                 budget={form.budget}
                                                 key={index} 
                                                 city={item} 
-                                                id={index}
+                                                id={index} 
                                                 isPresident={country.is_president}
                                             />                     
                                         )}
@@ -230,7 +229,8 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
                                             >Develop nuclear program (500$)</Checkbox>
                                             <div style={{marginTop: "10px"}}></div>
                                             <PartitionTitle title="Order nuclear rockets" text="Это подсказка для примера"/>
-                                            <Counter/>                  
+                                            <Counter/> 
+                                            <div style={{marginTop: "10px"}}></div>                 
                                         </div>
                                         <div className={cl.section__column}>
                                             <PartitionTitle  title="Ecology" text="Это подсказка для примера"/>
@@ -250,7 +250,6 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
                                                 <span className={cl.country__bomb}> {form.rockets}/{country.rockets} </span>
                                                 <img src={bomb}/>
                                             </div>
-                                            
                                         </div>
                                         <div className={cl.enemies}>
                                         { form.enemies.map((enemy, index) => 
@@ -274,7 +273,7 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
                                         </div>
                                     </section>
                                     <span className={cl.hr_big}></span>
-                                    <section>
+                                    <section >
                                         <div className={cl.country__sanctions}>
                                             <div className={cl.country__sanction}>
                                                 <PartitionTitle  title="Introduction of sanctions" text="Это подсказка для примера"/>
@@ -298,7 +297,7 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
                                             </div>
                                         </div>
                                     </section>
-                                    <section className={cl.section__columns}>
+                                    <section className={[cl.section__columns, cl.section__columns_row].join(" ")}>
                                         <div className={cl.country__position}>
                                             <p className={cl.position__text}>The President of the<br/> Republic of Belarus </p>
                                         </div>
@@ -317,7 +316,7 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
                         </section>
                     </section>
                     ):( // For simple users
-                    <section style={{marginLeft: "19%"}} className={cl.country__documents}>
+                    <section style={{margin: "40px auto"}} className={cl.country__documents}>
                         <section style={{background: pagesColors.other, zIndex: pageState }}  className={cl.country__other}>
                             <div className={otherBookmarkColorStyle.join(" ")}> 
                                 <div onClick={otherMain} className={cl.bookmark__text}>
@@ -335,11 +334,11 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
                                 )}
                                 <div className={cl.countries__information}>
                                     {countriesPublic.countries.map( (country, index) => 
-                                        <div key={country.country}>
-                                            <div>
+                                        <div className={cl.countries__country} key={country.country}>
+                                            <div> 
                                                 <h3 className={cl.countries__name}>{country.country}</h3>
                                             </div>
-                                            <div>
+                                            <div className={cl.countries__cities}>
                                                 { country.cities.map((city, index) => 
                                                 city.state ? (
                                                     <p className={cl.countries__city} key={city.city_name}>{city.city_name}: {city.live_level}%</p>
@@ -463,6 +462,16 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
                             </section>
                         </section>
                     </section>                       
+                    )}
+                    {country.is_president ? (
+                        <div className={cl.mobile__button}>
+                            <button style={buttonPosition} className={cl.fire__button} onClick={clickHandler} type="submit">
+                            <img src={ButtonBottom} alt="button fire" />
+                            <img className={cl.fire__top} src={FireTop}></img>
+                        </button>
+                        </div>
+                    ) : (
+                        <div></div>
                     )}
                 </div>
             </div>
