@@ -31,7 +31,8 @@ INSTALLED_APPS = [
     'round',
     'donate',
     'rest_framework', 
-    'corsheaders', 
+    'corsheaders',
+    'channels', 
 ] 
  
 MIDDLEWARE = [ 

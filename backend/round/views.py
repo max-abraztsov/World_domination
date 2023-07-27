@@ -32,13 +32,35 @@ def calculations(request_data):
     Country = country.objects.get(CountryName=country_name)
     User = user.objects.get(country_id=Country.id)
     Ecology = ecology.objects.get(round=Country.Round)
-            
+
+    request_data_show = {
+        'logincode': User.entercode,
+        'password': User.password
+    }
+
+    cost = 0
+
+    '''
+    Cities = attacked_cities.objects.all()
+    for attack_city in Cities:
+        city_under_attack = city.objects.get(city_name=attack_city, state=True)
+        print(str(city_under_attack.city_name + "\nState: " + str(city_under_attack.state) + "\nShield: " + str(city_under_attack.shield)))
+        if city_under_attack.shield == False:
+            city_under_attack.state = False
+        if city_under_attack.shield == True:
+            city_under_attack.shield = False
+
+        city_under_attack.save()
+    attacked_cities.objects.all().delete()
+    '''
+
+
     #send request to the app "donate" ========================================================================
     '''
     if donate_data['from'] != '' and donate_data['to'] != '':
         donate_response = requests.post('http://127.0.0.1:8000/donate', json=donate_data)
         response_data = donate_response.json()
-        Country.Budget = response_data.get('budget')
+        cost = response_data.get('budget')
     '''
             
     #add to database(attacked_cities) all cities under attack =================================================
@@ -69,10 +91,18 @@ def calculations(request_data):
     for one_request_city in cities:
         City = city.objects.get(country_id=Country.id, state=True, city_name=one_request_city['city_name'])
         if one_request_city['shield'] == True and City.shield == False:
-            Country.Budget -= 300
+            cost += 300
+            if cost > Country.Budget:
+                response_data = requests.post('http://127.0.0.1:8000/login_page', json=request_data_show)
+                json_response_data = response_data.json()
+                return json_response_data
             City.shield = True
         if one_request_city['develop'] == True:
-            Country.Budget -= 150
+            cost += 150
+            if cost > Country.Budget:
+                response_data = requests.post('http://127.0.0.1:8000/login_page', json=request_data_show)
+                json_response_data = response_data.json()
+                return json_response_data
             City.progress += 8
             City.live_level = (Ecology.level * City.progress)/100
             City.profit = City.live_level*3
@@ -91,7 +121,11 @@ def calculations(request_data):
     #update ecology level ===================================================================================
     '''
     if ecology_dev == True:
-        Country.Budget -= 200
+        cost += 200
+        if cost > Country.Budget:
+            response_data = requests.post('http://127.0.0.1:8000/login_page', json=request_data_show)
+            json_response_data = response_data.json()
+            return json_response_data
         Ecology.level += 5
         Ecology.round = Country.Round
         if Ecology.level > 100:
@@ -103,11 +137,19 @@ def calculations(request_data):
     '''
     if(nuclear_technology == True):
         if nuclear_technology == True and Country.NuclearTechnology == False:
-            Country.Budget -= 500
+            cost += 500
+            if cost > Country.Budget:
+                response_data = requests.post('http://127.0.0.1:8000/login_page', json=request_data_show)
+                json_response_data = response_data.json()
+                return json_response_data
             Ecology.level -= 3
             Country.NuclearTechnology = nuclear_technology
         Country.NuclearRockets += nuclear_rockets
-        Country.Budget -= nuclear_rockets * 150
+        cost += nuclear_rockets * 150
+        if cost > Country.Budget:
+            response_data = requests.post('http://127.0.0.1:8000/login_page', json=request_data_show)
+            json_response_data = response_data.json()
+            return json_response_data
                 
     elif(nuclear_technology==False):
         Country.NuclearRockets = 0
@@ -121,17 +163,13 @@ def calculations(request_data):
     '''
             
     #Budget ==========================================================================================
-    #Country.Budget += Country.Earnings - 20 * len(Sanctions_array)
+    #Country.Budget += Country.Earnings - 20 * len(Sanctions_array) - cost
     #Country.Earnings = sum_profit
                 
     Country.save()
     Ecology.save()
 
-    request_data = {
-        'logincode': User.entercode,
-        'password': User.password
-    }
-    response_data = requests.post('http://127.0.0.1:8000/login_page', json=request_data)
+    response_data = requests.post('http://127.0.0.1:8000/login_page', json=request_data_show)
     json_response_data = response_data.json()
     return json_response_data
 
