@@ -219,7 +219,7 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
                                     <span className={cl.hr_big}></span>
                                     <section className={cl.section__columns}>
                                         <div className={cl.section__column}>
-                                            <PartitionTitle  title="Nuclear technology" text="Это подсказка для примера"/>
+                                            <PartitionTitle  title="Nuclear technology" text="Nuclear technology is needed to build rockets"/>
                                             <Checkbox 
                                                 formState={form.nuclear_technology}
                                                 price={500}
@@ -228,12 +228,12 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
                                                 checked={country.nuclear_technology}
                                             >Develop nuclear program (500$)</Checkbox>
                                             <div style={{marginTop: "10px"}}></div>
-                                            <PartitionTitle title="Order nuclear rockets" text="Это подсказка для примера"/>
+                                            <PartitionTitle title="Order nuclear rockets" text="The ordered rockets will not appear in the arsenal until next round"/>
                                             <Counter/> 
                                             <div style={{marginTop: "10px"}}></div>                 
                                         </div>
                                         <div className={cl.section__column}>
-                                            <PartitionTitle  title="Ecology" text="Это подсказка для примера"/>
+                                            <PartitionTitle  title="Ecology" text="Investing in the environment will help improve living standards not only in your country, but also on the planet"/>
                                             <Checkbox 
                                                 formState={form.ecology}
                                                 price={200}
@@ -245,7 +245,7 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
                                     <span className={cl.hr_big}></span>
                                     <section className={cl.section__columns}>
                                         <div>
-                                            <PartitionTitle  title="Order to attack" text="Это подсказка для примера"/>
+                                            <PartitionTitle  title="Order to attack" text="Select the cities you want to attack, but note that if there is a shield on the enemy city - the missile will only destroy the shield and the city will remain intact"/>
                                             <div className={cl.rocket__counter}>
                                                 <span className={cl.country__bomb}> {form.rockets}/{country.rockets} </span>
                                                 <img src={bomb}/>
@@ -276,7 +276,7 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
                                     <section >
                                         <div className={cl.country__sanctions}>
                                             <div className={cl.country__sanction}>
-                                                <PartitionTitle  title="Introduction of sanctions" text="Это подсказка для примера"/>
+                                                <PartitionTitle  title="Introduction of sanctions" text="Select the country to sanction. If sanctions are imposed, the country will lose part of its income. But note that this may affect relations with that country"/>
                                                 { form.enemies.map((enemy, index) => 
                                                     <SanctionCheckbox 
                                                     key={index}
@@ -286,7 +286,7 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
                                                 )}
                                             </div>
                                             <div className={cl.country__sanction}>
-                                                <PartitionTitle  title="Relations with other countries" text="Это подсказка для примера"/>
+                                                <PartitionTitle  title="Relations with other countries" text="This shows the attitude of other countries towards you"/>
                                                 {form.enemies.map((enemy, index) => 
                                                     enemy.sanctinosFrom ? (
                                                         <p className={cl.relationship} key={enemy.country}>{enemy.country}: Sanctions have been announced...</p>
@@ -389,18 +389,18 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
                                     <span className={cl.hr_big}></span>
                                     <section className={cl.section__columns}>
                                         <div className={cl.section__column}>
-                                            <PartitionTitle  title="Nuclear technology" text="Это подсказка для примера"/>
+                                            <PartitionTitle  title="Nuclear technology" text="Nuclear technology is needed to build rockets"/>
                                             <p className={cl.only__price}>Develop nuclear program (500$)</p>              
                                         </div>
                                         <div className={cl.section__column}>
-                                            <PartitionTitle  title="Ecology" text="Это подсказка для примера"/>
+                                            <PartitionTitle  title="Ecology" text="The ordered rockets will not appear in the arsenal until next round"/>
                                             <p className={cl.only__price}>Develop ecology (200$)</p>
                                         </div>
                                     </section>
                                     <span className={cl.hr_big}></span>
                                     <section className={cl.section__columns}>
                                         <div>
-                                            <PartitionTitle  title="Order to attack" text="Это подсказка для примера"/>
+                                            <PartitionTitle  title="Order to attack" text="Investing in the environment will help improve living standards not only in your country, but also on the planet"/>
                                             <div className={cl.rocket__counter}>
                                                 <span className={cl.country__bomb}> {form.rockets}/{country.rockets} </span>
                                                 <img src={bomb}/>
@@ -432,7 +432,7 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
                                     <section>
                                         <div className={cl.country__sanctions}>
                                             <div className={cl.country__sanction}>
-                                                <PartitionTitle  title="Introduction of sanctions" text="Это подсказка для примера"/>
+                                                <PartitionTitle  title="Introduction of sanctions" text="Select the country to sanction. If sanctions are imposed, the country will lose part of its income. But note that this may affect relations with that country"/>
                                                 { form.enemies.map((enemy, index) => 
                                                     <SanctionCheckbox 
                                                     key={index}
@@ -442,7 +442,7 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
                                                 )}
                                             </div>
                                             <div className={cl.country__sanction}>
-                                                <PartitionTitle  title="Relations with other countries" text="Это подсказка для примера"/>
+                                                <PartitionTitle  title="Relations with other countries" text="This shows the attitude of other countries towards you"/>
                                                 {form.enemies.map((enemy, index) => 
                                                     enemy.sanctinosFrom ? (
                                                         <p className={cl.relationship} key={enemy.country}>{enemy.country}: Sanctions have been announced...</p>

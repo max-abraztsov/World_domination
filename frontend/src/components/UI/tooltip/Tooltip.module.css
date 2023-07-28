@@ -5,8 +5,9 @@
   margin-left: 4px;
 }
   .tooltip__content {
+  width: 100px;
   position: absolute;
-  top: 20%;
+  top: 50%;
   left: 320%;
   transform: translateX(-50%);
   background-color: #343333;
