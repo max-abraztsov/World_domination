@@ -101,3 +101,16 @@
     font-weight: 400;
     line-height: 98.5%;
 }
+
+@media (max-width: 688px){
+    .city{
+       width: 50%;
+       margin: 5px;
+    }
+}
+@media (max-width: 406px){
+    .city{
+       max-width: 133px;
+       margin: 5px ;
+    }
+}
