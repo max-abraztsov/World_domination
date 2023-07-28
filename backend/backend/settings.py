@@ -31,8 +31,8 @@ INSTALLED_APPS = [
     'round',
     'donate',
     'rest_framework', 
-    'corsheaders',
-    'channels', 
+    'corsheaders', 
+    'attack',
 ] 
  
 MIDDLEWARE = [ 
@@ -78,6 +78,7 @@ TEMPLATES = [
 ] 
  
 WSGI_APPLICATION = 'backend.wsgi.application' 
+
  
  
 # Database 

@@ -13,3 +13,15 @@ class attacked_cities(models.Model):
 
     def __str__(self):
         return str(self.city_name)
+    
+class session(models.Model):
+    forms_count = models.IntegerField()
+    forms_max = models.IntegerField()
+
+    class Meta:
+        verbose_name_plural='Session'
+        db_table='session'
+        managed = False
+    
+    def __str__(self):
+        return "Form max: " + str(self.forms_max )
