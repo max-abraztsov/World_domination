@@ -28,9 +28,16 @@ To get started with this application, simply clone this repository onto your loc
 
 ## For backend 
 
+### `python -m pip install Django`
+
+### `python manage.py makemigrations`
+
+### `python manage.py migrate`
+
 ### `python manage.py runserver`
 
 This will install all the necessary dependencies and start the application on your local server.
+For full operation of the project, a database must also be running (can be run either on a regular server or on a local server).
 
 ## Usage
 
@@ -44,6 +51,8 @@ This application was built using React and Django, and also utilizes the followi
 * react-router-dom
 * axios
 * vite.js 
+* jwt
+* json
 
 ## Contributing
 If you would like to contribute to this project, please feel free to fork this repository and submit a pull request.

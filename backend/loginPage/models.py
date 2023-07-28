@@ -1,5 +1,6 @@
 from django.db import models 
 from django.core.validators import MaxValueValidator
+from enum import Enum
  
 class country(models.Model): 
     CountryName = models.CharField(max_length=50)
@@ -8,8 +9,6 @@ class country(models.Model):
     NuclearRockets = models.IntegerField(validators=[MaxValueValidator(20)])
     Budget = models.IntegerField(validators=[MaxValueValidator(10000)])
     Round = models.IntegerField(validators=[MaxValueValidator(6)])
-    EnterCode = models.CharField(max_length=10) 
-    Password = models.CharField(max_length=20)
     Earnings = models.IntegerField(validators=[MaxValueValidator(5000)])
 
     class Meta:
@@ -69,4 +68,23 @@ class ecology(models.Model):
         managed = False
 
     def __str__(self):
-        return str(self.level) + "%"
+        return "Round " + str(self.round) + ": " + str(self.level) + "%"
+    
+class RoleChoices(Enum):
+    ADMIN = 'admin'
+    PRESIDENT = 'president'
+    MINISTER = 'minister'
+
+class user(models.Model):
+    entercode = models.CharField(max_length=10) 
+    password = models.CharField(max_length=20)
+    role = models.CharField(max_length=20, choices=[(role.value, role.value) for role in RoleChoices])
+    country = models.ForeignKey(country, on_delete=models.CASCADE)
+    
+    class Meta:
+        verbose_name_plural='User'
+        db_table='user'
+        managed = False
+
+    def __str__(self):
+        return str(self.country) + " " + str(self.role)

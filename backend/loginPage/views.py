@@ -1,14 +1,21 @@
 from django.shortcuts import render
-from django.core import serializers
 from django.db.models import Q
+from backend import settings
 from .models import country
 from .models import city
 from .models import ecology
 from .models import sanction
 from .models import CountryList
+from .models import user
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
+import jwt
+
+def generate_jwt_token(payload):
+    token = jwt.encode(payload, settings.SECRET_KEY, algorithm='HS256')
+    return token
+
 
 @csrf_exempt
 def login_page(request):
@@ -23,8 +30,14 @@ def login_page(request):
         password = pass_data.get('password')
                 
         try:
+            User = user.objects.get(entercode=logincode, password=password)
+            
             #data about country
-            Country = country.objects.get(EnterCode=logincode, Password=password)
+            Country = country.objects.get(id=User.country_id)
+            
+            is_president = False
+            if User.role == 'president':
+                is_president = True
             
             #data about cities of country
             city_objects = city.objects.filter(country_id=Country.id).values('photo', 'city_name', 'live_level', 'progress', 'profit', 'shield', 'state')
@@ -46,7 +59,7 @@ def login_page(request):
             #Data about other countries
             OthersCountries_objects = country.objects.filter(~Q(CountryName=Country.CountryName)).values('id', 'CountryName')
             OthersCountries_fulllist = list(OthersCountries_objects)
-            chosen_countries=['Belarus', 'Ukraine', 'Poland', 'Russia']
+            chosen_countries=['Belarus', 'Ukraine', 'Poland', 'Lithuania']
             OthersCountries_list=[]
             for chosen in OthersCountries_fulllist:
                 if chosen['CountryName'] in chosen_countries:
@@ -91,6 +104,7 @@ def login_page(request):
 
             
             response_data = {
+                'is_president': is_president,
                 'country': Country.CountryName,
                 'flag_photo': Country.flag_photo,
                 'average_live_level': average_live_level,
@@ -101,8 +115,11 @@ def login_page(request):
                 'cities': city_list,
                 'enemies': other_countries
             }
+
+            #token = generate_jwt_token(response_data)
+
             return JsonResponse(response_data)
-        except Country.DoesNotExist:
+        except User.DoesNotExist:
             return JsonResponse({'error': 'User not found'}, status=404)
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=500)
