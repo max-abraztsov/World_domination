@@ -31,7 +31,7 @@ export interface IEnemyCity{
 export interface IEnemy{
     country: string; //
     sanctions: boolean;
-    sanctinosFrom: boolean;
+    sanctions_from: boolean;
     cities: IEnemyCity[]; //
 }
 
@@ -57,7 +57,7 @@ export interface IEnemyCityForm{
 export interface IEnemyForm{
     country: string; //
     sanctions: boolean;
-    sanctinosFrom: boolean;
+    sanctions_from: boolean;
     cities: IEnemyCityForm[]; //
 }
 

@@ -49,7 +49,7 @@ def general_data(request):
                         city_data = {
                             'city_name': one_city['city_name'],
                             'live_level': one_city['live_level'],  
-                            'city_state': one_city['state'],
+                            'state': one_city['state'],
                         }
                         cities.append(city_data)
 

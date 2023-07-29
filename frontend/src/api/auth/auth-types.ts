@@ -1,4 +1,5 @@
 // login
+import { ICountry } from "../../types/types";
 
 export interface ILoginRequest{
     logincode: string;
@@ -7,4 +8,5 @@ export interface ILoginRequest{
 
 export interface ILoginResponce{
     accessToken: string;
+    country: ICountry;
 }

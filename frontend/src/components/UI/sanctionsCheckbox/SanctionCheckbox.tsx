@@ -13,7 +13,7 @@ const SanctionCheckbox: FC<SanctionCheckboxProps> = ({children, toggleStatus, ch
     return (
         <label className={cl.checkbox} onChange={toggleStatus}>  
             <span>
-                <input className={cl.real_checkbox} type="checkbox" checked={checked}/>
+                <input className={cl.real_checkbox} type="checkbox" checked={checked} onChange={toggleStatus}/>
                 <span className={cl.custom_checkbox}></span>
             </span>
             {children}

@@ -24,6 +24,8 @@ def forms_check(request_data_show):
     while Session.forms_count < Session.forms_max:
         if Session.forms_count == Session.forms_max:
             response_data = requests.post('http://127.0.0.1:8000/attack', json=request_data_show)
+            Session.forms_count -= 1
+            Session.save()
             json_response_data = response_data.json()
             return json_response_data
         else:
@@ -67,18 +69,18 @@ def calculations(request_data):
 
     cost = 0
 
-    '''
+    
     #send request to the app "donate" ========================================================================
     
     if donate_data['from'] != '' and donate_data['to'] != '':
         donate_response = requests.post('http://127.0.0.1:8000/donate', json=donate_data)
         response_data = donate_response.json()
         cost = response_data.get('budget')
-    '''
+    
     
 
     # add sanctions from this country =========================================================================
-    '''
+    
     for enemy in enemies:
         if enemy['sanctions'] == True:
             country_under_sanction = country.objects.filter(CountryName=enemy['country']).values('id')
@@ -126,10 +128,10 @@ def calculations(request_data):
         if cost > Country.Budget:
             response_data = forms_check(request_data_show)
             return response_data
-        Ecology.level += 5
-        Ecology.round = Country.Round
-        if Ecology.level > 100:
-            Ecology.level = 100
+        new_ecology = ecology.objects.get(round=Country.Round)
+        new_ecology.level = Ecology.level + 5
+        if new_ecology.level > 100:
+            new_ecologys.level = 100
     
             
 
@@ -166,7 +168,7 @@ def calculations(request_data):
                 
     Country.save()
     Ecology.save()
-    '''
+    
     Session = session.objects.get(id=1)
     Session.forms_count += 1
     Session.save()

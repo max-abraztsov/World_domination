@@ -1,8 +1,11 @@
 import {FC, useState, useEffect} from 'react';
 import {Link} from "react-router-dom"
+import { useAppSelector, useAppDispatch } from './../../../hook';
 import cl from "./Navigation.module.css"
 
 const Navigation: FC = () => {
+
+    const login = useAppSelector(state => state.status);
 
     const [scrollOpacity, setScrollOpacity] = useState(0);
 
@@ -28,8 +31,16 @@ const Navigation: FC = () => {
         style={{ backgroundColor: `rgba(20, 22, 68, ${scrollOpacity})` }}>
             <ul className={cl.navigation__links}>
                 <Link className={cl.navigation__link} to="/">Home</Link>
-                <Link className={cl.navigation__link} to="/country">Your country</Link>
-                <Link className={cl.navigation__link} to="/login">Sign in</Link>
+                {login.is_logged_in ? (
+                    <div>
+                        <Link className={cl.navigation__link} to="/country">Your country</Link>
+                        
+                    </div>
+                    
+
+                ) : (
+                    <Link className={cl.navigation__link} to="/login">Sign in</Link>
+                )}
                 {/* <Link className={cl.navigation__link} to="/wd-admin">Admin</Link> */}
             </ul>
         </nav>

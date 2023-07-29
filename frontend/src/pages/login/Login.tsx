@@ -1,7 +1,10 @@
 import React, {FormEvent, useState, FC} from 'react';
 import cl from "./Login.module.css" ;
-import { useAppDispatch } from '../../hook';
+import { useAppDispatch, useAppSelector } from '../../hook';
 import { loginUser } from '../../store/auth/actionCreators';
+import { updateCountryInfo } from '../../store/countrySlice';
+
+//import { withRouter, RouteComponentProps, useHistory } from 'react-router-dom';
 
 interface UserProps {
     logincode: string;
@@ -9,6 +12,11 @@ interface UserProps {
 }
 
 const Login: FC = () => {
+
+    const login = useAppSelector(state => state.status);
+
+    // const history = useHistory();
+
     const [userForm, setUserForm] = useState<UserProps>({
         logincode: "",
         password: "",
@@ -27,6 +35,11 @@ const Login: FC = () => {
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
         dispatch(loginUser(userForm));
+        const country = JSON.parse(localStorage.getItem("country"));
+        console.log(country);
+        if( country !== null){
+            dispatch(updateCountryInfo(country.country));
+        }  
     }
 
     return (

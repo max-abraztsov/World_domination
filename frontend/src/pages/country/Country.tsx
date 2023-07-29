@@ -4,7 +4,7 @@ import axios from 'axios';
 import {FC, useState, useEffect } from 'react';
 import { ICountry } from '../../types/types';
 import { useAppSelector, useAppDispatch } from '../../hook';
-import { toggleNuclearStatus, toggleEcologyDevelop, toggleEnemyCheckbox,toggleSanctionCheckbox } from '../../store/countrySlice';
+import { toggleNuclearStatus, toggleEcologyDevelop, toggleEnemyCheckbox,toggleSanctionCheckbox, updateCountriesPublicInfo } from '../../store/countrySlice';
 import cl from "./Country.module.css"
 import City from '../../components/city/City';
 import Checkbox from '../../components/UI/checkbox/Checkbox';
@@ -32,9 +32,9 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
     const form = useAppSelector(state => state.form);
     let country = useAppSelector(state => state.country);
     if (forAdmin) country = forAdmin;
-    const dispatch = useAppDispatch();
-
     const countriesPublic = useAppSelector(state => state.countriesPublic);
+
+    const dispatch = useAppDispatch();
 
     const getColorByValue = (value: number | null): string | null => {
         if (value != null && value <= 35) {
@@ -48,28 +48,42 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
         }      
     };
 
-    const chartData = {
-        labels: countriesPublic.countries.map( item => item.country),
-        datasets: [
-            {
-                label: 'Average live level',
-                data: countriesPublic.countries.map( item => item.average_live_level),
-                backgroundColor: countriesPublic.countries.map(item => getColorByValue(item.average_live_level)),
-            }, 
-        ],
-    };
+    const [chartData, setChartData] = useState({});
+    const [metricData, setMetricData] = useState({});
 
-    const metricData = {
-        labels: countriesPublic.ecology.map( item =>  item.round),
-        datasets: [
-            {
-                label: 'Ecology',
-                data: countriesPublic.ecology.map( item => item.value),
-                backgroundColor: countriesPublic.ecology.map(item => getColorByValue(item.value)),
-                
-            }, 
-        ],
-    };
+    useEffect(() => {
+        getOtherInfo();
+    }, []); 
+
+    useEffect(() => {
+        if (countriesPublic && countriesPublic.countries) {
+            setChartData({
+                labels: countriesPublic.countries.map((item) => item.country),
+                datasets: [
+                    {
+                        label: 'Average live level',
+                        data: countriesPublic.countries.map((item) => item.average_live_level),
+                        backgroundColor: countriesPublic.countries.map((item) => getColorByValue(item.average_live_level)),
+                    },
+                ],
+            });
+        }
+    
+        if (countriesPublic && countriesPublic.ecology) {
+            setMetricData({
+                labels: countriesPublic.ecology.map((item) => item.round),
+                datasets: [
+                    {
+                        label: 'Ecology',
+                        data: countriesPublic.ecology.map((item) => item.value),
+                        backgroundColor: countriesPublic.ecology.map((item) => getColorByValue(item.value)),
+                    },
+                ],
+            });
+        }
+        console.log(chartData, metricData);
+    }, [countriesPublic]);
+
 
      const clickHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
         console.log(form);
@@ -77,9 +91,27 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
         postForm();
     }
 
+    async function getOtherInfo(){
+        try {
+            const response = await axios.post("http://127.0.0.1:8000/general_data", form);
+            console.log(response.data);
+            dispatch(updateCountriesPublicInfo({new: response.data}));
+            // localStorage.setItem("other", JSON.stringify(response));
+            return response;
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                console.log('error message: ', error.message);
+                return error.message;
+            } else {
+                console.log('unexpected error: ', error);
+                return 'An unexpected error occurred';
+            }
+        }
+    }
+
     async function postForm(){
         try {
-            const response = await axios.post("http://127.0.0.1:8000/round_form", form);
+            const response = await axios.post("http://127.0.0.1:8000/round_end", form);
             console.log(response.data);
             return response;
         } catch (error) {
@@ -124,13 +156,14 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
     useEffect(() => {
         if(country.rockets > form.rockets) setButtonPosition({transform: "translateX(0px)", transition: ".4s"});
         else setButtonPosition({transform: "translateX(-100vw)", transition: ".4s"});   
-    }, [form.rockets]);    
+    }, [form.rockets]);  
+
     
     return (
         <div className={cl.country}>
             <div className={cl.container}>
                 <div className={cl.country__table}>  
-                    { country.is_president ? (             
+                    {country && country.is_president ? (             
                         <section className={cl.country__print}>
                             <div>
                                 <Printer />
@@ -146,7 +179,7 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
                     ):(
                         <div></div>
                     )}
-                    { country.is_president ? (
+                    {country && country.is_president ? (
                     <section className={cl.country__documents}>
                         <section style={{background: pagesColors.other, zIndex: pageState }}  className={cl.country__other}>
                             <div className={otherBookmarkColorStyle.join(" ")}> 
@@ -164,7 +197,7 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
                                     </div> 
                                 )}
                                 <div className={cl.countries__information}>
-                                    {countriesPublic.countries.map( (country, index) => 
+                                    {countriesPublic.countries && countriesPublic.countries.map( (country, index) => 
                                         <div className={cl.countries__country} key={country.country}>
                                             <div> 
                                                 <h3 className={cl.countries__name}>{country.country}</h3>
@@ -209,7 +242,7 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
                                         {country.cities.map((item, index) => 
                                             <City 
                                                 budget={form.budget}
-                                                key={index} 
+                                                key={`${item.city_name}${index}`}
                                                 city={item} 
                                                 id={index} 
                                                 isPresident={country.is_president}
@@ -253,7 +286,7 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
                                         </div>
                                         <div className={cl.enemies}>
                                         { form.enemies.map((enemy, index) => 
-                                            <div className={cl.enemy}>
+                                            <div key={enemy.country} className={cl.enemy}>
                                                 <p className={cl.enemy__country}>{enemy.country}</p>
                                                 <div>
                                                     {enemy.cities.map((city, id) => 
@@ -279,7 +312,7 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
                                                 <PartitionTitle  title="Introduction of sanctions" text="Select the country to sanction. If sanctions are imposed, the country will lose part of its income. But note that this may affect relations with that country"/>
                                                 { form.enemies.map((enemy, index) => 
                                                     <SanctionCheckbox 
-                                                    key={index}
+                                                    key={`${enemy.country}${index}`}
                                                     checked={enemy.sanctions}
                                                     toggleStatus={() => dispatch(toggleSanctionCheckbox({status: form.enemies[index].sanctions, index: index}))}
                                                     >{enemy.country}</SanctionCheckbox> 
@@ -288,10 +321,10 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
                                             <div className={cl.country__sanction}>
                                                 <PartitionTitle  title="Relations with other countries" text="This shows the attitude of other countries towards you"/>
                                                 {form.enemies.map((enemy, index) => 
-                                                    enemy.sanctinosFrom ? (
-                                                        <p className={cl.relationship} key={enemy.country}>{enemy.country}: Sanctions have been announced...</p>
+                                                    enemy.sanctions_from ? (
+                                                        <p className={cl.relationship} key={`${enemy.country}${index}r`}>{enemy.country}: Sanctions have been announced...</p>
                                                     ) : (
-                                                        <p className={cl.relationship} key={enemy.country}>{enemy.country}: Good relationship...</p> 
+                                                        <p className={cl.relationship} key={`${enemy.country}${index}r`}>{enemy.country}: Good relationship...</p> 
                                                     )
                                                 )}
                                             </div>
@@ -315,7 +348,7 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
                             </section>
                         </section>
                     </section>
-                    ):( // For simple users
+                    ) : country ? ( // For simple users
                     <section style={{margin: "40px auto"}} className={cl.country__documents}>
                         <section style={{background: pagesColors.other, zIndex: pageState }}  className={cl.country__other}>
                             <div className={otherBookmarkColorStyle.join(" ")}> 
@@ -379,7 +412,7 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
                                         {country.cities.map((item, index) => 
                                             <City 
                                                 budget={form.budget}
-                                                key={index} 
+                                                key={`${item.city_name}${index}`} 
                                                 city={item} 
                                                 id={index}
                                                 isPresident={country.is_president}
@@ -435,7 +468,7 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
                                                 <PartitionTitle  title="Introduction of sanctions" text="Select the country to sanction. If sanctions are imposed, the country will lose part of its income. But note that this may affect relations with that country"/>
                                                 { form.enemies.map((enemy, index) => 
                                                     <SanctionCheckbox 
-                                                    key={index}
+                                                    key={`${enemy.country}${index}`}
                                                     checked={enemy.sanctions}
                                                     toggleStatus={() => dispatch(toggleSanctionCheckbox({status: form.enemies[index].sanctions, index: index}))}
                                                     >{enemy.country}</SanctionCheckbox> 
@@ -444,10 +477,10 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
                                             <div className={cl.country__sanction}>
                                                 <PartitionTitle  title="Relations with other countries" text="This shows the attitude of other countries towards you"/>
                                                 {form.enemies.map((enemy, index) => 
-                                                    enemy.sanctinosFrom ? (
-                                                        <p className={cl.relationship} key={enemy.country}>{enemy.country}: Sanctions have been announced...</p>
+                                                    enemy.sanctions_from ? (
+                                                        <p className={cl.relationship} key={`${enemy.country}${index}r`}>{enemy.country}: Sanctions have been announced...</p>
                                                     ) : (
-                                                        <p className={cl.relationship} key={enemy.country}>{enemy.country}: Good relationship...</p> 
+                                                        <p className={cl.relationship} key={`${enemy.country}${index}r`}>{enemy.country}: Good relationship...</p> 
                                                     )
                                                 )}
                                             </div>
@@ -462,8 +495,8 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
                             </section>
                         </section>
                     </section>                       
-                    )}
-                    {country.is_president ? (
+                    ) : ( <div></div>)}
+                    {country && country.is_president ? (
                         <div className={cl.mobile__button}>
                             <button style={buttonPosition} className={cl.fire__button} onClick={clickHandler} type="submit">
                             <img src={ButtonBottom} alt="button fire" />

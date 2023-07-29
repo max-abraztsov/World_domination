@@ -85,11 +85,13 @@ def login_page(request):
 
                 sanctions=False
                 sanctions_object = sanction.objects.filter(sanctionFrom_id=Country.id, sanctionFor_id=id_country_from_list)
+                #print(sanctions_object)
                 if sanctions_object.exists():
                     sanctions=True
 
                 sanctions_from=False
                 sanctionsFrom_object = sanction.objects.filter(sanctionFrom_id=id_country_from_list, sanctionFor_id=Country.id)
+                #print(sanctionsFrom_object)
                 if sanctionsFrom_object.exists():
                     sanctions_from=True
                 

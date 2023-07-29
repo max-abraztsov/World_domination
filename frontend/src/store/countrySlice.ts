@@ -2,126 +2,55 @@ import {createSlice, PayloadAction, createAsyncThunk} from "@reduxjs/toolkit";
 import { ICountriesPublicInfo, ICountry, IForm, IDonat } from "../types/types";
 import CSS from "csstype"
 
-const initialStateCountry: ICountry = {
-    is_president: true,
-    round: 2,
-    country: "Belarus",
-    flag_photo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQNcell8SvcD2oHdkfnzK_q_hZ7LSyjc7UyAPeZtyATwYoD5HOGYtq-tOGyVpxE7YLhb0&usqp=CAU",
-    budget: 1000,
-    ecology: 80,
-    average_live_level: 57,
-    nuclear_technology: false,
-    rockets: 2,
-    cities: [ 
-        {
-            photo: "https://www.sb.by/upload/iblock/f82/f8206e5046cccf16e1a69da02994b74f.jpg",
-            city_name: "Minsk",
-            live_level: 56,
-            progress: 90,
-            profit: 270,  
-            shield: true,  
-            state: false,
-        },
-        {
-            photo: "https://www.sb.by/upload/iblock/f82/f8206e5046cccf16e1a69da02994b74f.jpg",
-            city_name: "Homel",
-            live_level: 57,
-            progress: 60,
-            profit: 180,  
-            shield: false,
-            state: true,
-        },
-        {
-            photo: "https://www.sb.by/upload/iblock/f82/f8206e5046cccf16e1a69da02994b74f.jpg",
-            city_name: "Grodno",
-            live_level: 57,
-            progress: 50,
-            profit: 170,  
-            shield: false,
-            state: true,
-        },
-        {
-            photo: "https://www.sb.by/upload/iblock/f82/f8206e5046cccf16e1a69da02994b74f.jpg",
-            city_name: "Brest",
-            live_level: 58,
-            progress: 50,
-            profit: 160,  
-            shield: true,
-            state: true,
-        },
-    ],
-    enemies: [
-        {   
-            country: "Russia",
-            sanctions: false,
-            sanctinosFrom: false,
-            cities: [
-                {
-                    city_name: "Moscow",
-                    state: true, 
-                },
-                {
-                    city_name: "St. Petersburg",
-                    state: true,
-                },
-                {
-                    city_name: "Sochi",
-                    state: true, 
-                },
-                {
-                    city_name: "Ekaterinburg",
-                    state: true, 
-                },
-            ],
-        },
-        {
-            country: "China", 
-            sanctions: false,
-            sanctinosFrom: false,
-            cities: [
-                {
-                    city_name: "Hong Kong",
-                    state: true, 
-                },
-                {
-                    city_name: "Shanghai",
-                    state: true, 
-                },
-                {
-                    city_name: "Beijing",
-                    state: false, 
-                },
-                {
-                    city_name: "Guangzhou",  
-                    state: false,
-                },
-            ],
-        },
-        {
-            country: "USA",
-            sanctions: false,
-            sanctinosFrom: true,
-            cities: [
-                {
-                    city_name: "New York",
-                    state: true,  
-                },
-                {
-                    city_name: "Chicago",
-                    state: true,  
-                },
-                {
-                    city_name: "Los Angeles",
-                    state: true,   
-                },
-                {
-                    city_name: "Atlanta",
-                    state: false,
-                },
-            ],
-        },
-    ]
-}
+const initialStateCountry: ICountry = JSON.parse(localStorage.getItem("country"));
+
+// const initialStateCountry: ICountry = {
+//     is_president: false,
+//     round: 2,
+//     country: "",
+//     flag_photo: "",
+//     budget: 0,
+//     ecology: 0,
+//     average_live_level: 0,
+//     nuclear_technology: false,
+//     rockets: 0,
+//     cities: [ 
+//         {
+//             photo: "",
+//             city_name: "",
+//             live_level: 0,
+//             progress: 0,
+//             profit: 0,  
+//             shield: false,  
+//             state: true,
+//         },
+//     ],
+//     enemies: [
+//         {   
+//             country: "",
+//             sanctions: false,
+//             sanctions_from: false,
+//             cities: [
+//                 {
+//                     city_name: "",
+//                     state: true, 
+//                 },
+//                 {
+//                     city_name: "",
+//                     state: true,
+//                 },
+//                 {
+//                     city_name: "",
+//                     state: true, 
+//                 },
+//                 {
+//                     city_name: "",
+//                     state: true, 
+//                 },
+//             ],
+//         },
+//     ]
+// }
 
 const formResult: IForm = {
     round: initialStateCountry.round,
@@ -155,83 +84,83 @@ const formResult: IForm = {
     ],
     enemies: [
         {
-            country: "Russia",
-            sanctions: false,
-            sanctinosFrom: initialStateCountry.enemies[0].sanctinosFrom,
+            country: initialStateCountry.enemies[0].country,
+            sanctions: initialStateCountry.enemies[0].sanctions,
+            sanctions_from: initialStateCountry.enemies[0].sanctions_from,
             cities: [
                 {
-                    city_name: "Moscow",
+                    city_name: initialStateCountry.enemies[0].cities[0].city_name,
                     is_attacked: false,
-                    state: false, 
+                    state: initialStateCountry.enemies[0].cities[0].state, 
                 },
                 {
-                    city_name: "St. Petersburg",
+                    city_name: initialStateCountry.enemies[0].cities[1].city_name,
                     is_attacked: false,
-                    state: false,
+                    state: initialStateCountry.enemies[0].cities[1].state,
                 },
                 {
-                    city_name: "Sochi",
+                    city_name: initialStateCountry.enemies[0].cities[2].city_name,
                     is_attacked: false,
-                    state: false, 
+                    state: initialStateCountry.enemies[0].cities[2].state, 
                 },
                 {
-                    city_name: "Ekaterinburg",
+                    city_name: initialStateCountry.enemies[0].cities[3].city_name,
                     is_attacked: false,
-                    state: false, 
+                    state: initialStateCountry.enemies[0].cities[3].state, 
                 },
             ],
         },
         {
-            country: "China", 
-            sanctions: false,
-            sanctinosFrom: initialStateCountry.enemies[1].sanctinosFrom,
+            country: initialStateCountry.enemies[1].country,
+            sanctions: initialStateCountry.enemies[1].sanctions,
+            sanctions_from: initialStateCountry.enemies[1].sanctions_from,
             cities: [
                 {
-                    city_name: "Hong Kong",
+                    city_name: initialStateCountry.enemies[1].cities[0].city_name,
                     is_attacked: false,
-                    state: false, 
+                    state: initialStateCountry.enemies[1].cities[0].state, 
                 },
                 {
-                    city_name: "Shanghai",
+                    city_name: initialStateCountry.enemies[1].cities[1].city_name,
                     is_attacked: false,
-                    state: false, 
+                    state: initialStateCountry.enemies[1].cities[1].state,
                 },
                 {
-                    city_name: "Beijing",
+                    city_name: initialStateCountry.enemies[1].cities[2].city_name,
                     is_attacked: false,
-                    state: true, 
+                    state: initialStateCountry.enemies[1].cities[2].state, 
                 },
                 {
-                    city_name: "Guangzhou", 
-                    is_attacked: false, 
-                    state: true,
+                    city_name: initialStateCountry.enemies[1].cities[3].city_name,
+                    is_attacked: false,
+                    state: initialStateCountry.enemies[1].cities[3].state, 
                 },
             ],
         },
         {
-            country: "USA",
-            sanctions: true,
-            sanctinosFrom: initialStateCountry.enemies[2].sanctinosFrom,
+            country: initialStateCountry.enemies[2].country,
+            sanctions: initialStateCountry.enemies[2].sanctions,
+            sanctions_from: initialStateCountry.enemies[2].sanctions_from,
             cities: [
                 {
-                    city_name: "New York",
+                    city_name: initialStateCountry.enemies[2].cities[0].city_name,
                     is_attacked: false,
-                    state: false,  
+                    state: initialStateCountry.enemies[2].cities[0].state, 
                 },
                 {
-                    city_name: "Chicago",
+                    city_name: initialStateCountry.enemies[2].cities[1].city_name,
                     is_attacked: false,
-                    state: false,  
+                    state: initialStateCountry.enemies[2].cities[1].state,
                 },
                 {
-                    city_name: "Los Angeles",
+                    city_name: initialStateCountry.enemies[2].cities[2].city_name,
                     is_attacked: false,
-                    state: false,   
+                    state: initialStateCountry.enemies[2].cities[2].state, 
                 },
                 {
-                    city_name: "Atlanta",
+                    city_name: initialStateCountry.enemies[2].cities[3].city_name,
                     is_attacked: false,
-                    state: true,
+                    state: initialStateCountry.enemies[2].cities[3].state, 
                 },
             ],
         },
@@ -247,148 +176,41 @@ const countrySlice = createSlice({
     name: "country",
     initialState: initialStateCountry,
     reducers: {
-        toggleChecked(state, action: PayloadAction<boolean>){
-            console.log(action.payload);
+        updateCountryInfo(state, action: PayloadAction<{neww: ICountry}>){
+            return action.payload.neww;
         }
     },
 });
 
+
+
 const initialStateCountriesPublic: ICountriesPublicInfo = {
     ecology: [
-        { round: "Round 1", value: 80 },
-        { round: "Round 2", value: 95 },
-        { round: "Round 3", value: 75 },
-        { round: "Round 4", value: 53 },
-        { round: "Round 5", value: null },
-        { round: "Round 6", value: null },
+        { round: "Round 1", value: null },
     ],
     countries: [
         {
-            country: "Belarus",
-            average_live_level: 57, 
+            country: "",
+            average_live_level: 0, 
             cities: [
                 {
-                    city_name: "Minsk",
-                    live_level: 56,  
+                    city_name: "",
+                    live_level: 0,  
                     state: true,
                 },
                 {
-                    city_name: "Homel",
-                    live_level: 57,  
-                    state: false,
-                },
-                {
-                    city_name: "Grodno",
-                    live_level: 57,  
+                    city_name: "",
+                    live_level: 0,  
                     state: true,
                 },
                 {
-                    city_name: "Brest",
-                    live_level: 58, 
-                    state: true, 
-                },
-            ],
-        },
-        {
-            country: "Russia",
-            average_live_level: 34, 
-            cities: [
-                {
-                    city_name: "Moscow",
-                    live_level: 60, 
-                    state: true, 
-                },
-                {
-                    city_name: "St. Petersburg",
-                    live_level: 59,  
+                    city_name: "",
+                    live_level: 0,  
                     state: true,
                 },
                 {
-                    city_name: "Sochi",
-                    live_level: 55, 
-                    state: true, 
-                },
-                {
-                    city_name: "Ekaterinburg",
-                    live_level: 56, 
-                    state: true, 
-                },
-            ],
-        },
-        {
-            country: "China",
-            average_live_level: 65, 
-            cities: [
-                {
-                    city_name: "Hong Kong",
-                    live_level: 70, 
-                    state: true, 
-                },
-                {
-                    city_name: "Shanghai",
-                    live_level: 68, 
-                    state: true, 
-                },
-                {
-                    city_name: "Beijing",
-                    live_level: 66, 
-                    state: false, 
-                },
-                {
-                    city_name: "Guangzhou",
-                    live_level: 63,  
-                    state: false,
-                },
-            ],
-        },
-        {
-            country: "USA",
-            average_live_level: 75, 
-            cities: [
-                {
-                    city_name: "New York",
-                    live_level: 80, 
-                    state: true,  
-                },
-                {
-                    city_name: "Chicago",
-                    live_level: 75, 
-                    state: true,  
-                },
-                {
-                    city_name: "Los Angeles",
-                    live_level: 73,
-                    state: true,   
-                },
-                {
-                    city_name: "Atlanta",
-                    live_level: 70,  
-                    state: false,
-                },
-            ],
-        },
-        {
-            country: "Germany",
-            average_live_level: 34, 
-            cities: [
-                {
-                    city_name: "Moscow",
-                    live_level: 60, 
-                    state: true, 
-                },
-                {
-                    city_name: "St. Petersburg",
-                    live_level: 59,  
-                    state: true,
-                },
-                {
-                    city_name: "Sochi",
-                    live_level: 55, 
-                    state: true, 
-                },
-                {
-                    city_name: "Ekaterinburg",
-                    live_level: 56, 
+                    city_name: "",
+                    live_level: 0, 
                     state: true, 
                 },
             ],
@@ -399,7 +221,11 @@ const initialStateCountriesPublic: ICountriesPublicInfo = {
 const coutriesPublicInfoSlice = createSlice({
     name: "countriesPublic",
     initialState: initialStateCountriesPublic,
-    reducers: {},
+    reducers: {
+        updateCountriesPublicInfo(state, action: PayloadAction<{ new: ICountriesPublicInfo }>) {
+         return action.payload.new;
+        }
+    },
 })
 
 
@@ -443,10 +269,10 @@ const formSlice = createSlice({
                     state.donate.amount = action.payload.amount;
                     state.budget = state.budget - action.payload.amount;
                     // Иммитация высылки данных на сервер
-                    console.log(state.donate.to, state.donate.amount, "Sum:", state.budget);
+                    // console.log(state.donate.to, state.donate.amount, "Sum:", state.budget);
                     state.donate.to = "";
                     state.donate.amount = 0;
-                    console.log(state.donate.to, state.donate.amount, "Sum:", state.budget);
+                    // console.log(state.donate.to, state.donate.amount, "Sum:", state.budget);
                 } else {
                     alert("Not money");
                 } 
@@ -463,7 +289,8 @@ const formSlice = createSlice({
     },
 });
 
-export const {toggleChecked} = countrySlice.actions;
+export const {updateCountryInfo} = countrySlice.actions;
+export const {updateCountriesPublicInfo} = coutriesPublicInfoSlice.actions;
 export const 
 {
     toggleNuclearStatus, 
