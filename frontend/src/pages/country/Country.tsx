@@ -4,7 +4,7 @@ import axios from 'axios';
 import {FC, useState, useEffect } from 'react';
 import { ICountry } from '../../types/types';
 import { useAppSelector, useAppDispatch } from '../../hook';
-import { toggleNuclearStatus, toggleEcologyDevelop, toggleEnemyCheckbox,toggleSanctionCheckbox, updateCountriesPublicInfo } from '../../store/countrySlice';
+import { toggleNuclearStatus, toggleEcologyDevelop, toggleEnemyCheckbox,toggleSanctionCheckbox, updateCountriesPublicInfo, updateFormInfo, updateCountryInfo } from '../../store/countrySlice';
 import cl from "./Country.module.css"
 import City from '../../components/city/City';
 import Checkbox from '../../components/UI/checkbox/Checkbox';
@@ -16,7 +16,6 @@ import Counter from '../../components/counter/Counter';
 import Printer from '../../components/Printer/Printer';
 import BarChart from '../../components/UI/charts/BarChart';
 import GrowthChart from '../../components/UI/charts/GrowthChart';
-
 
 import bomb from "../../assets/rocket-counter.svg"
 import ButtonBottom from "./../../assets/button-fire.png"
@@ -53,6 +52,127 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
 
     useEffect(() => {
         getOtherInfo();
+        if(country !== null){
+            dispatch(updateFormInfo({update: { 
+                round: country.round ,
+                country: country.country ,
+                nuclear_technology: country.nuclear_technology,
+                ecology: false,
+                budget: country.budget,
+                rockets: country.rockets,
+                rocket_order: 0,
+                cities: [
+                    {
+                        city_name: country.cities[0].city_name,
+                        develop: false,
+                        shield: country.cities[0].shield,
+                    },
+                    {
+                        city_name: country.cities[1].city_name,
+                        develop: false,
+                        shield: country.cities[1].shield,
+                    },
+                    {
+                        city_name: country.cities[2].city_name,
+                        develop: false,
+                        shield: country.cities[2].shield,
+                    },
+                    {
+                        city_name: country.cities[3].city_name,
+                        develop: false,
+                        shield: country.cities[3].shield,
+                    },
+                ],
+                enemies: [
+                    {
+                        country: country.enemies[0].country,
+                        sanctions: country.enemies[0].sanctions,
+                        sanctions_from: country.enemies[0].sanctions_from,
+                        cities: [
+                            {
+                                city_name: country.enemies[0].cities[0].city_name,
+                                is_attacked: false,
+                                state: country.enemies[0].cities[0].state, 
+                            },
+                            {
+                                city_name: country.enemies[0].cities[1].city_name,
+                                is_attacked: false,
+                                state: country.enemies[0].cities[1].state,
+                            },
+                            {
+                                city_name: country.enemies[0].cities[2].city_name,
+                                is_attacked: false,
+                                state: country.enemies[0].cities[2].state, 
+                            },
+                            {
+                                city_name: country.enemies[0].cities[3].city_name,
+                                is_attacked: false,
+                                state: country.enemies[0].cities[3].state, 
+                            },
+                        ],
+                    },
+                    {
+                        country: country.enemies[1].country,
+                        sanctions: country.enemies[1].sanctions,
+                        sanctions_from: country.enemies[1].sanctions_from,
+                        cities: [
+                            {
+                                city_name: country.enemies[1].cities[0].city_name,
+                                is_attacked: false,
+                                state: country.enemies[1].cities[0].state, 
+                            },
+                            {
+                                city_name: country.enemies[1].cities[1].city_name,
+                                is_attacked: false,
+                                state: country.enemies[1].cities[1].state,
+                            },
+                            {
+                                city_name: country.enemies[1].cities[2].city_name,
+                                is_attacked: false,
+                                state: country.enemies[1].cities[2].state, 
+                            },
+                            {
+                                city_name: country.enemies[1].cities[3].city_name,
+                                is_attacked: false,
+                                state: country.enemies[1].cities[3].state, 
+                            },
+                        ],
+                    },
+                    {
+                        country: country.enemies[2].country,
+                        sanctions: country.enemies[2].sanctions,
+                        sanctions_from: country.enemies[2].sanctions_from,
+                        cities: [
+                            {
+                                city_name: country.enemies[2].cities[0].city_name,
+                                is_attacked: false,
+                                state: country.enemies[2].cities[0].state, 
+                            },
+                            {
+                                city_name: country.enemies[2].cities[1].city_name,
+                                is_attacked: false,
+                                state: country.enemies[2].cities[1].state,
+                            },
+                            {
+                                city_name: country.enemies[2].cities[2].city_name,
+                                is_attacked: false,
+                                state: country.enemies[2].cities[2].state, 
+                            },
+                            {
+                                city_name: country.enemies[2].cities[3].city_name,
+                                is_attacked: false,
+                                state: country.enemies[2].cities[3].state, 
+                            },
+                        ],
+                    },
+                ],
+                donate: {
+                    from: "",
+                    to: "",
+                    amount: 0,
+                },
+            }}))
+        }
     }, []); 
 
     useEffect(() => {
@@ -113,6 +233,9 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
         try {
             const response = await axios.post("http://127.0.0.1:8000/round_end", form);
             console.log(response.data);
+            localStorage.setItem("country", JSON.stringify(response.data));
+            dispatch(updateCountryInfo({neww: JSON.parse(localStorage.getItem("country"))}));
+            dispatch(updateFormInfo({update: response.data}));
             return response;
         } catch (error) {
             if (axios.isAxiosError(error)) {
@@ -197,7 +320,7 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
                                     </div> 
                                 )}
                                 <div className={cl.countries__information}>
-                                    {countriesPublic.countries && countriesPublic.countries.map( (country, index) => 
+                                    {countriesPublic.countries && countriesPublic         .countries.map( (country, index) => 
                                         <div className={cl.countries__country} key={country.country}>
                                             <div> 
                                                 <h3 className={cl.countries__name}>{country.country}</h3>

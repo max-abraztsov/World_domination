@@ -14,7 +14,7 @@ export const loginUser =
 
                 const response = await api.auth.login(data);
                 
-                dispatch (loginSuccess(response.data.accessToken));
+                dispatch (loginSuccess(response.data.accessToken));d
                 dispatch (toggleLogged({status: true}));
                 localStorage.setItem("authenticated", "true");
                 localStorage.setItem("country", JSON.stringify(response.data));
