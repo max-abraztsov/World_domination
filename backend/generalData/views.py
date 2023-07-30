@@ -45,15 +45,22 @@ def general_data(request):
                 live_levels=[]
                 for one_city in city_list:
                     if one_city['country_id'] == one_country['id']:
-                        live_levels.append(one_city['live_level'])
+                        city_live_level = one_city['live_level']
+                        if one_city['state'] == False:
+                            live_levels.append(0)
+                            city_live_level = 0
+                        else:
+                            live_levels.append(one_city['live_level'])
                         city_data = {
                             'city_name': one_city['city_name'],
-                            'live_level': one_city['live_level'],  
+                            'live_level': city_live_level,  
                             'state': one_city['state'],
                         }
                         cities.append(city_data)
 
                 average_live_level=int(sum(live_levels)/len(live_levels))
+                #print(live_levels)
+                #print(average_live_level)
                 
                 country_data = {
                     'country': one_country['CountryName'],

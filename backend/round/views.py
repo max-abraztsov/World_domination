@@ -20,8 +20,8 @@ def generate_jwt_token(payload):
 
 def forms_check(request_data_show):
     Session = session.objects.get(id=1)
-    
-    while Session.forms_count < Session.forms_max:
+    while Session.forms_count <= Session.forms_max:
+        Session = session.objects.get(id=1)
         if Session.forms_count == Session.forms_max:
             response_data = requests.post('http://127.0.0.1:8000/attack', json=request_data_show)
             Session.forms_count -= 1
@@ -48,6 +48,9 @@ def calculations(request_data):
     Country = country.objects.get(CountryName=country_name)
     User = user.objects.get(country_id=Country.id)
     Ecology = ecology.objects.get(round=Country.Round)
+    Session = session.objects.get(id=1)
+    Session.forms_count += 1
+    Session.save()
 
     #add to database(attacked_cities) all cities under attack =================================================
     attacked_cities_list = []
@@ -131,7 +134,7 @@ def calculations(request_data):
         new_ecology = ecology.objects.get(round=Country.Round)
         new_ecology.level = Ecology.level + 5
         if new_ecology.level > 100:
-            new_ecologys.level = 100
+            new_ecology.level = 100
     
             
 
@@ -143,7 +146,7 @@ def calculations(request_data):
             if cost > Country.Budget:
                 response_data = forms_check(request_data_show)
                 return response_data
-            Ecology.level -= 3
+            new_ecology.level -= 3
             Country.NuclearTechnology = nuclear_technology
         Country.NuclearRockets += nuclear_rockets
         cost += nuclear_rockets * 150
@@ -168,10 +171,9 @@ def calculations(request_data):
                 
     Country.save()
     Ecology.save()
+    new_ecology.save()
     
-    Session = session.objects.get(id=1)
-    Session.forms_count += 1
-    Session.save()
+    
     
     response_data = forms_check(request_data_show)
     return response_data

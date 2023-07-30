@@ -107,6 +107,7 @@ def login_page(request):
             
             response_data = {
                 'is_president': is_president,
+                'round': Country.Round,
                 'country': Country.CountryName,
                 'flag_photo': Country.flag_photo,
                 'average_live_level': average_live_level,
