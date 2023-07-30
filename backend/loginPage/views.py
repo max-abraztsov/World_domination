@@ -113,10 +113,12 @@ def login_page(request):
                 'average_live_level': average_live_level,
                 'nuclear_technology': Country.NuclearTechnology,
                 'rockets': Country.NuclearRockets,
+                'rocket_order': 0,
                 'budget': Country.Budget,
                 'ecology': ecology_level,
                 'cities': city_list,
                 'enemies': other_countries
+
             }
 
             #token = generate_jwt_token(response_data)

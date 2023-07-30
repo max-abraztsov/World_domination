@@ -19,13 +19,17 @@ def generate_jwt_token(payload):
 
 
 def forms_check(request_data_show):
+    print("Start forms_check")
     Session = session.objects.get(id=1)
     while Session.forms_count <= Session.forms_max:
         Session = session.objects.get(id=1)
         if Session.forms_count == Session.forms_max:
+            print("Find a last form")
             response_data = requests.post('http://127.0.0.1:8000/attack', json=request_data_show)
             Session.forms_count -= 1
+            print("Down Session.forms_count -1")
             Session.save()
+            print("Save changes in session.forms_count")
             json_response_data = response_data.json()
             return json_response_data
         else:
@@ -36,6 +40,8 @@ def forms_check(request_data_show):
 
 
 def calculations(request_data):
+    print("Start calculations")
+    print(request_data)
     country_name = request_data.get('country')
     nuclear_technology = request_data.get('nuclear_technology')
     nuclear_rockets = request_data.get('rocket_order')
@@ -51,6 +57,7 @@ def calculations(request_data):
     Session = session.objects.get(id=1)
     Session.forms_count += 1
     Session.save()
+    print("Session.forms_count is up +1")
 
     #add to database(attacked_cities) all cities under attack =================================================
     attacked_cities_list = []
@@ -89,6 +96,7 @@ def calculations(request_data):
             country_under_sanction = country.objects.filter(CountryName=enemy['country']).values('id')
             new_sanction = sanction(sanctionFrom_id = Country.id, sanctionFor_id = country_under_sanction[0]['id'])
             new_sanction.save()
+            print("Add sanctions")
     
                 
             
@@ -104,35 +112,41 @@ def calculations(request_data):
                 response_data = forms_check(request_data_show)
                 return response_data
             City.shield = True
+            print("add shield for city " + str(City.city_name))
         if one_request_city['develop'] == True:
             cost += 150
             if cost > Country.Budget:
                 response_data = forms_check(request_data_show)
                 return response_data
             City.progress += 8
+            print("Upgrade progress to " + str(City.city_name))
             City.live_level = (Ecology.level * City.progress)/100
+            print("Upgrade live level to " + str(City.city_name))
             City.profit = City.live_level*3
+            print("Upgrade profit to " + str(City.city_name))
         sum_profit += City.profit
         City.save()
+        print("Save shield, progress, live level and profit to " + str(City.city_name))
     
 
     #up round ===========================================================================================
     
     if Country.Round<7:
         Country.Round += 1
+        print("Upgrade round +1")
     else:
         Country.Round = 6
     
             
     #update ecology level ===================================================================================
-    
+    new_ecology = ecology.objects.get(round=Country.Round)
     if ecology_dev == True:
         cost += 200
         if cost > Country.Budget:
             response_data = forms_check(request_data_show)
             return response_data
-        new_ecology = ecology.objects.get(round=Country.Round)
         new_ecology.level = Ecology.level + 5
+        print("Upgrade ecology level")
         if new_ecology.level > 100:
             new_ecology.level = 100
     
@@ -148,7 +162,9 @@ def calculations(request_data):
                 return response_data
             new_ecology.level -= 3
             Country.NuclearTechnology = nuclear_technology
+            print("Set nuclear technology on True")
         Country.NuclearRockets += nuclear_rockets
+        print("Upgrade order rockets on " + strt(nuclear_rockets))
         cost += nuclear_rockets * 150
         if cost > Country.Budget:
             response_data = forms_check(request_data_show)
@@ -160,18 +176,23 @@ def calculations(request_data):
 
 
     #sanctions count =================================================================================
-    
+    print("Message before sanctions")
     Sanction = sanction.objects.filter(sanctionFor_id=Country.id)
+    print("Message after sanctions")
     Sanctions_array = list(Sanction)
     
             
     #Budget ==========================================================================================
     Country.Budget += Country.Earnings - 20 * len(Sanctions_array) - cost
+    print("Calculate new country budget")
     Country.Earnings = sum_profit
+    print("Set new country earnings")
                 
     Country.save()
+    print("General save country data")
     Ecology.save()
     new_ecology.save()
+    print("Save ecology changes")
     
     
     
@@ -188,6 +209,7 @@ def end_round(request):
 
         try:
             Country = country.objects.get(CountryName=country_name)
+            print("Find a country")
             response_data = calculations(request_data)
             return JsonResponse(response_data)
                
@@ -196,3 +218,5 @@ def end_round(request):
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=500)
     return JsonResponse({'error': 'Invalid request method'}, status=405)
+
+

@@ -15,12 +15,14 @@ const Counter: FC = () => {
         setPossibleRocketLimit(Math.floor(form.budget/150));
     }, [form.budget]);
 
+    console.log(typeof(form.rocket_order));
+
     function handlePlus(){
-        if(possibleRocketLimit > 0) dispatch(toggleRocketOrder({order: form.rocket_order+1}));
+        if(possibleRocketLimit > 0) dispatch(toggleRocketOrder({order: Number(form.rocket_order)+1}));
     }
 
     function handleMinus(){
-        if(form.rocket_order > 0)  dispatch(toggleRocketOrder({order: form.rocket_order-1}));
+        if(form.rocket_order > 0)  dispatch(toggleRocketOrder({order: Number(form.rocket_order)-1}));
     }
 
     return (
