@@ -1,8 +1,10 @@
+import axios from 'axios';
 import React, {FormEvent, useState, FC} from 'react';
 import cl from "./Login.module.css" ;
 import { useAppDispatch, useAppSelector } from '../../hook';
 import { loginUser } from '../../store/auth/actionCreators';
 import { updateCountryInfo } from '../../store/countrySlice';
+import { toggleLogged } from '../../store/loginSlice';
 
 //import { withRouter, RouteComponentProps, useHistory } from 'react-router-dom';
 
@@ -14,6 +16,7 @@ interface UserProps {
 const Login: FC = () => {
 
     const login = useAppSelector(state => state.status);
+    const country = useAppSelector(state => state.country);
 
     // const history = useHistory();
 
@@ -30,11 +33,35 @@ const Login: FC = () => {
         setUserForm({...userForm, password: e.target.value});
     }
 
+    async function loginUser(userForm: UserProps){
+        try {
+            console.log(country);
+            const response = await axios.post("http://127.0.0.1:8000/login_page", userForm);
+            console.log(response.data);
+            dispatch (toggleLogged({status: true}));
+            localStorage.setItem("authenticated", "true");
+            localStorage.setItem("country", JSON.stringify(response.data));
+            console.log(localStorage.getItem("country"));
+            dispatch(updateCountryInfo({neww: JSON.parse(localStorage.getItem("country"))}));
+            await console.log(country);
+            return response;
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                console.log('error message: ', error.message);
+                return error.message;
+            } else {
+                console.log('unexpected error: ', error);
+                return 'An unexpected error occurred';
+            }
+        }
+    }
+
     const dispatch = useAppDispatch();
 
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
-        dispatch(loginUser(userForm));
+        // dispatch(loginUser(userForm));
+        loginUser(userForm);
         const country = JSON.parse(localStorage.getItem("country"));
         console.log(country);
         if( country !== null){

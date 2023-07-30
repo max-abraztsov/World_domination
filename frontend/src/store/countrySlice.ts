@@ -1,166 +1,140 @@
+import axios from "axios";
 import {createSlice, PayloadAction, createAsyncThunk} from "@reduxjs/toolkit";
 import { ICountriesPublicInfo, ICountry, IForm, IDonat } from "../types/types";
+import { useAppDispatch } from "../hook";
 import CSS from "csstype"
 
-const initialStateCountry: ICountry = JSON.parse(localStorage.getItem("country"));
 
-// const initialStateCountry: ICountry = {
-//     is_president: false,
-//     round: 2,
-//     country: "",
-//     flag_photo: "",
-//     budget: 0,
-//     ecology: 0,
-//     average_live_level: 0,
-//     nuclear_technology: false,
-//     rockets: 0,
-//     cities: [ 
-//         {
-//             photo: "",
-//             city_name: "",
-//             live_level: 0,
-//             progress: 0,
-//             profit: 0,  
-//             shield: false,  
-//             state: true,
-//         },
-//     ],
-//     enemies: [
-//         {   
-//             country: "",
-//             sanctions: false,
-//             sanctions_from: false,
-//             cities: [
-//                 {
-//                     city_name: "",
-//                     state: true, 
-//                 },
-//                 {
-//                     city_name: "",
-//                     state: true,
-//                 },
-//                 {
-//                     city_name: "",
-//                     state: true, 
-//                 },
-//                 {
-//                     city_name: "",
-//                     state: true, 
-//                 },
-//             ],
-//         },
-//     ]
-// }
+const initialStateCountry: ICountry = {
+    is_president: false,
+    round: 0,
+    country: "",
+    flag_photo: "",
+    budget: 0,
+    ecology: 0,
+    average_live_level: 0,
+    nuclear_technology: false,
+    rockets: 0,
+    cities: [ 
+        {
+            photo: "",
+            city_name: "",
+            live_level: 0,
+            progress: 0,
+            profit: 0,  
+            shield: false,  
+            state: true,
+        },
+        {
+            photo: "",
+            city_name: "",
+            live_level: 0,
+            progress: 0,
+            profit: 0,  
+            shield: false,  
+            state: true,
+        },
+        {
+            photo: "",
+            city_name: "",
+            live_level: 0,
+            progress: 0,
+            profit: 0,  
+            shield: false,  
+            state: true,
+        },
+        {
+            photo: "",
+            city_name: "",
+            live_level: 0,
+            progress: 0,
+            profit: 0,  
+            shield: false,  
+            state: true,
+        },
+    ],
+    enemies: [
+        {   
+            country: "",
+            sanctions: false,
+            sanctions_from: false,
+            cities: [
+                {
+                    city_name: "",
+                    state: true, 
+                },
+                {
+                    city_name: "",
+                    state: true,
+                },
+                {
+                    city_name: "",
+                    state: true, 
+                },
+                {
+                    city_name: "",
+                    state: true, 
+                },
+            ],
+        },
+    ]
+}
 
 const formResult: IForm = {
-    round: initialStateCountry.round,
-    country: initialStateCountry.country,
-    nuclear_technology: initialStateCountry.nuclear_technology,
+    round: 0,
+    country: "",
+    nuclear_technology: false,
     ecology: false,
-    budget: initialStateCountry.budget,
-    rockets: initialStateCountry.rockets,
+    budget: 0,
+    rockets: 0,
     rocket_order: 0,
     cities: [
         {
-            city_name: initialStateCountry.cities[0].city_name,
+            city_name: "",
             develop: false,
-            shield: initialStateCountry.cities[0].shield,
+            shield: false,
         },
         {
-            city_name: initialStateCountry.cities[1].city_name,
+            city_name: "",
             develop: false,
-            shield: initialStateCountry.cities[1].shield,
+            shield: false,
         },
         {
-            city_name: initialStateCountry.cities[2].city_name,
+            city_name: "",
             develop: false,
-            shield: initialStateCountry.cities[2].shield,
+            shield: false,
         },
         {
-            city_name: initialStateCountry.cities[3].city_name,
+            city_name: "",
             develop: false,
-            shield: initialStateCountry.cities[3].shield,
+            shield: false,
         },
     ],
     enemies: [
         {
-            country: initialStateCountry.enemies[0].country,
-            sanctions: initialStateCountry.enemies[0].sanctions,
-            sanctions_from: initialStateCountry.enemies[0].sanctions_from,
+            country: "",
+            sanctions: false,
+            sanctions_from: false,
             cities: [
                 {
-                    city_name: initialStateCountry.enemies[0].cities[0].city_name,
+                    city_name: "",
                     is_attacked: false,
-                    state: initialStateCountry.enemies[0].cities[0].state, 
+                    state: false, 
                 },
                 {
-                    city_name: initialStateCountry.enemies[0].cities[1].city_name,
+                    city_name: "",
                     is_attacked: false,
-                    state: initialStateCountry.enemies[0].cities[1].state,
+                    state: false,
                 },
                 {
-                    city_name: initialStateCountry.enemies[0].cities[2].city_name,
+                    city_name: "",
                     is_attacked: false,
-                    state: initialStateCountry.enemies[0].cities[2].state, 
+                    state: false, 
                 },
                 {
-                    city_name: initialStateCountry.enemies[0].cities[3].city_name,
+                    city_name: "",
                     is_attacked: false,
-                    state: initialStateCountry.enemies[0].cities[3].state, 
-                },
-            ],
-        },
-        {
-            country: initialStateCountry.enemies[1].country,
-            sanctions: initialStateCountry.enemies[1].sanctions,
-            sanctions_from: initialStateCountry.enemies[1].sanctions_from,
-            cities: [
-                {
-                    city_name: initialStateCountry.enemies[1].cities[0].city_name,
-                    is_attacked: false,
-                    state: initialStateCountry.enemies[1].cities[0].state, 
-                },
-                {
-                    city_name: initialStateCountry.enemies[1].cities[1].city_name,
-                    is_attacked: false,
-                    state: initialStateCountry.enemies[1].cities[1].state,
-                },
-                {
-                    city_name: initialStateCountry.enemies[1].cities[2].city_name,
-                    is_attacked: false,
-                    state: initialStateCountry.enemies[1].cities[2].state, 
-                },
-                {
-                    city_name: initialStateCountry.enemies[1].cities[3].city_name,
-                    is_attacked: false,
-                    state: initialStateCountry.enemies[1].cities[3].state, 
-                },
-            ],
-        },
-        {
-            country: initialStateCountry.enemies[2].country,
-            sanctions: initialStateCountry.enemies[2].sanctions,
-            sanctions_from: initialStateCountry.enemies[2].sanctions_from,
-            cities: [
-                {
-                    city_name: initialStateCountry.enemies[2].cities[0].city_name,
-                    is_attacked: false,
-                    state: initialStateCountry.enemies[2].cities[0].state, 
-                },
-                {
-                    city_name: initialStateCountry.enemies[2].cities[1].city_name,
-                    is_attacked: false,
-                    state: initialStateCountry.enemies[2].cities[1].state,
-                },
-                {
-                    city_name: initialStateCountry.enemies[2].cities[2].city_name,
-                    is_attacked: false,
-                    state: initialStateCountry.enemies[2].cities[2].state, 
-                },
-                {
-                    city_name: initialStateCountry.enemies[2].cities[3].city_name,
-                    is_attacked: false,
-                    state: initialStateCountry.enemies[2].cities[3].state, 
+                    state: false, 
                 },
             ],
         },
@@ -171,6 +145,12 @@ const formResult: IForm = {
         amount: 0,
     },
 };
+
+
+
+
+
+
 
 const countrySlice = createSlice({
     name: "country",
@@ -222,7 +202,7 @@ const coutriesPublicInfoSlice = createSlice({
     name: "countriesPublic",
     initialState: initialStateCountriesPublic,
     reducers: {
-        updateCountriesPublicInfo(state, action: PayloadAction<{ new: ICountriesPublicInfo }>) {
+        updateCountriesPublicInfo(state , action: PayloadAction<{ new: ICountriesPublicInfo }>) {       
          return action.payload.new;
         }
     },
@@ -286,6 +266,10 @@ const formSlice = createSlice({
             state.rocket_order = action.payload.order;
             state.budget = state.budget - (state.rocket_order * 150);
         },
+        updateFormInfo(state, action: PayloadAction<{update: IForm}>){
+            return action.payload.update;
+        },
+        
     },
 });
 
@@ -301,6 +285,7 @@ export const
     toggleSanctionCheckbox,
     donatFromBudget,
     toggleRocketOrder,
+    updateFormInfo,
 } = formSlice.actions;
 
 export default {
