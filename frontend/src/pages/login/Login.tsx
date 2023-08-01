@@ -5,6 +5,7 @@ import { useAppDispatch, useAppSelector } from '../../hook';
 import { loginUser } from '../../store/auth/actionCreators';
 import { updateCountryInfo } from '../../store/countrySlice';
 import { toggleLogged } from '../../store/loginSlice';
+import { useNavigate } from 'react-router-dom';
 
 //import { withRouter, RouteComponentProps, useHistory } from 'react-router-dom';
 
@@ -19,6 +20,8 @@ const Login: FC = () => {
     const country = useAppSelector(state => state.country);
 
     // const history = useHistory();
+    const dispatch = useAppDispatch();
+    const navigate = useNavigate();
 
     const [userForm, setUserForm] = useState<UserProps>({
         logincode: "",
@@ -44,6 +47,7 @@ const Login: FC = () => {
             console.log(localStorage.getItem("country"));
             dispatch(updateCountryInfo({neww: JSON.parse(localStorage.getItem("country"))}));
             await console.log(country);
+            navigate("/country");
             return response;
         } catch (error) {
             if (axios.isAxiosError(error)) {
@@ -56,7 +60,6 @@ const Login: FC = () => {
         }
     }
 
-    const dispatch = useAppDispatch();
 
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();

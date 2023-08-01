@@ -188,7 +188,7 @@
 }
 
 /* Fire Button ---------------------------------- */
-.fire__button{
+/* .fire__button{
     border: none;
     background-color:transparent;
     position: relative;
@@ -210,7 +210,7 @@
 .fire__button:active .fire__top{
     top:calc(50% - 16px);  
     transition: .2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
+} */
 
 /* ---------------------------------------------- */
 
@@ -436,6 +436,10 @@
     display: none;
 }
 
+.desktop__button{
+    display: block;
+}
+
 @media (max-width: 1060px){
     .country__table{
         flex-direction: column;
@@ -447,7 +451,10 @@
         margin: 30px auto;
         width: 100%;
     }
-    .country__print .fire__button{
+    /* .country__print .fire__button{
+        display: none;
+    } */
+    .desktop__button{
         display: none;
     }
     .mobile__button{

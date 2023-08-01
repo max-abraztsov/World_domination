@@ -16,10 +16,11 @@ import Counter from '../../components/counter/Counter';
 import Printer from '../../components/Printer/Printer';
 import BarChart from '../../components/UI/charts/BarChart';
 import GrowthChart from '../../components/UI/charts/GrowthChart';
+import { generateDefaultForm } from '../../store/defaultValue';
+import { useNavigate } from 'react-router-dom';
+import NuclearButton from '../../components/UI/nuclearButton/NuclearButton';
 
 import bomb from "../../assets/rocket-counter.svg"
-import ButtonBottom from "./../../assets/button-fire.png"
-import FireTop from "./../../assets/fire-top.png"
 import Pen from "./../../assets/Pen.svg"
 
 interface CountryProps{
@@ -34,6 +35,7 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
     const countriesPublic = useAppSelector(state => state.countriesPublic);
 
     const dispatch = useAppDispatch();
+    const navigate = useNavigate();
 
     const getColorByValue = (value: number | null): string | null => {
         if (value != null && value <= 35) {
@@ -52,126 +54,14 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
 
     useEffect(() => {
         getOtherInfo();
-        if(country !== null){
-            dispatch(updateFormInfo({update: { 
-                round: country.round ,
-                country: country.country ,
-                nuclear_technology: country.nuclear_technology,
-                ecology: false,
-                budget: country.budget,
-                rockets: country.rockets,
-                rocket_order: 0,
-                cities: [
-                    {
-                        city_name: country.cities[0].city_name,
-                        develop: false,
-                        shield: country.cities[0].shield,
-                    },
-                    {
-                        city_name: country.cities[1].city_name,
-                        develop: false,
-                        shield: country.cities[1].shield,
-                    },
-                    {
-                        city_name: country.cities[2].city_name,
-                        develop: false,
-                        shield: country.cities[2].shield,
-                    },
-                    {
-                        city_name: country.cities[3].city_name,
-                        develop: false,
-                        shield: country.cities[3].shield,
-                    },
-                ],
-                enemies: [
-                    {
-                        country: country.enemies[0].country,
-                        sanctions: country.enemies[0].sanctions,
-                        sanctions_from: country.enemies[0].sanctions_from,
-                        cities: [
-                            {
-                                city_name: country.enemies[0].cities[0].city_name,
-                                is_attacked: false,
-                                state: country.enemies[0].cities[0].state, 
-                            },
-                            {
-                                city_name: country.enemies[0].cities[1].city_name,
-                                is_attacked: false,
-                                state: country.enemies[0].cities[1].state,
-                            },
-                            {
-                                city_name: country.enemies[0].cities[2].city_name,
-                                is_attacked: false,
-                                state: country.enemies[0].cities[2].state, 
-                            },
-                            {
-                                city_name: country.enemies[0].cities[3].city_name,
-                                is_attacked: false,
-                                state: country.enemies[0].cities[3].state, 
-                            },
-                        ],
-                    },
-                    {
-                        country: country.enemies[1].country,
-                        sanctions: country.enemies[1].sanctions,
-                        sanctions_from: country.enemies[1].sanctions_from,
-                        cities: [
-                            {
-                                city_name: country.enemies[1].cities[0].city_name,
-                                is_attacked: false,
-                                state: country.enemies[1].cities[0].state, 
-                            },
-                            {
-                                city_name: country.enemies[1].cities[1].city_name,
-                                is_attacked: false,
-                                state: country.enemies[1].cities[1].state,
-                            },
-                            {
-                                city_name: country.enemies[1].cities[2].city_name,
-                                is_attacked: false,
-                                state: country.enemies[1].cities[2].state, 
-                            },
-                            {
-                                city_name: country.enemies[1].cities[3].city_name,
-                                is_attacked: false,
-                                state: country.enemies[1].cities[3].state, 
-                            },
-                        ],
-                    },
-                    {
-                        country: country.enemies[2].country,
-                        sanctions: country.enemies[2].sanctions,
-                        sanctions_from: country.enemies[2].sanctions_from,
-                        cities: [
-                            {
-                                city_name: country.enemies[2].cities[0].city_name,
-                                is_attacked: false,
-                                state: country.enemies[2].cities[0].state, 
-                            },
-                            {
-                                city_name: country.enemies[2].cities[1].city_name,
-                                is_attacked: false,
-                                state: country.enemies[2].cities[1].state,
-                            },
-                            {
-                                city_name: country.enemies[2].cities[2].city_name,
-                                is_attacked: false,
-                                state: country.enemies[2].cities[2].state, 
-                            },
-                            {
-                                city_name: country.enemies[2].cities[3].city_name,
-                                is_attacked: false,
-                                state: country.enemies[2].cities[3].state, 
-                            },
-                        ],
-                    },
-                ],
-                donate: {
-                    from: "",
-                    to: "",
-                    amount: 0,
-                },
-            }}))
+        const countryLocalStorage = localStorage.getItem("country");
+        if (countryLocalStorage !== null && localStorage.getItem("authenticated")){
+            dispatch(updateCountryInfo({neww: JSON.parse(countryLocalStorage)}));
+            dispatch(updateFormInfo({update: generateDefaultForm(JSON.parse(countryLocalStorage))}));
+        } else if(countryLocalStorage === null && localStorage.getItem("authenticated")){
+            clarifyCountryInfo();
+        } else {
+            console.log("Error");
         }
     }, []); 
 
@@ -204,11 +94,28 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
         console.log(chartData, metricData);
     }, [countriesPublic]);
 
-
-     const clickHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const clickHandler = (e: React.MouseEvent<HTMLButtonElement>): void => {
         console.log(form);
         e.preventDefault();
         postForm();
+    }
+
+    async function clarifyCountryInfo(){
+        try {
+            const response = await axios.post("http://127.0.0.1:8000/login_page", {authenticated: true});
+            localStorage.setItem("country", JSON.stringify(response.data));
+            dispatch(updateCountryInfo({neww: JSON.parse(response.data)}));
+            dispatch(updateFormInfo({update: generateDefaultForm(response.data)}));
+            return response;
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                console.log('error message: ', error.message);
+                return error.message;
+            } else {
+                console.log('unexpected error: ', error);
+                return 'An unexpected error occurred';
+            }
+        }
     }
 
     async function getOtherInfo(){
@@ -216,7 +123,6 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
             const response = await axios.post("http://127.0.0.1:8000/general_data", form);
             console.log(response.data);
             dispatch(updateCountriesPublicInfo({new: response.data}));
-            // localStorage.setItem("other", JSON.stringify(response));
             return response;
         } catch (error) {
             if (axios.isAxiosError(error)) {
@@ -234,7 +140,7 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
             const response = await axios.post("http://127.0.0.1:8000/round_end", form);
             console.log(response.data);
             localStorage.setItem("country", JSON.stringify(response.data));
-            dispatch(updateCountryInfo({neww: JSON.parse(localStorage.getItem("country"))}));
+            dispatch(updateCountryInfo({neww: response.data}));
             dispatch(updateFormInfo({update: response.data}));
             return response;
         } catch (error) {
@@ -283,6 +189,8 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
 
     
     return (
+        <div>
+        {country != null && country.country != "" ? (
         <div className={cl.country}>
             <div className={cl.container}>
                 <div className={cl.country__table}>  
@@ -291,13 +199,13 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
                             <div>
                                 <Printer />
                                 <div id={cl.pen}>
-                                    <img src={Pen} />
+                                    <img src={Pen}/>
                                 </div>
-                            </div>                     
-                            <button style={buttonPosition} className={cl.fire__button} onClick={clickHandler} type="submit">
-                                <img src={ButtonBottom} alt="button fire" />
-                                <img className={cl.fire__top} src={FireTop}></img>
-                            </button>                                                                  
+                            </div> 
+                            <div className={cl.desktop__button}>
+                                <NuclearButton onClick={clickHandler} /> 
+                            </div>                    
+                                                                                             
                         </section>  
                     ):(
                         <div></div>
@@ -320,17 +228,17 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
                                     </div> 
                                 )}
                                 <div className={cl.countries__information}>
-                                    {countriesPublic.countries && countriesPublic         .countries.map( (country, index) => 
-                                        <div className={cl.countries__country} key={country.country}>
+                                    {countriesPublic.countries && countriesPublic.countries.map( (country, index) => 
+                                        <div className={cl.countries__country} key={`${country.country }-${index}`}>
                                             <div> 
                                                 <h3 className={cl.countries__name}>{country.country}</h3>
                                             </div>
                                             <div className={cl.countries__cities}>
                                                 { country.cities.map((city, index) => 
-                                                city.state ? (
-                                                    <p className={cl.countries__city} key={city.city_name}>{city.city_name}: {city.live_level}%</p>
+                                                city.state  ? (
+                                                    <p className={cl.countries__city} key={`${city.city_name}-r${index}`}>{city.city_name}: {city.live_level}%</p>
                                                 ) : (
-                                                    <p className={cl.countries__city} key={city.city_name}>
+                                                    <p className={cl.countries__city} key={`${city.city_name}-r${index}`}>
                                                         {city.city_name}: <img className={cl.city__destoyed} src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Cross_red_circle.svg/800px-Cross_red_circle.svg.png" alt="cross" />
                                                     </p> 
                                                 )
@@ -353,6 +261,7 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
                                     <h2 className={cl.country__name}>{country.country}</h2>
                                 </div>
                                 <div className={cl.country__metrics}>
+                                    <Metric indicator={"Round"} index={country.round} />
                                     <Metric indicator={"Average live level"} index={country.average_live_level} unit={"%"} />
                                     <Metric indicator={"Ecology"} index={country.ecology} unit={"%"}/>
                                     <Metric indicator={"Budget"} index={form.budget} unit={"$"} width={"65px"}/>
@@ -365,7 +274,7 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
                                         {country.cities.map((item, index) => 
                                             <City 
                                                 budget={form.budget}
-                                                key={`${item.city_name}${index}`}
+                                                key={`${item.city_name}${item.photo}`}
                                                 city={item} 
                                                 id={index} 
                                                 isPresident={country.is_president}
@@ -383,10 +292,17 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
                                                 toggleStatus={() => dispatch(toggleNuclearStatus({ status: form.nuclear_technology, price: 500}))} 
                                                 checked={country.nuclear_technology}
                                             >Develop nuclear program (500$)</Checkbox>
-                                            <div style={{marginTop: "10px"}}></div>
-                                            <PartitionTitle title="Order nuclear rockets" text="The ordered rockets will not appear in the arsenal until next round"/>
-                                            <Counter/> 
-                                            <div style={{marginTop: "10px"}}></div>                 
+                                           
+                                            {country.nuclear_technology ? (
+                                                <div>
+                                                    <div style={{marginTop: "10px"}}></div>
+                                                    <PartitionTitle title="Order nuclear rockets" text="The ordered rockets will not appear in the arsenal until next round"/>
+                                                    <Counter/> 
+                                                    <div style={{marginTop: "10px"}}></div>
+                                                </div> 
+                                            ) : (
+                                                <div></div>
+                                            )}               
                                         </div>
                                         <div className={cl.section__column}>
                                             <PartitionTitle  title="Ecology" text="Investing in the environment will help improve living standards not only in your country, but also on the planet"/>
@@ -435,7 +351,7 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
                                                 <PartitionTitle  title="Introduction of sanctions" text="Select the country to sanction. If sanctions are imposed, the country will lose part of its income. But note that this may affect relations with that country"/>
                                                 { form.enemies.map((enemy, index) => 
                                                     <SanctionCheckbox 
-                                                    key={`${enemy.country}${index}`}
+                                                    key={`${enemy.country}-${index}`}
                                                     checked={enemy.sanctions}
                                                     toggleStatus={() => dispatch(toggleSanctionCheckbox({status: form.enemies[index].sanctions, index: index}))}
                                                     >{enemy.country}</SanctionCheckbox> 
@@ -473,6 +389,12 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
                     </section>
                     ) : country ? ( // For simple users
                     <section style={{margin: "40px auto"}} className={cl.country__documents}>
+
+
+
+
+
+
                         <section style={{background: pagesColors.other, zIndex: pageState }}  className={cl.country__other}>
                             <div className={otherBookmarkColorStyle.join(" ")}> 
                                 <div onClick={otherMain} className={cl.bookmark__text}>
@@ -490,16 +412,16 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
                                 )}
                                 <div className={cl.countries__information}>
                                     {countriesPublic.countries.map( (country, index) => 
-                                        <div className={cl.countries__country} key={country.country}>
+                                        <div className={cl.countries__country} key={`${country.country }-${index}`}>
                                             <div> 
                                                 <h3 className={cl.countries__name}>{country.country}</h3>
                                             </div>
                                             <div className={cl.countries__cities}>
                                                 { country.cities.map((city, index) => 
                                                 city.state ? (
-                                                    <p className={cl.countries__city} key={city.city_name}>{city.city_name}: {city.live_level}%</p>
+                                                    <p className={cl.countries__city} key={`${city.city_name}-r${index}`}>{city.city_name}: {city.live_level}%</p>
                                                 ) : (
-                                                    <p className={cl.countries__city} key={city.city_name}>
+                                                    <p className={cl.countries__city} key={`${city.city_name}-r${index}`}>
                                                         {city.city_name}: <img className={cl.city__destoyed} src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Cross_red_circle.svg/800px-Cross_red_circle.svg.png" alt="cross" />
                                                     </p> 
                                                 )
@@ -535,7 +457,7 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
                                         {country.cities.map((item, index) => 
                                             <City 
                                                 budget={form.budget}
-                                                key={`${item.city_name}${index}`} 
+                                                key={`${item.city_name}${item.photo}`} 
                                                 city={item} 
                                                 id={index}
                                                 isPresident={country.is_president}
@@ -591,7 +513,7 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
                                                 <PartitionTitle  title="Introduction of sanctions" text="Select the country to sanction. If sanctions are imposed, the country will lose part of its income. But note that this may affect relations with that country"/>
                                                 { form.enemies.map((enemy, index) => 
                                                     <SanctionCheckbox 
-                                                    key={`${enemy.country}${index}`}
+                                                    key={`${enemy.country}-${index}`}
                                                     checked={enemy.sanctions}
                                                     toggleStatus={() => dispatch(toggleSanctionCheckbox({status: form.enemies[index].sanctions, index: index}))}
                                                     >{enemy.country}</SanctionCheckbox> 
@@ -618,19 +540,18 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
                             </section>
                         </section>
                     </section>                       
-                    ) : ( <div></div>)}
+                    ) : (<div></div>)}
                     {country && country.is_president ? (
                         <div className={cl.mobile__button}>
-                            <button style={buttonPosition} className={cl.fire__button} onClick={clickHandler} type="submit">
-                            <img src={ButtonBottom} alt="button fire" />
-                            <img className={cl.fire__top} src={FireTop}></img>
-                        </button>
+                            <NuclearButton onClick={clickHandler} /> 
                         </div>
-                    ) : (
-                        <div></div>
-                    )}
+                    ) : (<div></div>)}
                 </div>
             </div>
+        </div>
+        ) : (
+            <div></div>
+        )}
         </div>
     );
 };

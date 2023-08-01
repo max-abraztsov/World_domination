@@ -19,19 +19,6 @@ function App() {
   const form = useAppSelector(state => state.form);
   const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    console.log(country, form);
-    console.log(1);
-    if (localStorage.getItem("authenticated") === "true"){
-      dispatch(toggleLogged({status: true}));
-    } else if (localStorage.getItem("authenticated") === null || localStorage.getItem("authenticated") === "false"){
-      dispatch(toggleLogged({status: false}));
-      localStorage.setItem("authenticated", "false");
-    } else {
-      console.log("Error");
-    }
-  }, []);
-
   return (
     <BrowserRouter>
       <Navigation/>
