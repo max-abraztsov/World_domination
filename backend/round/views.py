@@ -94,9 +94,11 @@ def calculations(request_data):
     for enemy in enemies:
         if enemy['sanctions'] == True:
             country_under_sanction = country.objects.filter(CountryName=enemy['country']).values('id')
-            new_sanction = sanction(sanctionFrom_id = Country.id, sanctionFor_id = country_under_sanction[0]['id'])
-            new_sanction.save()
-            print("Add sanctions")
+            if_sanction_exist = sanction(sanctionFrom_id = Country.id, sanctionFor_id = country_under_sanction[0]['id'])
+            if if_sanction_exist == None:
+                new_sanction = sanction(sanctionFrom_id = Country.id, sanctionFor_id = country_under_sanction[0]['id'])
+                new_sanction.save()
+                print("Add sanctions")
     
                 
             
@@ -164,7 +166,7 @@ def calculations(request_data):
             Country.NuclearTechnology = nuclear_technology
             print("Set nuclear technology on True")
         Country.NuclearRockets += nuclear_rockets
-        print("Upgrade order rockets on " + strt(nuclear_rockets))
+        print("Upgrade order rockets on " + str(nuclear_rockets))
         cost += nuclear_rockets * 150
         if cost > Country.Budget:
             response_data = forms_check(request_data_show)
