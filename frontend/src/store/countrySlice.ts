@@ -25,33 +25,6 @@ const initialStateCountry: ICountry = {
             shield: false,  
             state: true,
         },
-        {
-            photo: "",
-            city_name: "",
-            live_level: 0,
-            progress: 0,
-            profit: 0,  
-            shield: false,  
-            state: true,
-        },
-        {
-            photo: "",
-            city_name: "",
-            live_level: 0,
-            progress: 0,
-            profit: 0,  
-            shield: false,  
-            state: true,
-        },
-        {
-            photo: "",
-            city_name: "",
-            live_level: 0,
-            progress: 0,
-            profit: 0,  
-            shield: false,  
-            state: true,
-        },
     ],
     enemies: [
         {   
@@ -137,6 +110,7 @@ const formResult: IForm = {
                     state: false, 
                 },
             ],
+            
         },
     ],
     donate: {

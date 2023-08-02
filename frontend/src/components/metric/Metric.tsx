@@ -4,7 +4,7 @@ import cl from "./Metric.module.css"
 interface MetricProps{
     indicator: string,
     index: number,
-    unit: string,
+    unit?: string,
     width?: string;
 }
 
