@@ -123,7 +123,7 @@
 }
 
 .form_control input {
-    background-color: transparent;
+    background-color: transparent !important;
     border: 0;
     border-bottom: 2px #fff solid;
     display: block;
@@ -137,6 +137,7 @@
 .form_control input:valid {
     outline: 0;
     border-bottom-color: lightblue;
+    background-color: transparent !important;
 }
 
 .form_control label {
@@ -158,4 +159,8 @@
 .form_control input:valid+label span {
     color: lightblue;
     transform: translateY(-30px);
+}
+
+.form_control input:-internal-autofill-selected {
+    height:20px ;
 }

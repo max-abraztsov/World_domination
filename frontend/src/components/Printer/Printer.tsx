@@ -18,14 +18,17 @@ const Printer: FC = () => {
 
     function donate(e: React.MouseEvent<HTMLButtonElement>){
         e.preventDefault();
-        dispatch(donatFromBudget({amount: donateForm.amount, countryTo: donateForm.to}));
-        console.log(donateForm);
-        setAnimation(true);
-        setTimeout(() => {
-            setDonateForm({ to: "", amount: 0, });
-            setAnimation(false);
-        }, 3000);
-        
+        if (donateForm.amount && donateForm.to){
+            dispatch(donatFromBudget({amount: donateForm.amount, countryTo: donateForm.to}));
+            console.log(donateForm);
+            setAnimation(true);
+            setTimeout(() => {
+                setDonateForm({ to: "", amount: 0, });
+                setAnimation(false);
+            }, 3000);
+        } else {
+            setDonateForm({to: "", amount: 0,});
+        }
     }
 
     function handleChangeAmount(e: React.ChangeEvent<HTMLInputElement>) {

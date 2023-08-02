@@ -4,6 +4,7 @@ import { useAppSelector, useAppDispatch } from './../../../hook';
 import { toggleLogged } from '../../../store/loginSlice';
 import cl from "./Navigation.module.css"
 import { useNavigate, useLocation } from 'react-router-dom';
+import Logout from '../logout/Logout';
 
 
 
@@ -55,18 +56,17 @@ const Navigation: FC = () => {
         <nav className={cl.navigation}
         style={{ backgroundColor: `rgba(20, 22, 68, ${scrollOpacity})` }}>
             <ul className={cl.navigation__links}>
-                <Link className={cl.navigation__link} to="/">Home</Link>
                 {login.is_logged_in ? (
-                    <div>
-                        <Link className={cl.navigation__link} to="/country">Your country</Link>
-                        
+                    <div className={cl.navigation__links}>
+                        {/* <Link className={cl.navigation__link} to="/country">Your country</Link> */}
+                        <Link className={cl.navigation__link} to="/"><Logout /></Link>
                     </div>
-                    
-
                 ) : (
-                    <Link className={cl.navigation__link} to="/login">Sign in</Link>
+                    <div className={cl.navigation__links}>
+                        <Link className={cl.navigation__link} to="/">Home</Link>
+                        <Link className={cl.navigation__link} to="/login">Sign in</Link>
+                    </div>
                 )}
-                {/* <Link className={cl.navigation__link} to="/wd-admin">Admin</Link> */}
             </ul>
         </nav>
     );

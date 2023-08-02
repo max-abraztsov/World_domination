@@ -19,7 +19,6 @@ const Login: FC = () => {
     const login = useAppSelector(state => state.status);
     const country = useAppSelector(state => state.country);
 
-    // const history = useHistory();
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
@@ -45,7 +44,7 @@ const Login: FC = () => {
             localStorage.setItem("authenticated", "true");
             localStorage.setItem("country", JSON.stringify(response.data));
             console.log(localStorage.getItem("country"));
-            dispatch(updateCountryInfo({neww: JSON.parse(localStorage.getItem("country"))}));
+            dispatch(updateCountryInfo({neww: response.data}));
             await console.log(country);
             navigate("/country");
             return response;
@@ -63,13 +62,7 @@ const Login: FC = () => {
 
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
-        // dispatch(loginUser(userForm));
         loginUser(userForm);
-        const country = JSON.parse(localStorage.getItem("country"));
-        console.log(country);
-        if( country !== null){
-            dispatch(updateCountryInfo(country.country));
-        }  
     }
 
     return (
@@ -79,7 +72,7 @@ const Login: FC = () => {
                 <p className={cl.login__text}>Login to continue using the app</p>
                 <div className={cl.login__container}>
                     <div className={cl.form_control}>
-                        <input 
+                        <input style={{backgroundColor: "rgba(6, 7, 22, 0) !important"}} 
                             className={cl.login__input}
                             onChange={changeLogin} 
                             type="text" 
