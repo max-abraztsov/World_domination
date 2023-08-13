@@ -4,7 +4,7 @@ import axios from 'axios';
 import {FC, useState, useEffect } from 'react';
 import { ICountry } from '../../types/types';
 import { useAppSelector, useAppDispatch } from '../../hook';
-import { toggleNuclearStatus, toggleEcologyDevelop, toggleEnemyCheckbox,toggleSanctionCheckbox, updateCountriesPublicInfo, updateFormInfo, updateCountryInfo } from '../../store/countrySlice';
+import { toggleNuclearStatus, toggleEcologyDevelop, toggleEnemyCheckbox,toggleSanctionCheckbox, getOtherInfo, updateFormInfo, updateCountryInfo } from '../../store/countrySlice';
 import cl from "./Country.module.css"
 import City from '../../components/city/City';
 import Checkbox from '../../components/UI/checkbox/Checkbox';
@@ -32,10 +32,10 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
     const form = useAppSelector(state => state.form);
     let country = useAppSelector(state => state.country);
     if (forAdmin) country = forAdmin;
-    const countriesPublic = useAppSelector(state => state.countriesPublic);
+    const countriesPublic = useAppSelector(state => state.countriesPublic.initialStateCountriesPublic);
 
     const dispatch = useAppDispatch();
-    const navigate = useNavigate();
+    
 
     const getColorByValue = (value: number | null): string | null => {
         if (value != null && value <= 35) {
@@ -53,7 +53,7 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
     const [metricData, setMetricData] = useState({});
 
     useEffect(() => {
-        getOtherInfo();
+        dispatch(getOtherInfo(form));
         const countryLocalStorage = localStorage.getItem("country");
         if (countryLocalStorage !== null && localStorage.getItem("authenticated")){
             dispatch(updateCountryInfo({neww: JSON.parse(countryLocalStorage)}));
@@ -118,22 +118,22 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
         }
     }
 
-    async function getOtherInfo(){
-        try {
-            const response = await axios.post("http://127.0.0.1:8000/general_data", form);
-            console.log(response.data);
-            dispatch(updateCountriesPublicInfo({new: response.data}));
-            return response;
-        } catch (error) {
-            if (axios.isAxiosError(error)) {
-                console.log('error message: ', error.message);
-                return error.message;
-            } else {
-                console.log('unexpected error: ', error);
-                return 'An unexpected error occurred';
-            }
-        }
-    }
+    // async function getOtherInfo(){
+    //     try {
+    //         const response = await axios.post("http://127.0.0.1:8000/general_data", form);
+    //         console.log(response.data);
+    //         dispatch(updateCountriesPublicInfo({new: response.data}));
+    //         return response;
+    //     } catch (error) {
+    //         if (axios.isAxiosError(error)) {
+    //             console.log('error message: ', error.message);
+    //             return error.message;
+    //         } else {
+    //             console.log('unexpected error: ', error);
+    //             return 'An unexpected error occurred';
+    //         }
+    //     }
+    // }
 
     async function postForm(){
         try {

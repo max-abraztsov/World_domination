@@ -1,9 +1,8 @@
-import axios from "axios";
-import {createSlice, PayloadAction, createAsyncThunk} from "@reduxjs/toolkit";
+import axios, {Axios, AxiosResponse} from "axios";
+import { createSlice, PayloadAction, createAsyncThunk, AsyncThunk, AsyncThunkAction } from "@reduxjs/toolkit";
 import { ICountriesPublicInfo, ICountry, IForm, IDonat } from "../types/types";
 import { useAppDispatch } from "../hook";
 import CSS from "csstype"
-
 
 const initialStateCountry: ICountry = {
     is_president: false,
@@ -120,24 +119,6 @@ const formResult: IForm = {
     },
 };
 
-
-
-
-
-
-
-const countrySlice = createSlice({
-    name: "country",
-    initialState: initialStateCountry,
-    reducers: {
-        updateCountryInfo(state, action: PayloadAction<{neww: ICountry}>){
-            return action.payload.neww;
-        }
-    },
-});
-
-
-
 const initialStateCountriesPublic: ICountriesPublicInfo = {
     ecology: [
         { round: "Round 1", value: null },
@@ -172,14 +153,70 @@ const initialStateCountriesPublic: ICountriesPublicInfo = {
     ]
 }
 
-const coutriesPublicInfoSlice = createSlice({
-    name: "countriesPublic",
-    initialState: initialStateCountriesPublic,
+const countrySlice = createSlice({
+    name: "country",
+    initialState: initialStateCountry,
     reducers: {
-        updateCountriesPublicInfo(state , action: PayloadAction<{ new: ICountriesPublicInfo }>) {       
-         return action.payload.new;
+        updateCountryInfo(state, action: PayloadAction<{neww: ICountry}>){
+            return action.payload.neww;
         }
     },
+});
+
+export const getOtherInfo = createAsyncThunk<
+    ICountriesPublicInfo,
+    IForm,
+    {rejectValue: string}
+>(
+    'countriesPublic/getOtherInfo',
+    async function(form: IForm, {rejectWithValue}){
+        try {
+            const response = await axios.post<ICountriesPublicInfo>("http://127.0.0.1:8000/general_data", form);
+            console.log(response.data);
+            updateCountriesPublicInfo({new: response.data});
+            return response.data;
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                console.log('error message: ', error.message);
+                return rejectWithValue(error.message);
+            } else {
+                console.log('unexpected error: ', error);
+                return rejectWithValue('An unexpected error occurred');
+            }
+        }
+    }
+)
+
+type Status = 'loading' | 'resolved' | 'rejected' | null;
+
+const coutriesPublicInfoSlice = createSlice({
+    name: "countriesPublic",
+    initialState:{
+        initialStateCountriesPublic: {} as ICountriesPublicInfo,
+        status: null as Status,
+        error: null as string | null,
+    },
+    reducers: {
+        updateCountriesPublicInfo(state , action: PayloadAction<{ new: ICountriesPublicInfo }>) {       
+          state.initialStateCountriesPublic = action.payload.new;
+        }
+    },
+    extraReducers: (builder) =>  {
+        builder
+        .addCase(getOtherInfo.pending, (state) => {
+            state.status = "loading";
+            state.error = null;
+        })
+        .addCase(getOtherInfo.fulfilled, (state, action) => {
+            state.status = "resolved";
+            state.initialStateCountriesPublic = action.payload;
+            state.error = null;
+        })
+        .addCase(getOtherInfo.rejected, (state, action) => { 
+            state.status = "rejected";
+            state.error = action.meta.requestStatus; 
+        });
+    }
 })
 
 
