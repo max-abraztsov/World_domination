@@ -17,6 +17,7 @@ class attacked_cities(models.Model):
 class session(models.Model):
     forms_count = models.IntegerField()
     forms_max = models.IntegerField()
+    sended = models.BooleanField()
 
     class Meta:
         verbose_name_plural='Session'
