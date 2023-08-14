@@ -4,7 +4,17 @@ import axios from 'axios';
 import {FC, useState, useEffect } from 'react';
 import { ICountry } from '../../types/types';
 import { useAppSelector, useAppDispatch } from '../../hook';
-import { toggleNuclearStatus, toggleEcologyDevelop, toggleEnemyCheckbox,toggleSanctionCheckbox, getOtherInfo, updateFormInfo, updateCountryInfo } from '../../store/countrySlice';
+import { 
+    toggleNuclearStatus, 
+    toggleEcologyDevelop, 
+    toggleEnemyCheckbox,
+    toggleSanctionCheckbox, 
+    getOtherInfo, 
+    postForm,
+    clarifyCountryInfo, 
+    updateFormInfo, 
+    updateCountryInfo 
+} from '../../store/countrySlice';
 import cl from "./Country.module.css"
 import City from '../../components/city/City';
 import Checkbox from '../../components/UI/checkbox/Checkbox';
@@ -17,7 +27,6 @@ import Printer from '../../components/Printer/Printer';
 import BarChart from '../../components/UI/charts/BarChart';
 import GrowthChart from '../../components/UI/charts/GrowthChart';
 import { generateDefaultForm } from '../../store/defaultValue';
-import { useNavigate } from 'react-router-dom';
 import NuclearButton from '../../components/UI/nuclearButton/NuclearButton';
 
 import bomb from "../../assets/rocket-counter.svg"
@@ -29,8 +38,8 @@ interface CountryProps{
 
 const Country: FC<CountryProps> = ({forAdmin}) => {
 
-    const form = useAppSelector(state => state.form);
-    let country = useAppSelector(state => state.country);
+    const form = useAppSelector(state => state.form.formResult);
+    let country = useAppSelector(state => state.country.initialStateCountry);
     if (forAdmin) country = forAdmin;
     const countriesPublic = useAppSelector(state => state.countriesPublic.initialStateCountriesPublic);
 
@@ -59,7 +68,7 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
             dispatch(updateCountryInfo({neww: JSON.parse(countryLocalStorage)}));
             dispatch(updateFormInfo({update: generateDefaultForm(JSON.parse(countryLocalStorage))}));
         } else if(countryLocalStorage === null && localStorage.getItem("authenticated")){
-            clarifyCountryInfo();
+            dispatch(clarifyCountryInfo("Hello!"));
         } else {
             console.log("Error");
         }
@@ -97,26 +106,27 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
     const clickHandler = (e: React.MouseEvent<HTMLButtonElement>): void => {
         console.log(form);
         e.preventDefault();
-        postForm();
+        dispatch(postForm(form));
+        // postForm();
     }
 
-    async function clarifyCountryInfo(){
-        try {
-            const response = await axios.post("http://127.0.0.1:8000/login_page", {authenticated: true});
-            localStorage.setItem("country", JSON.stringify(response.data));
-            dispatch(updateCountryInfo({neww: JSON.parse(response.data)}));
-            dispatch(updateFormInfo({update: generateDefaultForm(response.data)}));
-            return response;
-        } catch (error) {
-            if (axios.isAxiosError(error)) {
-                console.log('error message: ', error.message);
-                return error.message;
-            } else {
-                console.log('unexpected error: ', error);
-                return 'An unexpected error occurred';
-            }
-        }
-    }
+    // async function clarifyCountryInfo(){
+    //     try {
+    //         const response = await axios.post("http://127.0.0.1:8000/login_page", {authenticated: true});
+    //         localStorage.setItem("country", JSON.stringify(response.data));
+    //         dispatch(updateCountryInfo({neww: JSON.parse(response.data)}));
+    //         dispatch(updateFormInfo({update: generateDefaultForm(response.data)}));
+    //         return response;
+    //     } catch (error) {
+    //         if (axios.isAxiosError(error)) {
+    //             console.log('error message: ', error.message);
+    //             return error.message;
+    //         } else {
+    //             console.log('unexpected error: ', error);
+    //             return 'An unexpected error occurred';
+    //         }
+    //     }
+    // }
 
     // async function getOtherInfo(){
     //     try {
@@ -135,27 +145,28 @@ const Country: FC<CountryProps> = ({forAdmin}) => {
     //     }
     // }
 
-    async function postForm(){
-        try {
-            console.log(form);
-            const response = await axios.post("http://127.0.0.1:8000/round_end", form);
-            console.log(response.data);
-            console.log(form);
-            localStorage.setItem("country", JSON.stringify(response.data));
-            dispatch(updateCountryInfo({neww: response.data}));
-            dispatch(updateFormInfo({update: response.data}));
-            console.log(form);
-            return response;
-        } catch (error) {
-            if (axios.isAxiosError(error)) {
-                console.log('error message: ', error.message);
-                return error.message;
-            } else {
-                console.log('unexpected error: ', error);
-                return 'An unexpected error occurred';
-            }
-        }
-    }
+    // async function postForm(){
+    //     try {
+    //         console.log(form);
+    //         const response = await axios.post("http://127.0.0.1:8000/round_end", form);
+    //         console.log(response.data);
+    //         console.log(form);
+    //         localStorage.setItem("country", JSON.stringify(response.data));
+    //         console.log("update");
+    //         dispatch(updateCountryInfo({neww: response.data}));
+    //         dispatch(updateFormInfo({update: response.data}));
+    //         console.log(form);
+    //         return response;
+    //     } catch (error) {
+    //         if (axios.isAxiosError(error)) {
+    //             console.log('error message: ', error.message);
+    //             return error.message;
+    //         } else {
+    //             console.log('unexpected error: ', error);
+    //             return 'An unexpected error occurred';
+    //         }
+    //     }
+    // }
 
     const [pageState, setPageState] = useState(1);
     const [otherBookmarkColorStyle, setOtherBookmarkColorStyle] = useState([cl.bookmark__grey, cl.bookmark__other]);
