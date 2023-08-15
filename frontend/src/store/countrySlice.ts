@@ -1,9 +1,7 @@
-import axios, {Axios, AxiosResponse} from "axios";
-import { createSlice, PayloadAction, createAsyncThunk, AsyncThunk, AsyncThunkAction } from "@reduxjs/toolkit";
-import { ICountriesPublicInfo, ICountry, IForm, IDonat } from "../types/types";
+import axios from "axios";
+import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
+import { ICountriesPublicInfo, ICountry, IForm } from "../types/types";
 import { generateDefaultForm } from "./defaultValue";
-import { useAppDispatch } from "../hook";
-import CSS from "csstype"
 
 type Status = 'loading' | 'resolved' | 'rejected' | null;
 
@@ -197,6 +195,7 @@ const countrySlice = createSlice({
         builder
         .addCase(clarifyCountryInfo.pending, (state) => {
             state.status = "loading";
+            console.log(state.status);
             state.error = null;
         })
         .addCase(clarifyCountryInfo.fulfilled, (state, action) => {
@@ -242,7 +241,7 @@ const coutriesPublicInfoSlice = createSlice({
         status: null as Status,
         error: null as string | null,
     },
-    reducers: {
+    reducers:{
         updateCountriesPublicInfo(state , action: PayloadAction<{ new: ICountriesPublicInfo }>) {       
           state.initialStateCountriesPublic = action.payload.new;
         }
@@ -277,11 +276,11 @@ export const postForm = createAsyncThunk<
             const response = await axios.post("http://127.0.0.1:8000/round_end", form);
             console.log(response.data);
             console.log(form);
-            localStorage.setItem("country", JSON.stringify(response.data));
+            await localStorage.setItem("country", JSON.stringify(response.data));
             console.log("update");
-            dispatch(updateCountryInfo({neww: response.data}));
-            dispatch(updateFormInfo({update: response.data}));
-            console.log(form);
+            await dispatch(updateCountryInfo({neww: response.data}));
+            await dispatch(updateFormInfo({update: response.data}));
+            console.log(form.cities[0].develop);
             return response.data;
         } catch (error) {
             if (axios.isAxiosError(error)) {
@@ -355,12 +354,14 @@ const formSlice = createSlice({
         },
         updateFormInfo(state, action: PayloadAction<{update: IForm}>){
             state.formResult = action.payload.update;
+            console.log(state.formResult);
         },  
     },
     extraReducers: (builder) =>  {
         builder
         .addCase(postForm.pending, (state) => {
             state.status = "loading";
+            console.log(state.status);
             state.error = null;
         })
         .addCase(postForm.fulfilled, (state, action) => {
