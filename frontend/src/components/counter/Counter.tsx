@@ -7,7 +7,7 @@ import {toggleRocketOrder} from '../../store/countrySlice';
 
 const Counter: FC = () => {
 
-    const form = useAppSelector(state => state.form);
+    const form = useAppSelector(state => state.form.formResult);
     const [possibleRocketLimit, setPossibleRocketLimit] = useState<number>(0);
     const dispatch = useAppDispatch();
 

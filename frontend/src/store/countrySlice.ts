@@ -51,7 +51,7 @@ const initialStateCountry: ICountry = {
             ],
         },
     ]
-}
+};
 
 const formResult: IForm = {
     round: 0,
@@ -152,7 +152,7 @@ const initialStateCountriesPublic: ICountriesPublicInfo = {
             ],
         },
     ]
-}
+};
 
 export const clarifyCountryInfo = createAsyncThunk<
     ICountry,
@@ -275,12 +275,9 @@ export const postForm = createAsyncThunk<
             console.log(form);
             const response = await axios.post("http://127.0.0.1:8000/round_end", form);
             console.log(response.data);
-            console.log(form);
-            await localStorage.setItem("country", JSON.stringify(response.data));
-            console.log("update");
-            await dispatch(updateCountryInfo({neww: response.data}));
-            await dispatch(updateFormInfo({update: response.data}));
-            console.log(form.cities[0].develop);
+            localStorage.setItem("country", JSON.stringify(response.data));
+            dispatch(updateCountryInfo({neww: response.data}));
+            dispatch(updateFormInfo({update: generateDefaultForm(response.data)}));
             return response.data;
         } catch (error) {
             if (axios.isAxiosError(error)) {

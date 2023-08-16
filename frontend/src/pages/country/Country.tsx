@@ -23,8 +23,6 @@ const Country: FC = () => {
 
     const form = useAppSelector(state => state.form.formResult);
     const country = useAppSelector(state => state.country.initialStateCountry);
-    // const countryStatus = useAppSelector(state => state.country.status);
-    // const {status, error} = useAppSelector(state => state.form);
     const countriesPublic = useAppSelector(state => state.countriesPublic.initialStateCountriesPublic);
 
     const dispatch = useAppDispatch();
@@ -94,17 +92,20 @@ const Country: FC = () => {
         await setIsSubmitting(true);
         try{
             await dispatch(postForm(form));
+            await dispatch(getOtherInfo(form));
+            await dispatch(updateFormInfo({update: generateDefaultForm(JSON.parse(localStorage.getItem("country")))}));
             await setIsSubmitting(false);
+            await console.log(country, form);
         } catch (error) {
             await setIsSubmitting(false);
         }
     }
     
-    const [buttonPosition, setButtonPosition] = useState({transform: "translateX(0px)", transition: ".4s"})
+    const [buttonPosition, setButtonPosition] = useState({transform: "translateX(-100vw)", transition: ".4s", display: "flex", justifyContent: "center"});
 
     useEffect(() => {
-        if(country.rockets > form.rockets) setButtonPosition({transform: "translateX(-100vw)", transition: ".4s"});
-        else setButtonPosition({transform: "translateX(100vw)", transition: ".4s"});   
+        if(country.rockets > form.rockets) setButtonPosition({ ...buttonPosition, transform: "translateX(0px)", transition: ".4s"});
+        else setButtonPosition({...buttonPosition, transform: "translateX(-100vw)", transition: ".4s"});
     }, [form.rockets]);  
 
     
@@ -130,7 +131,7 @@ const Country: FC = () => {
                                         </section>  
                                     ):(<div></div>)}
                                     {country && country.is_president ? (
-                                        <PresidentPage metricData={metricData} chartData={chartData} />
+                                        <PresidentPage metricData={metricData} chartData={chartData} clickHandler={clickHandler} />
                                     ) : country ? ( // For simple users
                                         <MinisterPage metricData={metricData} chartData={chartData} />                      
                                     ) : (<div></div>)}

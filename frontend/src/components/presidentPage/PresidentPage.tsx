@@ -15,7 +15,6 @@ import {
     toggleEcologyDevelop, 
     toggleEnemyCheckbox,
     toggleSanctionCheckbox,
-    postForm,
 } from '../../store/countrySlice';
 import bomb from "../../assets/rocket-counter.svg"
 
@@ -33,9 +32,10 @@ interface chartData {
 interface PresidentPageProps{
     metricData: chartData,
     chartData: chartData,
+    clickHandler: (e: React.MouseEvent<HTMLButtonElement>) => Promise<void>;
 }
 
-const PresidentPage: FC<PresidentPageProps> = ({metricData, chartData}) => {
+const PresidentPage: FC<PresidentPageProps> = ({metricData, chartData, clickHandler}) => {
     
     const form = useAppSelector(state => state.form.formResult);
     const country = useAppSelector(state => state.country.initialStateCountry);
@@ -68,14 +68,6 @@ const PresidentPage: FC<PresidentPageProps> = ({metricData, chartData}) => {
             setPagesColors({other: "#C1C1C1", your: "#fff"}); 
         }
     }
-
-    const clickHandler = (e: React.MouseEvent<HTMLButtonElement>): void => {
-        console.log(form);
-        e.preventDefault();
-        dispatch(postForm(form));
-    }
-
-    
 
     return (
         <section className={cl.country__documents}>
