@@ -53,6 +53,7 @@ This application was built using React and Django, and also utilizes the followi
 * vite.js 
 * jwt
 * json
+* timeout-decorator
 
 ## Contributing
 If you would like to contribute to this project, please feel free to fork this repository and submit a pull request.
