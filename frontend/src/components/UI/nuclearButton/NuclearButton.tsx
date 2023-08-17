@@ -10,8 +10,8 @@ interface NuclearButtonProps{
 
 const NuclearButton: FC<NuclearButtonProps> = ({onClick}) => {
 
-    const country = useAppSelector(state => state.country);
-    const form = useAppSelector(state => state.form);
+    const country = useAppSelector(state => state.country.initialStateCountry);
+    const form = useAppSelector(state => state.form.formResult);
 
     const [buttonPosition, setButtonPosition] = useState({transform: "translateX(-100vw)", transition: ".4s"})
 

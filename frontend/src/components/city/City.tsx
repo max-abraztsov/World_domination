@@ -16,8 +16,8 @@ interface CityProps{
 const City: FC<CityProps> = ({city, isPresident, id, budget}) => {
     
     const dispatch = useAppDispatch();
-    const form = useAppSelector(state => state.form);
-    const country = useAppSelector(state => state.country);
+    const form = useAppSelector(state => state.form.formResult);
+    const country = useAppSelector(state => state.country.initialStateCountry);
 
 
     if (city.state){

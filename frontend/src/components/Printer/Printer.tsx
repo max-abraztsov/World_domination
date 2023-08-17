@@ -8,7 +8,7 @@ import PrinterBottom from "./../../assets/print-bottom.svg"
 
 const Printer: FC = () => {
 
-    const form = useAppSelector(state => state.form);
+    const form = useAppSelector(state => state.form.formResult);
     const dispatch = useAppDispatch();
 
     const [donateForm, setDonateForm] = useState({
