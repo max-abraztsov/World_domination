@@ -48,7 +48,8 @@ def login_page(request):
             for one_city in city_list:
                 if (one_city['state']==True):
                     cities.append(one_city['live_level'])
-
+                else:
+                    cities.append(0)
             average_live_level = int(sum(cities)/len(cities))
 
             #ecology

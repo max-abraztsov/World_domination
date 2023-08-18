@@ -18,7 +18,6 @@ def generate_jwt_token(payload):
     return token
 '''
 
-
 def forms_check(request_data_show):
     country_name = request_data_show.get('country')
     new_round = request_data_show.get('new_round')
@@ -30,9 +29,6 @@ def forms_check(request_data_show):
         if Session.sended == True:
             if Session.forms_count == 1:
                 Session.sended = False
-                set_new_ecology.level = Session.eco_actual
-                Session.save()
-                set_new_ecology.save()
                 print("Set Session.sended = False")
             Session.forms_count -= 1
             Session.save()
@@ -41,11 +37,13 @@ def forms_check(request_data_show):
         else:
             if Session.forms_count == Session.forms_max:
                 Session.sended = True
+                set_new_ecology.level = Session.eco_actual
                 print("Find a last form: " + str(country_name) + " (all forms were sended)")
                 response_data = requests.post('http://127.0.0.1:8000/attack', json=request_data_show)
                 print(str(country_name) + ": attack is successfull")
                 Session.forms_count -= 1
                 Session.save()
+                set_new_ecology.save()
                 print(str(country_name) + ": session.forms_count -1")
                 break
             else:
@@ -65,22 +63,11 @@ def calculations(request_data):
     enemies = request_data.get('enemies')
     
     Country = country.objects.get(CountryName=country_name)
-    User = user.objects.get(country_id=Country.id)
+    User = user.objects.get(country_id=Country.id, role="president")
     Ecology = ecology.objects.get(round=Country.Round)
-    
     
     Session = session.objects.get(id=1)
     Session.forms_count += 1
-    '''
-    if Session.forms_count == 1:
-        set_new_ecology = ecology.objects.get(round=Country.Round+1)
-        set_new_ecology.level = Ecology.level
-        set_new_ecology.save()
-
-        actual_ecology = session.objects.get(id=1)
-        actual_ecology.eco_actual = set_new_ecology.level
-        actual_ecology.save()
-    '''
     Session.save()
     print(str(country_name) + ": session.forms_count is up +1")
 
@@ -97,12 +84,7 @@ def calculations(request_data):
                 add_db_city = attacked_cities(city_name_id=attack_city[0]['id'])
                 add_db_city.save()
                 print(str(enemy_city['city_name']) + " was added in attacked_cities")
-                '''
-                attacked_city = {
-                    'city_name': enemy_city['city_name']
-                }
-                attacked_cities_list.append(attacked_city)
-                '''
+                
 
     request_data_show = {
         'country': country_name,
@@ -133,7 +115,6 @@ def calculations(request_data):
     
                  
     #update info about all cities in country (shields, progress, live level and profit)
-    sum_profit = 0
     for one_request_city in cities:
         City = city.objects.get(country_id=Country.id, state=True, city_name=one_request_city['city_name'])
         if one_request_city['shield'] == True and City.shield == False:
@@ -152,13 +133,21 @@ def calculations(request_data):
                 return json_response_data
             City.progress += 8
             print(str(country_name) + ": upgrade progress to " + str(City.city_name))
-            City.live_level = (Ecology.level * City.progress)/100
-            print(str(country_name) + ": upgrade live level to " + str(City.city_name))
-            City.profit = City.live_level*3
-            print(str(country_name) + " upgrade profit to " + str(City.city_name))
+        City.save()
+        print(str(country_name) + ": save shield and progress to " + str(City.city_name))
+
+    
+    #update live level in all cities at country
+    sum_profit = 0
+    for one_city_live_level in cities:
+        City = city.objects.get(country_id=Country.id, state=True, city_name=one_city_live_level['city_name'])
+        City.live_level = (Ecology.level * City.progress)/100
+        print(str(country_name) + ": upgrade live level to " + str(City.city_name))
+        City.profit = City.live_level*3
+        print(str(country_name) + " upgrade profit to " + str(City.city_name))
         sum_profit += City.profit
         City.save()
-        print(str(country_name) + ": save shield, progress, live level and profit to " + str(City.city_name))
+        print(str(country_name) + ": live level and profit to " + str(City.city_name))
     
 
     #up round ===========================================================================================
@@ -171,8 +160,6 @@ def calculations(request_data):
     
             
     #update ecology level ===================================================================================
-    #new_ecology = ecology.objects.get(round=Country.Round)
-    #new_ecology.level = Ecology.level
     Actual_ecology = session.objects.get(id=1)
     if ecology_dev == True:
         cost += 200
@@ -202,6 +189,9 @@ def calculations(request_data):
             Country.NuclearTechnology = nuclear_technology
             print(str(country_name) + ": set nuclear technology on True")
         Country.NuclearRockets += nuclear_rockets
+        Actual_ecology = session.objects.get(id=1)
+        Actual_ecology.eco_actual -= 2 * nuclear_rockets
+        Actual_ecology.save()
         print(str(country_name) + ": upgrade order rockets on " + str(nuclear_rockets))
         cost += nuclear_rockets * 150
         if cost > Country.Budget:
@@ -221,17 +211,16 @@ def calculations(request_data):
     Sanction = sanction.objects.filter(sanctionFor_id=Country.id)
     Sanctions_array = list(Sanction)
     
-            
+
     #Budget ==========================================================================================
-    Country.Budget += Country.Earnings - 20 * len(Sanctions_array) - cost
+    Country.Budget += Country.Earnings - 50 * len(Sanctions_array) - cost
     print(str(country_name) + ": calculate new country budget")
-    #Country.Earnings = sum_profit
+    Country.Earnings = sum_profit
     print(str(country_name) + ": set new country earnings")
                 
     Country.save()
     print(str(country_name) + ": general save country data")
-    Ecology.save()
-    #new_ecology.save()
+    # new_ecology.save()
     print(str(country_name) + ": save ecology changes")
     
     
