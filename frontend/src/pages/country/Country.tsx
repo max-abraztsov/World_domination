@@ -24,7 +24,6 @@ const Country: FC = () => {
     const form = useAppSelector(state => state.form.formResult);
     const country = useAppSelector(state => state.country.initialStateCountry);
     const countriesPublic = useAppSelector(state => state.countriesPublic.initialStateCountriesPublic);
-
     const dispatch = useAppDispatch();
     
     const getColorByValue = (value: number | null): string | null => {
@@ -100,14 +99,21 @@ const Country: FC = () => {
             await setIsSubmitting(false);
         }
     }
-    
-    const [buttonPosition, setButtonPosition] = useState({transform: "translateX(-100vw)", transition: ".4s", display: "flex", justifyContent: "center"});
 
-    useEffect(() => {
-        if(country.rockets > form.rockets) setButtonPosition({ ...buttonPosition, transform: "translateX(0px)", transition: ".4s"});
-        else setButtonPosition({...buttonPosition, transform: "translateX(-100vw)", transition: ".4s"});
-    }, [form.rockets]);  
-
+    const updateMinisterInformation = async (e: React.MouseEvent<HTMLButtonElement>): Promise<void> => {
+        console.log(form);
+        e.preventDefault();
+        await setIsSubmitting(true);
+        try{
+            dispatch(clarifyCountryInfo("Hello!"));
+            await dispatch(getOtherInfo(form));
+            await dispatch(updateFormInfo({update: generateDefaultForm(JSON.parse(localStorage.getItem("country")))}));
+            await setIsSubmitting(false);
+            await console.log(country, form);
+        } catch (error) {
+            await setIsSubmitting(false);
+        }
+    }
     
     return (
         <div>
@@ -124,22 +130,26 @@ const Country: FC = () => {
                                                 <div id={cl.pen}>
                                                     <img src={Pen}/>
                                                 </div>
-                                            </div> 
-                                            <div className={cl.desktop__button}>
+                                            </div>
+                                            { country.round < 6 ? (
+                                                <div className={cl.desktop__button}>
                                                 <NuclearButton onClick={clickHandler} /> 
-                                            </div>                                                                                  
+                                            </div>  
+                                            ) : (<div></div>)}                                                                               
                                         </section>  
                                     ):(<div></div>)}
                                     {country && country.is_president ? (
-                                        <PresidentPage metricData={metricData} chartData={chartData} clickHandler={clickHandler} />
-                                    ) : country ? ( // For simple users
-                                        <MinisterPage metricData={metricData} chartData={chartData} />                      
-                                    ) : (<div></div>)}
-                                    {country && country.is_president ? (
-                                        <div style={buttonPosition} className={cl.mobile__button}>
-                                            <NuclearButton onClick={clickHandler} /> 
+                                        <div className={cl.country__documents_president}>
+                                            <PresidentPage metricData={metricData} chartData={chartData} clickHandler={clickHandler} />
+                                            {country.round < 6 ? (
+                                                <div className={cl.mobile__button}>
+                                                <NuclearButton onClick={clickHandler} /> 
+                                            </div> 
+                                            ) : (<div></div>)} 
                                         </div>
-                                    ) : (<div></div>)}
+                                    ) : country ? (
+                                        <MinisterPage metricData={metricData} chartData={chartData} clickHandler={updateMinisterInformation}/>                      
+                                    ) : (<div>An error accured...</div>)}
                                 </div>
                             </div>
                         </div>

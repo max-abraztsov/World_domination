@@ -28,11 +28,11 @@ interface chartData {
 interface MinisterPageProps{
     metricData: chartData,
     chartData: chartData,
-
+    clickHandler: (e: React.MouseEvent<HTMLButtonElement>) => Promise<void>;
 }
 
 
-const MinisterPage: FC<MinisterPageProps> = ({chartData, metricData}) => {
+const MinisterPage: FC<MinisterPageProps> = ({chartData, metricData, clickHandler}) => {
 
     const dispatch = useAppDispatch();
     const countriesPublic = useAppSelector( state => state.countriesPublic.initialStateCountriesPublic);
@@ -110,6 +110,7 @@ const MinisterPage: FC<MinisterPageProps> = ({chartData, metricData}) => {
                         <h2 className={cl.country__name}>{country.country}</h2>
                     </div>
                     <div className={cl.country__metrics}>
+                        <Metric indicator={"Round"} index={country.round} />
                         <Metric indicator={"Average live level"} index={country.average_live_level} unit={"%"} />
                         <Metric indicator={"Ecology"} index={country.ecology} unit={"%"}/>
                         <Metric indicator={"Budget"} index={form.budget} unit={"$"} width={"65px"}/>
@@ -198,6 +199,7 @@ const MinisterPage: FC<MinisterPageProps> = ({chartData, metricData}) => {
                         <section style={{marginTop: "100px"}} className={cl.section__columns}>
                             <div className={cl.country__position}>
                                 <p className={cl.position__text}>The Minister</p>
+                                <button className={cl.position__button} onClick={clickHandler} type="button">Reset information</button>
                             </div>
                         </section> 
                     </form>
