@@ -21,15 +21,18 @@ def generate_jwt_token(payload):
 
 def forms_check(request_data_show):
     country_name = request_data_show.get('country')
+    new_round = request_data_show.get('new_round')
+    set_new_ecology = ecology.objects.get(round=new_round)
     print(str(country_name) + ": start forms_check")
     Session = session.objects.get(id=1)
-    #all_sended = Session.sended
     while Session.forms_count <= Session.forms_max:
         Session = session.objects.get(id=1)
         if Session.sended == True:
             if Session.forms_count == 1:
                 Session.sended = False
+                set_new_ecology.level = Session.eco_actual
                 Session.save()
+                set_new_ecology.save()
                 print("Set Session.sended = False")
             Session.forms_count -= 1
             Session.save()
@@ -46,23 +49,7 @@ def forms_check(request_data_show):
                 print(str(country_name) + ": session.forms_count -1")
                 break
             else:
-                time.sleep(30)
-        '''
-        Session = session.objects.get(id=1)
-        if Session.forms_count == Session.forms_max:
-            print("Find a last form")
-            response_data = requests.post('http://127.0.0.1:8000/attack', json=request_data_show)
-            Session.forms_count -= 1
-            print(str(country_name) + ": down Session.forms_count -1")
-            Session.save()
-            print(str(country_name) + ": save changes in session.forms_count")
-            json_response_data = response_data.json()
-            return json_response_data
-        else:
-            time.sleep(10)
-        '''
-    
-    
+                time.sleep(15)    
 
 
 
@@ -81,18 +68,31 @@ def calculations(request_data):
     User = user.objects.get(country_id=Country.id)
     Ecology = ecology.objects.get(round=Country.Round)
     
+    
     Session = session.objects.get(id=1)
     Session.forms_count += 1
+    '''
+    if Session.forms_count == 1:
+        set_new_ecology = ecology.objects.get(round=Country.Round+1)
+        set_new_ecology.level = Ecology.level
+        set_new_ecology.save()
+
+        actual_ecology = session.objects.get(id=1)
+        actual_ecology.eco_actual = set_new_ecology.level
+        actual_ecology.save()
+    '''
     Session.save()
     print(str(country_name) + ": session.forms_count is up +1")
 
     #add to database(attacked_cities) all cities under attack =================================================
-    attacked_cities_list = []
+    Actual_ecology = session.objects.get(id=1)
+    #attacked_cities_list = []
     for enemy in enemies:
         for enemy_city in enemy['cities']:
             if enemy_city['is_attacked'] == True and enemy_city['state'] == True:
                 Country.NuclearRockets -= 1
-                Ecology.level -= 2
+                Actual_ecology.eco_actual -= 2
+                Actual_ecology.save()
                 attack_city = city.objects.filter(city_name=enemy_city['city_name']).values('id')
                 add_db_city = attacked_cities(city_name_id=attack_city[0]['id'])
                 add_db_city.save()
@@ -107,7 +107,8 @@ def calculations(request_data):
     request_data_show = {
         'country': country_name,
         'logincode': User.entercode,
-        'password': User.password
+        'password': User.password,
+        'new_round': Country.Round + 1
     }
 
     cost = 0
@@ -158,9 +159,6 @@ def calculations(request_data):
         sum_profit += City.profit
         City.save()
         print(str(country_name) + ": save shield, progress, live level and profit to " + str(City.city_name))
-
-    #attack cities of enemies ===========================================================================
-    forms_check(request_data_show)
     
 
     #up round ===========================================================================================
@@ -173,22 +171,25 @@ def calculations(request_data):
     
             
     #update ecology level ===================================================================================
-    new_ecology = ecology.objects.get(round=Country.Round)
-    new_ecology.level = Ecology.level
+    #new_ecology = ecology.objects.get(round=Country.Round)
+    #new_ecology.level = Ecology.level
+    Actual_ecology = session.objects.get(id=1)
     if ecology_dev == True:
         cost += 200
         if cost > Country.Budget:
             response_data = requests.post('http://127.0.0.1:8000/login_page', json=request_data_show)
             json_response_data = response_data.json()
             return json_response_data
-        new_ecology.level += 5
+        Actual_ecology.eco_actual += 5
         print(str(country_name) + ": upgrade ecology level")
-        if new_ecology.level > 100:
-            new_ecology.level = 100
+        if Actual_ecology.eco_actual > 100:
+            Actual_ecology.eco_actual = 100
+        Actual_ecology.save()
     
             
 
     #set nuclear technology and order new rockets ==================================================
+    Actual_ecology = session.objects.get(id=1)
     if nuclear_technology == True:
         if Country.NuclearTechnology == False:
             cost += 500
@@ -196,7 +197,8 @@ def calculations(request_data):
                 response_data = requests.post('http://127.0.0.1:8000/login_page', json=request_data_show)
                 json_response_data = response_data.json()
                 return json_response_data
-            new_ecology.level -= 3
+            Actual_ecology.eco_actual -= 3
+            Actual_ecology.save()
             Country.NuclearTechnology = nuclear_technology
             print(str(country_name) + ": set nuclear technology on True")
         Country.NuclearRockets += nuclear_rockets
@@ -209,6 +211,9 @@ def calculations(request_data):
                 
     elif(nuclear_technology==False):
         Country.NuclearRockets = 0
+
+    #attack cities of enemies ===========================================================================
+    forms_check(request_data_show)
     
 
 
@@ -226,12 +231,12 @@ def calculations(request_data):
     Country.save()
     print(str(country_name) + ": general save country data")
     Ecology.save()
-    new_ecology.save()
+    #new_ecology.save()
     print(str(country_name) + ": save ecology changes")
     
     
     
-    #response_data = forms_check(request_data_show)
+     
 
     response_data = requests.post('http://127.0.0.1:8000/login_page', json=request_data_show)
     json_response_data = response_data.json()

@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.validators import MaxValueValidator
 from loginPage.models import city
 
 # Create your models here.
@@ -18,6 +19,7 @@ class session(models.Model):
     forms_count = models.IntegerField()
     forms_max = models.IntegerField()
     sended = models.BooleanField()
+    eco_actual = models.IntegerField(validators=[MaxValueValidator(5000)])
 
     class Meta:
         verbose_name_plural='Session'
