@@ -16,8 +16,8 @@ const NuclearButton: FC<NuclearButtonProps> = ({onClick}) => {
     const [buttonPosition, setButtonPosition] = useState({transform: "translateX(-100vw)", transition: ".4s"})
 
     useEffect(() => {
-        if(country.rockets > form.rockets) setButtonPosition({transform: "translateX(0px)", transition: ".4s"});
-        else setButtonPosition({transform: "translateX(-100vw)", transition: ".4s"});   
+        if(country.rockets > form.rockets) setButtonPosition({ transform: "translateX(0px)", transition: ".4s"});
+        else setButtonPosition({ transform: "translateX(-100vw)", transition: ".4s"});   
     }, [form.rockets]);
 
 

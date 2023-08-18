@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Arimo:wght@400;700&family=Bebas+Neue&display=swap');
+
 *{
     margin: 0;
     padding: 0;
@@ -41,11 +42,44 @@
     top: 0;
     left: 0;
     max-width: 789px;
-    width: 65%;
+    width: 100%;
     padding: 5px 8px 15px 18px;
     border-radius: 5px;
     background: #DFBE68;
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+}
+
+.country__documents_president{
+    max-width: 789px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.country__table{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 100px;
+    margin-bottom: 100px;
+}
+
+.country__your{
+    border-radius: 5px 0 5px 5px;
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 763px;
+    background-color: #fff;
+    padding: 20px 30px;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+}
+
+.country__print{
+    width: 35%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .country__table_loading{
@@ -71,8 +105,8 @@
     position: relative;
     width: 80px;
     height: 80px;
-  }
-  .loader div {
+}
+.loader div {
     box-sizing: border-box;
     display: block;
     position: absolute;
@@ -83,34 +117,23 @@
     border-radius: 50%;
     animation: loader 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
     border-color: #fff transparent transparent transparent;
-  }
-  .loader div:nth-child(1) {
+}
+.loader div:nth-child(1) {
     animation-delay: -0.45s;
-  }
-  .loader div:nth-child(2) {
+}
+.loader div:nth-child(2) {
     animation-delay: -0.3s;
-  }
-  .loader div:nth-child(3) {
+}
+.loader div:nth-child(3) {
     animation-delay: -0.15s;
-  }
-  @keyframes loader {
+}
+@keyframes loader {
     0% {
-      transform: rotate(0deg);
+        transform: rotate(0deg);
     }
     100% {
-      transform: rotate(360deg);
+        transform: rotate(360deg);
     }
-  }
-
-.country__your{
-    border-radius: 5px 0 5px 5px;
-    position: relative;
-    z-index: 2;
-    width: 100%;
-    max-width: 763px;
-    background-color: #fff;
-    padding: 20px 30px;
-    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
 }
 
 .bookmark, .bookmark__grey {
@@ -188,17 +211,19 @@
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
 }
 
-
 .country__metrics{
     width: 70%;
+    max-width: 365px;
     display:flex;
     align-items: center;
     justify-content: flex-end;
+    margin-left: 40px;
 }
 .country__title{
     display:flex;
     align-items: center;
-    width: 30%;
+    width: 100%;
+    
 }
 .country__flag{
     border-radius: 5px;
@@ -223,11 +248,7 @@
 .cities__info > div:nth-child(4){
     margin-right: 0;
 }
-.country__table{
-    display: flex;
-    margin-top: 100px;
-    margin-bottom: 100px;
-}
+
 .country__print{
     width: 35%;
     display: flex;
@@ -291,6 +312,10 @@
 }
 
 .country__position{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     align-self: flex-end;
     padding-bottom: 20px;
 }
@@ -303,6 +328,26 @@
     font-weight: 400;
     line-height: 98.5%; 
     margin: 7px 0 11px 0;
+}
+
+.position__button{
+    background-color: #fff;
+    padding: 5px 10px;
+    border: 1px solid #343333;
+    border-radius: 4px;
+    color: #343333;
+    font-family: Arimo;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 98.5%;
+    transition: .2s;
+}
+
+.position__button:hover{
+    background-color: #343333;
+    color: #fff;
+    transition: .2s;
 }
 
 .country__button{
@@ -441,10 +486,6 @@
     height: 20px;
 }
 
-.countries__cities{
-
-}
-
 .countries__city{
     display: flex;
     align-items: center;
@@ -469,6 +510,7 @@
 @media (max-width: 1060px){
     .country__table{
         flex-direction: column;
+        width: 100%;
     }
     #pen{
         display: none;
@@ -477,18 +519,17 @@
         margin: 30px auto;
         width: 100%;
     }
-    /* .country__print .fire__button{
-        display: none;
-    } */
     .desktop__button{
         display: none;
     }
     .mobile__button{
         display: block;
+        display: flex;
+        justify-content: center; 
     }
     .mobile__button .fire__button{
         width: 100%;
-        margin-top: 20px; 
+        margin-top: 20px auto; 
     }
     .country__print{
         width: 100%;

@@ -70,7 +70,7 @@ const PresidentPage: FC<PresidentPageProps> = ({metricData, chartData, clickHand
     }
 
     return (
-        <section className={cl.country__documents}>
+        <section style={{margin: "40px auto"}} className={cl.country__documents}>
             <section style={{background: pagesColors.other, zIndex: pageState }}  className={cl.country__other}>
                 <div className={otherBookmarkColorStyle.join(" ")}> 
                     <div onClick={otherMain} className={cl.bookmark__text}>
@@ -220,16 +220,18 @@ const PresidentPage: FC<PresidentPageProps> = ({metricData, chartData, clickHand
                                 </div>
                             </div>
                         </section>
-                        <section className={[cl.section__columns, cl.section__columns_row].join(" ")}>
+                        <section style={{marginTop: "100px"}} className={[cl.section__columns, cl.section__columns_row].join(" ")}>
                             <div className={cl.country__position}>
                                 <p className={cl.position__text}>The President of the<br/> Republic of Belarus </p>
                             </div>
                             <div className={cl.country__button}>
                                 <button className={cl.button} onClick={clickHandler} type="submit">
-                                    { country.rockets > form.rockets ? (
+                                    { country.rockets > form.rockets && country.round < 6   ? (
                                         <div className={cl.stamp__grey_red}></div>
-                                    ) : (
+                                    ) : country.round < 6 ? (
                                         <div className={cl.stamp__grey_blue}></div>
+                                    ) : (
+                                        <div></div>
                                     )}
                                 </button>
                             </div>
