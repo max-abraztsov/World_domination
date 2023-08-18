@@ -100,7 +100,7 @@ def calculations(request_data):
     if donate_data['from'] != '' and donate_data['to'] != '':
         donate_response = requests.post('http://127.0.0.1:8000/donate', json=donate_data)
         response_data = donate_response.json()
-        cost = response_data.get('budget')
+        Country.Budget = response_data.get('budget')
     
     
     # add sanctions from this country =========================================================================

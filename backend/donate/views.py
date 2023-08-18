@@ -28,6 +28,8 @@ def donate(request):
             country_from.save()   
             country_to.save()       
 
+            print("Money transfer in " + str(donate_amount) + " from " + str(donate_from) + " to " + str(donate_to))
+
             return JsonResponse({'budget': country_from.Budget}) 
         except country.DoesNotExist:
             if country_from is None:
