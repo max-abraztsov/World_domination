@@ -5,6 +5,11 @@ import { generateDefaultForm } from "./defaultValue";
 
 type Status = 'loading' | 'resolved' | 'rejected' | null;
 
+interface IUpdateCountryInformation{
+    logincode: string,
+    password: string,
+}
+
 const initialStateCountry: ICountry = {
     is_president: false,
     round: 0,
@@ -156,13 +161,13 @@ const initialStateCountriesPublic: ICountriesPublicInfo = {
 
 export const clarifyCountryInfo = createAsyncThunk<
     ICountry,
-    string,
+    IUpdateCountryInformation,
     {rejectValue: string}
 >(
     'countriesPublic/clarifyCountryInfo',
-    async function( str: string, {rejectWithValue, dispatch}){
+    async function( update: IUpdateCountryInformation, {rejectWithValue, dispatch}){
         try {
-            const response = await axios.post<ICountry>("http://127.0.0.1:8000/login_page", str);
+            const response = await axios.post<ICountry>("http://127.0.0.1:8000/login_page", update);
             localStorage.setItem("country", JSON.stringify(response.data));
             dispatch(updateCountryInfo({neww: response.data}));
             dispatch(updateFormInfo({update: generateDefaultForm(response.data)}));

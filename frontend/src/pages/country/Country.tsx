@@ -48,7 +48,7 @@ const Country: FC = () => {
             dispatch(updateCountryInfo({neww: JSON.parse(countryLocalStorage)}));
             dispatch(updateFormInfo({update: generateDefaultForm(JSON.parse(countryLocalStorage))}));
         } else if(countryLocalStorage === null && localStorage.getItem("authenticated")){
-            dispatch(clarifyCountryInfo("Hello!"));
+            dispatch(clarifyCountryInfo({logincode: country.country, password: country.flag_photo}));
         } else {
             console.log("Error");
         }
@@ -105,7 +105,7 @@ const Country: FC = () => {
         e.preventDefault();
         await setIsSubmitting(true);
         try{
-            dispatch(clarifyCountryInfo("Hello!"));
+            await dispatch(clarifyCountryInfo({logincode: country.country, password: country.flag_photo}));
             await dispatch(getOtherInfo(form));
             await dispatch(updateFormInfo({update: generateDefaultForm(JSON.parse(localStorage.getItem("country")))}));
             await setIsSubmitting(false);
