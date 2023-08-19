@@ -5,6 +5,7 @@ from generalData.views import general_data
 from round.views import end_round
 from donate.views import donate
 from attack.views import attack
+from ministerData.views import minister_data
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -12,5 +13,6 @@ urlpatterns = [
     path('general_data', general_data, name='generalData'),
     path('round_end', end_round, name='end_of_round'),
     path('attack', attack, name='attack'),
-    path('donate', donate, name='donate')
+    path('donate', donate, name='donate'),
+    path('update_data', minister_data, name='ministerData')
 ]

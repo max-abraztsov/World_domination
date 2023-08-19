@@ -8,7 +8,7 @@ class country(models.Model):
     NuclearTechnology = models.BooleanField()
     NuclearRockets = models.IntegerField(validators=[MaxValueValidator(20)])
     Budget = models.IntegerField(validators=[MaxValueValidator(10000)])
-    Round = models.IntegerField(validators=[MaxValueValidator(6)])
+    Round = models.IntegerField(validators=[MaxValueValidator(7)])
     Earnings = models.IntegerField(validators=[MaxValueValidator(5000)])
 
     class Meta:
@@ -59,7 +59,7 @@ class sanction(models.Model):
         return str(self.sanctionFrom) + ' => ' + str(self.sanctionFor)
     
 class ecology(models.Model):
-    round = models.IntegerField(validators=[MaxValueValidator(6)])
+    round = models.IntegerField(validators=[MaxValueValidator(7)])
     level = models.IntegerField(validators=[MaxValueValidator(100)])
 
     class Meta:
