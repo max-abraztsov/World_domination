@@ -73,7 +73,6 @@ def calculations(request_data):
 
     #add to database(attacked_cities) all cities under attack =================================================
     Actual_ecology = session.objects.get(id=1)
-    #attacked_cities_list = []
     for enemy in enemies:
         for enemy_city in enemy['cities']:
             if enemy_city['is_attacked'] == True and enemy_city['state'] == True:
@@ -152,11 +151,11 @@ def calculations(request_data):
 
     #up round ===========================================================================================
     
-    if Country.Round<7:
+    if Country.Round<8:
         Country.Round += 1
         print(str(country_name) + ": upgrade round +1")
     else:
-        Country.Round = 6
+        Country.Round = 7
     
             
     #update ecology level ===================================================================================
