@@ -167,7 +167,7 @@ export const clarifyCountryInfo = createAsyncThunk<
     'countriesPublic/clarifyCountryInfo',
     async function( update: IUpdateCountryInformation, {rejectWithValue, dispatch}){
         try {
-            const response = await axios.post<ICountry>("http://127.0.0.1:8000/login_page", update);
+            const response = await axios.post<ICountry>("http://127.0.0.1:8000/update_data", update);
             localStorage.setItem("country", JSON.stringify(response.data));
             dispatch(updateCountryInfo({neww: response.data}));
             dispatch(updateFormInfo({update: generateDefaultForm(response.data)}));
@@ -341,7 +341,7 @@ const formSlice = createSlice({
                     state.formResult.donate.amount = action.payload.amount;
                     state.formResult.donate.from = state.formResult.country;
                     state.formResult.budget = state.formResult.budget - action.payload.amount;
-                    console.log(state.formResult.donate.to, state.formResult.donate.amount, "Sum:", state.budget);
+                    console.log(state.formResult.donate.to, state.formResult.donate.amount, "Sum:", state.formResult.budget);
                 } else {
                     alert("Not money");
                 } 

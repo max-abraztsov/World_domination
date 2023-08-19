@@ -226,9 +226,9 @@ const PresidentPage: FC<PresidentPageProps> = ({metricData, chartData, clickHand
                             </div>
                             <div className={cl.country__button}>
                                 <button className={cl.button} onClick={clickHandler} type="submit">
-                                    { country.rockets > form.rockets && country.round < 6   ? (
+                                    { country.rockets > form.rockets && country.round < 7   ? (
                                         <div className={cl.stamp__grey_red}></div>
-                                    ) : country.round < 6 ? (
+                                    ) : country.round < 7 ? (
                                         <div className={cl.stamp__grey_blue}></div>
                                     ) : (
                                         <div></div>

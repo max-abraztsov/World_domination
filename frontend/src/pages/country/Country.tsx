@@ -131,7 +131,7 @@ const Country: FC = () => {
                                                     <img src={Pen}/>
                                                 </div>
                                             </div>
-                                            { country.round < 6 ? (
+                                            { country.round < 7 ? (
                                                 <div className={cl.desktop__button}>
                                                 <NuclearButton onClick={clickHandler} /> 
                                             </div>  
@@ -141,7 +141,7 @@ const Country: FC = () => {
                                     {country && country.is_president ? (
                                         <div className={cl.country__documents_president}>
                                             <PresidentPage metricData={metricData} chartData={chartData} clickHandler={clickHandler} />
-                                            {country.round < 6 ? (
+                                            {country.round < 7 ? (
                                                 <div className={cl.mobile__button}>
                                                 <NuclearButton onClick={clickHandler} /> 
                                             </div> 
