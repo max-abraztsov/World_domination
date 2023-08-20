@@ -41,11 +41,11 @@ def forms_check(request_data_show):
                 print("Find a last form: " + str(country_name) + " (all forms were sended)")
                 response_data = requests.post('http://127.0.0.1:8000/attack', json=request_data_show)
                 print(str(country_name) + ": attack is successfull")
-                Session.forms_count -= 1
+                #Session.forms_count -= 1
                 Session.save()
                 set_new_ecology.save()
-                print(str(country_name) + ": session.forms_count -1")
-                break
+                #print(str(country_name) + ": session.forms_count -1")
+                #break
             else:
                 time.sleep(15)    
 
