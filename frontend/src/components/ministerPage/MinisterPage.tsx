@@ -198,7 +198,7 @@ const MinisterPage: FC<MinisterPageProps> = ({chartData, metricData, clickHandle
                         </section>
                         <section style={{marginTop: "100px"}} className={cl.section__columns}>
                             <div className={cl.country__position}>
-                                <p className={cl.position__text}>The Minister</p>
+                                <p className={cl.position__text}>The Minister<br/>of the Republic</p>
                                 <button className={cl.position__button} onClick={clickHandler} type="button">Reset information</button>
                             </div>
                         </section> 

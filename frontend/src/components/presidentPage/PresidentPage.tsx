@@ -222,7 +222,7 @@ const PresidentPage: FC<PresidentPageProps> = ({metricData, chartData, clickHand
                         </section>
                         <section style={{marginTop: "100px"}} className={[cl.section__columns, cl.section__columns_row].join(" ")}>
                             <div className={cl.country__position}>
-                                <p className={cl.position__text}>The President of the<br/> Republic of Belarus </p>
+                                <p className={cl.position__text}>The President <br/>of the Republic</p>
                             </div>
                             <div className={cl.country__button}>
                                 <button className={cl.button} onClick={clickHandler} type="submit">
