@@ -26,7 +26,7 @@ function App() {
           <Route path="/login" element={<Login/>}/>
           {loginState.is_logged_in ? (
             <Route path="/country" element={<Country/>}/>
-          ): (
+          ):(
             <Route path="/login" element={<Login/>}/>
           )}
           {/* <Route path="/wd-admin" element={<Admin/>}/> */}

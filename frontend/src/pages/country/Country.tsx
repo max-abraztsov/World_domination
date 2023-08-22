@@ -13,6 +13,7 @@ import cl from "./Country.module.css"
 import Printer from '../../components/Printer/Printer';
 import { generateDefaultForm } from '../../store/defaultValue';
 import NuclearButton from '../../components/UI/nuclearButton/NuclearButton';
+import { useLocation } from 'react-router-dom';
 
 import Pen from "./../../assets/Pen.svg"
 import MinisterPage from '../../components/ministerPage/MinisterPage';
@@ -41,6 +42,12 @@ const Country: FC = () => {
 
     const [chartData, setChartData] = useState({});
     const [metricData, setMetricData] = useState({});
+
+    const { pathname } = useLocation();
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [pathname]);
 
     useEffect(() => {
         dispatch(getOtherInfo(form));

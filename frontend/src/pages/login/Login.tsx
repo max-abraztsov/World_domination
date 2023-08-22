@@ -1,11 +1,11 @@
 import axios from 'axios';
-import React, {FormEvent, useState, FC} from 'react';
+import React, {FormEvent, useState, FC, useEffect} from 'react';
 import cl from "./Login.module.css" ;
 import { useAppDispatch, useAppSelector } from '../../hook';
 import { loginUser } from '../../store/auth/actionCreators';
 import { updateCountryInfo } from '../../store/countrySlice';
 import { toggleLogged } from '../../store/loginSlice';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 //import { withRouter, RouteComponentProps, useHistory } from 'react-router-dom';
 
@@ -21,6 +21,12 @@ const Login: FC = () => {
 
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
+
+    const { pathname } = useLocation();
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [pathname]);
 
     const [userForm, setUserForm] = useState<UserProps>({
         logincode: "",
