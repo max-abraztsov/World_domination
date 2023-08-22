@@ -1,5 +1,5 @@
 import {FC, useState, useEffect} from 'react';
-import {useAppSelector, useAppDispatch } from './../../hook';
+import {useAppSelector} from './../../hook';
 import cl from "./GameOver.module.css"
 import gameover from "./../../assets/game_over-light.png"
 import BarChart from '../UI/charts/BarChart';
@@ -7,9 +7,17 @@ import BarChart from '../UI/charts/BarChart';
 const GameOver: FC = () => {
 
     const countriesPublic = useAppSelector(state => state.countriesPublic.initialStateCountriesPublic);
-    const dispatch = useAppDispatch();
+    const country = useAppSelector(state => state.country.initialStateCountry.country);
 
-    const [place, setPlace] = useState("");
+    const copiedCountries = [...countriesPublic.countries];
+
+    const sortedCountries = copiedCountries.sort( (a, b) => {
+        return b.average_live_level - a.average_live_level;
+    });
+
+    console.log(sortedCountries);
+
+    const [yourPlace, setYourPlace] = useState(sortedCountries.findIndex(item => item.country === country));
 
     const [chartData, setChartData] = useState({});
     const [metricData, setMetricData] = useState({});
@@ -25,6 +33,11 @@ const GameOver: FC = () => {
             return null;
         }      
     };
+
+    useEffect(() => {
+        const yourPlace = sortedCountries.findIndex(item => item.country === country);
+        setYourPlace(yourPlace);
+    }, [sortedCountries, country]);
 
     useEffect(() => {
         if (countriesPublic && countriesPublic.countries) {
@@ -64,11 +77,15 @@ const GameOver: FC = () => {
                             <h2 className={cl.game_over_title}> Game over!</h2>
                             <div className={cl.game_over_photo}>
                                 <img src={gameover} className={cl.game_over_img} />
-                                <div className={[cl.game_over_city, cl.city_place_first].join(" ")}>Belarus</div>
-                                <div className={[cl.game_over_city, cl.city_place_second].join(" ")}>Ukraine</div>
-                                <div className={[cl.game_over_city, cl.city_place_third].join(" ")}>Poland</div>
+                                {sortedCountries.length >= 3 && (
+                                    <div>
+                                        <div className={[cl.game_over_city, cl.city_place_first].join(" ")}>{sortedCountries[0].country}</div>
+                                        <div className={[cl.game_over_city, cl.city_place_second].join(" ")}>{sortedCountries[1].country}</div>
+                                        <div className={[cl.game_over_city, cl.city_place_third].join(" ")}>{sortedCountries[2].country}</div>
+                                    </div>
+                                )}
                             </div>
-                            <h3 className={cl.game_over_place}>You came in {place} place</h3>
+                            <h3 className={cl.game_over_place}>You came in {yourPlace + 1} place</h3>
                         </div>
                     </div>
                 </div>

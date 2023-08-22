@@ -4,7 +4,7 @@
     align-items: center;
 }
 .pedestal{
-    background:  linear-gradient(180deg, rgba(173,185,147,1) 0%, rgba(208,211,143,1) 50%, rgba(255,240,234,1) 100%);
+    background:  linear-gradient(180deg, rgba(173,185,147,1) 0%, rgba(208,211,143,1) 70%, rgba(255,240,234,1) 100%);
 }
 .info{
     background: rgba(255,240,234,1);
@@ -36,7 +36,7 @@
 .game_over_place{
     text-align: center;
     font-family: Bebas Neue;
-    font-size: 30px;
+    font-size: 50px;
     font-style: normal;
     font-weight: 500;
     line-height: 98.5%;
@@ -117,6 +117,11 @@
     line-height: 98.5%; 
 }
 @media (max-width: 1200px){
+    .game_over_place{
+        font-size: 40px; 
+        margin-right: 30px;
+        margin-bottom: 40px;
+    }
     .game_over_city{
         font-size: 50px;
     }
@@ -125,6 +130,11 @@
     }
 }
 @media (max-width: 1000px){
+    .game_over_place{
+        font-size: 34px; 
+        margin-right: 30px;
+        margin-bottom: 20px;
+    }
     .game_over_content{
         margin-top: 0px;
     }
@@ -145,7 +155,7 @@
 }
 @media (max-width: 768px){
     .game_over_pedestal{
-        height: 60vh;
+        height: 80vh;
     }
     .game_over_title{
         font-size: 70px;
@@ -159,6 +169,14 @@
     }
 }
 @media (max-width: 600px){
+    .game_over_place{
+        font-size: 26px; 
+        margin-right: 20px;
+        margin-bottom: 20px;
+    }
+    .game_over_pedestal{
+        height: 70vh;
+    }
     .game_over_title{
         font-size: 70px;
         margin-right: 10px;
@@ -171,6 +189,9 @@
     }
 }
 @media (max-width: 500px){
+    .game_over_pedestal{
+        height: 60vh;
+    }
     .game_over_title{
         font-size: 50px;
         margin-right: 0px;
@@ -191,6 +212,11 @@
     }
 }
 @media (max-width: 400px){
+    .game_over_place{
+        font-size: 20px; 
+        margin-right: 13px;
+        margin-bottom: 0px;
+    }
     .game_over_city{
         font-size: 18px;
     }
