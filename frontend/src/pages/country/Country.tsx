@@ -115,6 +115,8 @@ const Country: FC = () => {
             await setIsSubmitting(false);
         }
     }
+
+    console.log(metricData, chartData);
     
     return (
         <div>
@@ -143,7 +145,12 @@ const Country: FC = () => {
                                             ):(<div></div>)}
                                             {country && country.is_president ? (
                                                 <div className={cl.country__documents_president}>
-                                                    <PresidentPage metricData={metricData} chartData={chartData} clickHandler={clickHandler} />
+                                                    <PresidentPage 
+                                                        metricData={metricData} 
+                                                        chartData={chartData} 
+                                                        clickHandler={clickHandler} 
+                                                        resetInfo={updateMinisterInformation}
+                                                    />
                                                     {country.round < 7 ? (
                                                         <div className={cl.mobile__button}>
                                                         <NuclearButton onClick={clickHandler} /> 
@@ -151,7 +158,11 @@ const Country: FC = () => {
                                                     ) : (<div></div>)} 
                                                 </div>
                                             ) : country ? (
-                                                <MinisterPage metricData={metricData} chartData={chartData} clickHandler={updateMinisterInformation}/>                      
+                                                <MinisterPage 
+                                                    metricData={metricData} 
+                                                    chartData={chartData} 
+                                                    clickHandler={updateMinisterInformation}
+                                                />                      
                                             ) : (<div>An error accured...</div>)}
                                         </div>
                                     </div>

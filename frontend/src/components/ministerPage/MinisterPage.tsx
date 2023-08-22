@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useState, useEffect } from 'react';
 import cl from "./../../pages/country/Country.module.css"
 import Metric from '../metric/Metric';
 import City from '../city/City';
@@ -39,6 +39,8 @@ const MinisterPage: FC<MinisterPageProps> = ({chartData, metricData, clickHandle
     const country = useAppSelector( state => state.country.initialStateCountry);
     const form = useAppSelector(state => state.form.formResult);
 
+    const [gameEnded, setGameEnded] = useState<boolean>(false);
+
     const [pageState, setPageState] = useState(1);
     const [otherBookmarkColorStyle, setOtherBookmarkColorStyle] = useState([cl.bookmark__grey, cl.bookmark__other]);
     const [yourBookmarkColorStyle, setYourBookmarkColorStyle] = useState([cl.bookmark, cl.bookmark__your]);
@@ -64,6 +66,21 @@ const MinisterPage: FC<MinisterPageProps> = ({chartData, metricData, clickHandle
             setPagesColors({other: "#C1C1C1", your: "#fff"}); 
         }
     }
+
+    useEffect(() => {
+        let count = 0;
+        country.cities.forEach( item => {
+            if( item.state == false){
+                console.log(5000);
+               count++;
+            } else {
+                console.log(9000);
+            }
+        })
+        if(count == 4){
+            setGameEnded(true);
+        }
+    }, [])
 
     return (
         <section style={{margin: "40px auto"}} className={cl.country__documents}>
@@ -118,94 +135,109 @@ const MinisterPage: FC<MinisterPageProps> = ({chartData, metricData, clickHandle
                 </section>
                 <span className={cl.hr_big}></span>
                 <section>
-                    <form action="#" >
-                        <section className={cl.cities__information}>
-                            {country.cities.map((item, index) => 
-                                <City 
-                                    budget={form.budget}
-                                    key={`${item.city_name}${item.photo}`} 
-                                    city={item} 
-                                    id={index}
-                                    isPresident={country.is_president}
-                                />                     
-                            )}
-                        </section>
-                        <span className={cl.hr_big}></span>
-                        <section className={cl.section__columns}>
-                            <div className={cl.section__column}>
-                                <PartitionTitle  title="Nuclear technology" text="Nuclear technology is needed to build rockets"/>
-                                <p className={cl.only__price}>Develop nuclear program (500$)</p>              
+                    <section className={cl.cities__information}>
+                        {country.cities.map((item, index) => 
+                            <City 
+                                budget={form.budget}
+                                key={`${item.city_name}${item.photo}`} 
+                                city={item} 
+                                id={index}
+                                isPresident={country.is_president}
+                            />                     
+                        )}
+                    </section>
+                    <span className={cl.hr_big}></span>
+                    {gameEnded ? (
+                        <div>
+                            <div className={cl.country__state_block}>
+                                <p className={cl.country__state}>you lose</p>
+                                <p className={cl.country__state_small}>
+                                    Apparently your tactics didn't work.... <br/>
+                                    You should analyze your actions and next time act on the basis of your experience.
+                                </p>
+                                <button className={cl.position__button} onClick={clickHandler} type="button">Reset information</button>
                             </div>
-                            <div className={cl.section__column}>
-                                <PartitionTitle  title="Ecology" text="The ordered rockets will not appear in the arsenal until next round"/>
-                                <p className={cl.only__price}>Develop ecology (200$)</p>
-                            </div>
-                        </section>
-                        <span className={cl.hr_big}></span>
-                        <section className={cl.section__columns}>
-                            <div>
-                                <PartitionTitle  title="Order to attack" text="Investing in the environment will help improve living standards not only in your country, but also on the planet"/>
-                                <div className={cl.rocket__counter}>
-                                    <span className={cl.country__bomb}> {form.rockets}/{country.rockets} </span>
-                                    <img src={bomb}/>
-                                </div>  
-                            </div>
-                            <div className={cl.enemies}>
-                            { form.enemies.map((enemy, index) => 
-                                <div className={cl.enemy}>
-                                    <p className={cl.enemy__country}>{enemy.country}</p>
-                                    <div>
-                                        {enemy.cities.map((city, id) => 
-                                            <EnemyCheckbox 
-                                                formState={form.enemies[index].cities[id].is_attacked}
-                                                indexCol={index}
-                                                id={id}
-                                                key={city.city_name} 
-                                                stateCity={country.enemies[index].cities[id].state}
-                                                bombs={form.rockets}
-                                                toggleStatus={() => dispatch(toggleEnemyCheckbox({index: index, id: id}))}
-                                            >{city.city_name}</EnemyCheckbox>
+                        </div>
+                    ) : (
+                        <section>
+                            
+                            <section className={cl.section__columns}>
+                                <div className={cl.section__column}>
+                                    <PartitionTitle  title="Nuclear technology" text="Nuclear technology is needed to build rockets"/>
+                                    <p className={cl.only__price}>Develop nuclear program (500$)</p>              
+                                </div>
+                                <div className={cl.section__column}>
+                                    <PartitionTitle  title="Ecology" text="The ordered rockets will not appear in the arsenal until next round"/>
+                                    <p className={cl.only__price}>Develop ecology (200$)</p>
+                                </div>
+                            </section>
+                            <span className={cl.hr_big}></span>
+                            <section className={cl.section__columns}>
+                                <div>
+                                    <PartitionTitle  title="Order to attack" text="Investing in the environment will help improve living standards not only in your country, but also on the planet"/>
+                                    <div className={cl.rocket__counter}>
+                                        <span className={cl.country__bomb}> {form.rockets}/{country.rockets} </span>
+                                        <img src={bomb}/>
+                                    </div>  
+                                </div>
+                                <div className={cl.enemies}>
+                                { form.enemies.map((enemy, index) => 
+                                    <div className={cl.enemy}>
+                                        <p className={cl.enemy__country}>{enemy.country}</p>
+                                        <div>
+                                            {enemy.cities.map((city, id) => 
+                                                <EnemyCheckbox 
+                                                    formState={form.enemies[index].cities[id].is_attacked}
+                                                    indexCol={index}
+                                                    id={id}
+                                                    key={city.city_name} 
+                                                    stateCity={country.enemies[index].cities[id].state}
+                                                    bombs={form.rockets}
+                                                    toggleStatus={() => dispatch(toggleEnemyCheckbox({index: index, id: id}))}
+                                                >{city.city_name}</EnemyCheckbox>
+                                            )}
+                                        </div>
+                                    </div>
+                                )}
+                                </div>
+                            </section>
+                            <span className={cl.hr_big}></span>
+                            <section>
+                                <div className={cl.country__sanctions}>
+                                    <div className={cl.country__sanction}>
+                                        <PartitionTitle  title="Introduction of sanctions" text="Select the country to sanction. If sanctions are imposed, the country will lose part of its income. But note that this may affect relations with that country"/>
+                                        { form.enemies.map((enemy, index) => 
+                                            <SanctionCheckbox 
+                                            key={`${enemy.country}-${index}`}
+                                            checked={enemy.sanctions}
+                                            toggleStatus={() => dispatch(toggleSanctionCheckbox({status: form.enemies[index].sanctions, index: index}))}
+                                            >{enemy.country}</SanctionCheckbox> 
+                                        )}
+                                    </div>
+                                    <div className={cl.country__sanction}>
+                                        <PartitionTitle  title="Relations with other countries" text="This shows the attitude of other countries towards you"/>
+                                        {form.enemies.map((enemy, index) => 
+                                            enemy.sanctions_from ? (
+                                                <p className={cl.relationship} key={`${enemy.country}${index}r`}>{enemy.country}: Sanctions have been announced...</p>
+                                            ) : (
+                                                <p className={cl.relationship} key={`${enemy.country}${index}r`}>{enemy.country}: Good relationship...</p> 
+                                            )
                                         )}
                                     </div>
                                 </div>
-                            )}
-                            </div>
-                        </section>
-                        <span className={cl.hr_big}></span>
-                        <section>
-                            <div className={cl.country__sanctions}>
-                                <div className={cl.country__sanction}>
-                                    <PartitionTitle  title="Introduction of sanctions" text="Select the country to sanction. If sanctions are imposed, the country will lose part of its income. But note that this may affect relations with that country"/>
-                                    { form.enemies.map((enemy, index) => 
-                                        <SanctionCheckbox 
-                                        key={`${enemy.country}-${index}`}
-                                        checked={enemy.sanctions}
-                                        toggleStatus={() => dispatch(toggleSanctionCheckbox({status: form.enemies[index].sanctions, index: index}))}
-                                        >{enemy.country}</SanctionCheckbox> 
-                                    )}
+                            </section>
+                            <section style={{marginTop: "100px"}} className={cl.section__columns}>
+                                <div className={cl.country__position}>
+                                    <p className={cl.position__text}>The Minister<br/>of the Republic</p>
+                                    <button className={cl.position__button} onClick={clickHandler} type="button">Reset information</button>
                                 </div>
-                                <div className={cl.country__sanction}>
-                                    <PartitionTitle  title="Relations with other countries" text="This shows the attitude of other countries towards you"/>
-                                    {form.enemies.map((enemy, index) => 
-                                        enemy.sanctions_from ? (
-                                            <p className={cl.relationship} key={`${enemy.country}${index}r`}>{enemy.country}: Sanctions have been announced...</p>
-                                        ) : (
-                                            <p className={cl.relationship} key={`${enemy.country}${index}r`}>{enemy.country}: Good relationship...</p> 
-                                        )
-                                    )}
-                                </div>
-                            </div>
+                            </section> 
                         </section>
-                        <section style={{marginTop: "100px"}} className={cl.section__columns}>
-                            <div className={cl.country__position}>
-                                <p className={cl.position__text}>The Minister<br/>of the Republic</p>
-                                <button className={cl.position__button} onClick={clickHandler} type="button">Reset information</button>
-                            </div>
-                        </section> 
-                    </form>
+                    )}
                 </section>
             </section>
         </section>
+        
     );
 };
 
