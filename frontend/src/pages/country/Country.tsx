@@ -148,7 +148,7 @@ const Country: FC = () => {
             {countriesPublic.countries[0].country == "" && <Loader text={"Waiting..."} />}
             {!isSubmitting ? (
             <div>
-            { countriesPublic.ecology[6] === null ? (
+            { countriesPublic.ecology[6].value === null ? (
                 <div>
                     {country !== null && country.country != "" ? (
                         <div className={cl.country}>
@@ -195,7 +195,7 @@ const Country: FC = () => {
                         </div>
                     ) : (<div></div>)}
                 </div>
-            ) : countriesPublic.ecology[6] !== null ? (
+            ) : countriesPublic.ecology[6].value !== null ? (
                 <GameOver />
             ) : (<div>Error</div>)}
         </div>
