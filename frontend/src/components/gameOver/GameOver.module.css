@@ -22,7 +22,7 @@
 
 }
 .game_over_content{
-    margin-top: 70px;
+    margin-top: 90px;
 }
 .game_over_title{
     text-align: center;
@@ -136,7 +136,7 @@
         margin-bottom: 20px;
     }
     .game_over_content{
-        margin-top: 0px;
+        margin-top: 20px;
     }
     .game_over_city{
         font-size: 40px;

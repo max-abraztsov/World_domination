@@ -124,13 +124,28 @@ const Country: FC = () => {
         }
     }
 
+    const resetLoserInfo = async (e: React.MouseEvent<HTMLButtonElement>): Promise<void> => {
+        console.log(form);
+        e.preventDefault();
+        await setIsSubmitting(true);
+        try{
+            await dispatch(clarifyCountryInfo({logincode: country.country, password: country.flag_photo}));
+            await dispatch(getOtherInfo(form));
+            await dispatch(updateFormInfo({update: generateDefaultForm(JSON.parse(localStorage.getItem("country")))}));
+            await setIsSubmitting(false);
+            await console.log(country, form);
+        } catch (error) {
+            await setIsSubmitting(false);
+        }
+    }
+
+
+
     console.log(metricData, chartData);
     
     return (
         <div>
-            {countriesPublic.countries[0].country == "" && (
-                <Loader text={"Waiting..."} />
-            )}
+            {countriesPublic.countries[0].country == "" && <Loader text={"Waiting..."} />}
             {!isSubmitting ? (
             <div>
             { country.round < 7 ? (
@@ -180,17 +195,11 @@ const Country: FC = () => {
                         </div>
                     ) : (<div></div>)}
                 </div>
-            ) : country.round === 7 && countriesPublic.ecology[6] !== null ? (
+            ) : countriesPublic.ecology[6] !== null ? (
                 <GameOver />
-            ) : (
-                <div>
-                    Error
-                </div>
-            )}
+            ) : (<div>Error</div>)}
         </div>
-        ) : (
-            <Loader text={"Waiting for the other players..."} />
-        )}
+        ) : (<Loader text={"Waiting for the other players..."} />)}
     </div>
     );
 };
