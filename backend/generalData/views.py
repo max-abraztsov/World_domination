@@ -24,7 +24,7 @@ def general_data(request):
             country_ecology_object = country.objects.filter(CountryName=AllCountries_list[0]['CountryName']).values('Round')
             for round in country_ecology_object:
                 country_round = round['Round']
-            ecology_rounds = [1, 2, 3, 4, 5, 6]
+            ecology_rounds = [1, 2, 3, 4, 5, 6, 7]
             for ecology_round in ecology_rounds:
                 one_ecology_object = ecology.objects.get(round=ecology_round)
                 ecology_title = "Round " + str(one_ecology_object.round)

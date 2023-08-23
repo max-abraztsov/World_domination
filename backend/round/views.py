@@ -30,9 +30,14 @@ def forms_check(request_data_show):
             if Session.forms_count == 1:
                 Session.sended = False
                 print("Set Session.sended = False")
+                formsmax_response = requests.post('http://127.0.0.1:8000/formsmax', json=request_data_show)
+                response_data = formsmax_response.json()
+                forms_max = response_data.get('alive_countries')
+                Session.forms_max = forms_max
+                print("Update max forms (" + str(Session.forms_max) + ")")
             Session.forms_count -= 1
             Session.save()
-            print(str(country_name) + ": session.forms_count -1")
+            print(str(country_name) + ": session.forms_count -1 (Count of forms = " + str(Session.forms_count) + ")")
             break
         else:
             if Session.forms_count == Session.forms_max:
@@ -41,11 +46,8 @@ def forms_check(request_data_show):
                 print("Find a last form: " + str(country_name) + " (all forms were sended)")
                 response_data = requests.post('http://127.0.0.1:8000/attack', json=request_data_show)
                 print(str(country_name) + ": attack is successfull")
-                #Session.forms_count -= 1
                 Session.save()
                 set_new_ecology.save()
-                #print(str(country_name) + ": session.forms_count -1")
-                #break
             else:
                 time.sleep(15)    
 
@@ -61,7 +63,7 @@ def calculations(request_data):
     ecology_dev = request_data.get('ecology')
     cities = request_data.get('cities')
     enemies = request_data.get('enemies')
-    
+
     Country = country.objects.get(CountryName=country_name)
     User = user.objects.get(country_id=Country.id, role="president")
     Ecology = ecology.objects.get(round=Country.Round)
@@ -95,7 +97,6 @@ def calculations(request_data):
     cost = 0
 
     #send request to the app "donate" ========================================================================
-    
     if donate_data['from'] != '' and donate_data['to'] != '':
         donate_response = requests.post('http://127.0.0.1:8000/donate', json=donate_data)
         response_data = donate_response.json()
@@ -111,12 +112,12 @@ def calculations(request_data):
                 new_sanction = sanction(sanctionFrom_id = Country.id, sanctionFor_id = country_under_sanction[0]['id'])
                 new_sanction.save()
                 print(str(country_name) + ": add sanctions on " + str(enemy['country']))
-    
-                 
-    #update info about all cities in country (shields, progress, live level and profit)
+
+
+    #update info about all cities in country (shields and progress)
     for one_request_city in cities:
-        City = city.objects.get(country_id=Country.id, state=True, city_name=one_request_city['city_name'])
-        if one_request_city['shield'] == True and City.shield == False:
+        City = city.objects.get(country_id=Country.id, city_name=one_request_city['city_name'])
+        if (one_request_city['shield'] == True and City.shield == False) and City.state == True:
             cost += 300
             if cost > Country.Budget:
                 response_data = requests.post('http://127.0.0.1:8000/login_page', json=request_data_show)
@@ -124,7 +125,7 @@ def calculations(request_data):
                 return json_response_data
             City.shield = True
             print(str(country_name) + ": add shield for city " + str(City.city_name))
-        if one_request_city['develop'] == True:
+        if one_request_city['develop'] == True and City.state == True:
             cost += 150
             if cost > Country.Budget:
                 response_data = requests.post('http://127.0.0.1:8000/login_page', json=request_data_show)
@@ -133,24 +134,20 @@ def calculations(request_data):
             City.progress += 8
             print(str(country_name) + ": upgrade progress to " + str(City.city_name))
         City.save()
-        print(str(country_name) + ": save shield and progress to " + str(City.city_name))
 
     
-    #update live level in all cities at country
     sum_profit = 0
     for one_city_live_level in cities:
-        City = city.objects.get(country_id=Country.id, state=True, city_name=one_city_live_level['city_name'])
+        City = city.objects.get(country_id=Country.id, city_name=one_city_live_level['city_name'])
         City.live_level = (Ecology.level * City.progress)/100
         print(str(country_name) + ": upgrade live level to " + str(City.city_name))
         City.profit = City.live_level*3
         print(str(country_name) + " upgrade profit to " + str(City.city_name))
         sum_profit += City.profit
         City.save()
-        print(str(country_name) + ": live level and profit to " + str(City.city_name))
     
 
     #up round ===========================================================================================
-    
     if Country.Round<8:
         Country.Round += 1
         print(str(country_name) + ": upgrade round +1")
@@ -201,10 +198,10 @@ def calculations(request_data):
     elif(nuclear_technology==False):
         Country.NuclearRockets = 0
 
+
     #attack cities of enemies ===========================================================================
     forms_check(request_data_show)
     
-
 
     #sanctions count =================================================================================
     Sanction = sanction.objects.filter(sanctionFor_id=Country.id)
@@ -219,13 +216,8 @@ def calculations(request_data):
                 
     Country.save()
     print(str(country_name) + ": general save country data")
-    # new_ecology.save()
     print(str(country_name) + ": save ecology changes")
     
-    
-    
-     
-
     response_data = requests.post('http://127.0.0.1:8000/login_page', json=request_data_show)
     json_response_data = response_data.json()
     return json_response_data
@@ -233,6 +225,7 @@ def calculations(request_data):
 
 @csrf_exempt
 def end_round(request):
+    print("\n\n\n")
     if request.method == 'POST':
         request_body = request.body.decode('utf-8')
         request_data = json.loads(request_body)  
