@@ -148,7 +148,7 @@ const Country: FC = () => {
             {countriesPublic.countries[0].country == "" && <Loader text={"Waiting..."} />}
             {!isSubmitting ? (
             <div>
-            { country.round < 7 ? (
+            { countriesPublic.ecology[6] === null ? (
                 <div>
                     {country !== null && country.country != "" ? (
                         <div className={cl.country}>
