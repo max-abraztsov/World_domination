@@ -21,7 +21,7 @@ const Navigation: FC = () => {
         console.log(country, form);
         if (localStorage.getItem("authenticated") === "true"){
             dispatch(toggleLogged({status: true}));
-        } else if (localStorage.getItem("authenticated") === null || localStorage.getItem("authenticated") === "false"){
+        } else if (localStorage.getItem("authenticated") === null || localStorage.getItem("authenticated") === "false" && location.pathname === "/country"){
             navigate("/");
             dispatch(toggleLogged({status: false}));
             localStorage.setItem("authenticated", "false");

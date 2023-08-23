@@ -31,9 +31,9 @@ const Home: FC = () => {
                             <h1>WORLD<br/> DOMINATION</h1>
                             <p>- Discord Web Game is an immersive online experience where players engage in a strategic competition between nations.</p>
                             <div className={cl.main_buttons}>
-                                <div className={cl.main_button}>
+                                {/* <div className={cl.main_button}>
                                     <a href="#read">Read more</a>
-                                </div>
+                                </div> */}
                                 <div className={cl.main_button__red}>
                                     <Link to="/login">Join the game</Link>
                                 </div>
@@ -71,7 +71,7 @@ const Home: FC = () => {
                             </div>
                             <div className={cl.game_general__item_red}>
                                 <p className={cl.game_general__text}>
-                                    <span>10 - 450</span><br/>players
+                                    <span>10 - 40</span><br/>players
                                 </p>
                             </div>
                             <div className={cl.game_general__item}>

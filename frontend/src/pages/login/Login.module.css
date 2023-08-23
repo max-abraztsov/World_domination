@@ -1,8 +1,36 @@
 @import url('https://fonts.googleapis.com/css2?family=Arimo:wght@400;700&display=swap');
 
+input:-webkit-autofill {
+    /* Ваши стили для автозагрузки в Chrome и Safari */
+    background-color: yellow;
+}
+  
+input:-moz-autofill {
+/* Ваши стили для автозагрузки в Firefox */
+background-color: yellow;
+
+}
+
+input:-internal-autofill-selected{
+    background-color: black !important;
+}
+
+/* Стили для автозагрузки - универсальный вариант */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+/* Ваши стили для автозагрузки */
+background-color: yellow;
+}
+
+
 .login__container{
     display: flex;
     flex-direction:column;
+    position: relative;
+    top: 0;
+    left:0;
 }
 
 .login__wrapper {
@@ -44,6 +72,22 @@
     font-weight: 400;
     line-height: normal;
     margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.login__text_red{
+    display: block;
+    position: absolute;
+    bottom: 25%;
+    left: 0;
+    color: #F2716B;
+    font-family: Arimo;
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 .login__label{
@@ -55,6 +99,10 @@
     font-weight: 700;
     line-height: normal;
     margin-bottom: 10px;
+}
+
+.login__input:active, .login__input:focus{
+    
 }
 
 #login__button {
@@ -136,13 +184,14 @@
 .form_control input:focus,
 .form_control input:valid {
     outline: 0;
-    border-bottom-color: lightblue;
+    /* border-bottom-color: lightblue; */
     background-color: transparent !important;
+    background: black;
 }
 
 .form_control label {
     position: absolute;
-    top: 15px;
+    top: 14px;
     left: 0;
     pointer-events: none;
 }
@@ -157,10 +206,11 @@
 
 .form_control input:focus+label span,
 .form_control input:valid+label span {
-    color: lightblue;
-    transform: translateY(-30px);
+    /* color: lightblue; */
+    transform: translateY(-35px);
 }
 
 .form_control input:-internal-autofill-selected {
-    height:20px ;
+    height:40px ;
+    background: black;
 }

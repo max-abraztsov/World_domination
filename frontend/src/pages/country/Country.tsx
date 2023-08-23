@@ -14,6 +14,7 @@ import Printer from '../../components/Printer/Printer';
 import { generateDefaultForm } from '../../store/defaultValue';
 import NuclearButton from '../../components/UI/nuclearButton/NuclearButton';
 import { useLocation } from 'react-router-dom';
+import Loader from '../../components/UI/loader/Loader';
 
 import Pen from "./../../assets/Pen.svg"
 import MinisterPage from '../../components/ministerPage/MinisterPage';
@@ -127,80 +128,70 @@ const Country: FC = () => {
     
     return (
         <div>
+            {countriesPublic.countries[0].country == "" && (
+                <Loader text={"Waiting..."} />
+            )}
+            {!isSubmitting ? (
+            <div>
             { country.round < 7 ? (
                 <div>
-                    {!isSubmitting ? (
-                        <div>
-                            {country !== null && country.country != "" ? (
-                                <div className={cl.country}>
-                                    <div className={cl.container}>
-                                        <div className={cl.country__table}> 
-                                            {country && country.is_president ? (             
-                                                <section className={cl.country__print}>
-                                                    <div>
-                                                        <Printer />
-                                                        <div id={cl.pen}>
-                                                            <img src={Pen}/>
-                                                        </div>
-                                                    </div>
-                                                    { country.round < 7 ? (
-                                                        <div className={cl.desktop__button}>
-                                                        <NuclearButton onClick={clickHandler} /> 
-                                                    </div>  
-                                                    ) : (<div></div>)}                                                                               
-                                                </section>  
-                                            ):(<div></div>)}
-                                            {country && country.is_president ? (
-                                                <div className={cl.country__documents_president}>
-                                                    <PresidentPage 
-                                                        metricData={metricData} 
-                                                        chartData={chartData} 
-                                                        clickHandler={clickHandler} 
-                                                        resetInfo={updateMinisterInformation}
-                                                    />
-                                                    {country.round < 7 ? (
-                                                        <div className={cl.mobile__button}>
-                                                        <NuclearButton onClick={clickHandler} /> 
-                                                    </div> 
-                                                    ) : (<div></div>)} 
-                                                </div>
-                                            ) : country ? (
-                                                <MinisterPage 
-                                                    metricData={metricData} 
-                                                    chartData={chartData} 
-                                                    clickHandler={updateMinisterInformation}
-                                                />                      
-                                            ) : (<div>An error accured...</div>)}
-                                        </div>
-                                    </div>
-                                </div>
-                            ) : (<div></div>)}
-                        </div>
-                    ) : (
+                    {country !== null && country.country != "" ? (
                         <div className={cl.country}>
                             <div className={cl.container}>
-                                <div className={cl.country__table_loading}>
-                                    <div className={cl.loader}>
-                                        <div></div>
-                                        <div></div>
-                                        <div></div>
-                                        <div></div>
-                                    </div>
-                                    <div className={cl.loader__text}>
-                                        Waiting for the other players...<br/>
-                                        Please don't reload the page!
-                                    </div>
+                                <div className={cl.country__table}> 
+                                    {country && country.is_president ? (             
+                                        <section className={cl.country__print}>
+                                            <div>
+                                                <Printer />
+                                                <div id={cl.pen}>
+                                                    <img src={Pen}/>
+                                                </div>
+                                            </div>
+                                            { country.round < 7 ? (
+                                                <div className={cl.desktop__button}>
+                                                <NuclearButton onClick={clickHandler} /> 
+                                            </div>  
+                                            ) : (<div></div>)}                                                                               
+                                        </section>  
+                                    ):(<div></div>)}
+                                    {country && country.is_president ? (
+                                        <div className={cl.country__documents_president}>
+                                            <PresidentPage 
+                                                metricData={metricData} 
+                                                chartData={chartData} 
+                                                clickHandler={clickHandler} 
+                                                resetInfo={updateMinisterInformation}
+                                            />
+                                            {country.round < 7 ? (
+                                                <div className={cl.mobile__button}>
+                                                <NuclearButton onClick={clickHandler} /> 
+                                            </div> 
+                                            ) : (<div></div>)} 
+                                        </div>
+                                    ) : country ? (
+                                        <MinisterPage 
+                                            metricData={metricData} 
+                                            chartData={chartData} 
+                                            clickHandler={updateMinisterInformation}
+                                        />                      
+                                    ) : (<div>An error accured...</div>)}
                                 </div>
                             </div>
                         </div>
-                    )}
+                    ) : (<div></div>)}
                 </div>
             ) : country.round === 7 && countriesPublic.ecology[6] !== null ? (
                 <GameOver />
             ) : (
-                <div>121212112</div>
+                <div>
+                    Error
+                </div>
             )}
         </div>
+        ) : (
+            <Loader text={"Waiting for the other players..."} />
+        )}
+    </div>
     );
 };
 

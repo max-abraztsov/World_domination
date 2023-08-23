@@ -28,6 +28,8 @@ const Login: FC = () => {
         window.scrollTo(0, 0);
     }, [pathname]);
 
+    const [invalidPassword, setInvalidPassword] = useState<boolean>(false);
+
     const [userForm, setUserForm] = useState<UserProps>({
         logincode: "",
         password: "",
@@ -43,6 +45,7 @@ const Login: FC = () => {
 
     async function loginUser(userForm: UserProps){
         try {
+            setInvalidPassword(false);
             console.log(country);
             const response = await axios.post("http://127.0.0.1:8000/login_page", userForm);
             console.log(response.data);
@@ -57,6 +60,7 @@ const Login: FC = () => {
         } catch (error) {
             if (axios.isAxiosError(error)) {
                 console.log('error message: ', error.message);
+                setInvalidPassword(true);
                 return error.message;
             } else {
                 console.log('unexpected error: ', error);
@@ -118,7 +122,9 @@ const Login: FC = () => {
                             <span style={{transitionDelay: "350ms"}}>d</span>
                         </label>
                     </div>
-
+                    {invalidPassword && (
+                        <p className={cl.login__text_red}>Invalid password or login. Try again... </p>
+                    )}
                     <button id={cl.login__button} type="submit">
                         Login
                         <div className={cl.arrow_wrapper}>
