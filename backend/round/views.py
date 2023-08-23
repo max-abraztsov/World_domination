@@ -30,9 +30,14 @@ def forms_check(request_data_show):
             if Session.forms_count == 1:
                 Session.sended = False
                 print("Set Session.sended = False")
+                formsmax_response = requests.post('http://127.0.0.1:8000/formsmax', json=request_data_show)
+                response_data = formsmax_response.json()
+                forms_max = response_data.get('alive_countries')
+                Session.forms_max = forms_max
+                print("Update max forms (" + str(Session.forms_max) + ")")
             Session.forms_count -= 1
             Session.save()
-            print(str(country_name) + ": session.forms_count -1")
+            print(str(country_name) + ": session.forms_count -1 (Count of forms = " + str(Session.forms_count) + ")")
             break
         else:
             if Session.forms_count == Session.forms_max:
@@ -61,6 +66,10 @@ def calculations(request_data):
     ecology_dev = request_data.get('ecology')
     cities = request_data.get('cities')
     enemies = request_data.get('enemies')
+
+    print("==============================================================")
+    print(request_data)
+    print("==============================================================")
     
     Country = country.objects.get(CountryName=country_name)
     User = user.objects.get(country_id=Country.id, role="president")
@@ -112,11 +121,28 @@ def calculations(request_data):
                 new_sanction.save()
                 print(str(country_name) + ": add sanctions on " + str(enemy['country']))
     
-                 
-    #update info about all cities in country (shields, progress, live level and profit)
+    '''
+    print("Text before start cykl")
+    for request_city in cities:
+        print("Text in cykl")
+        print(request_city)
+        City = city.objects.get(country_id=Country.id, city_name=request_city['city_name'])
+        print("======================")
+        print(City)
+        print(City.state)
+        print(City.shield)'''
+
+    #update info about all cities in country (shields and progress)
     for one_request_city in cities:
-        City = city.objects.get(country_id=Country.id, state=True, city_name=one_request_city['city_name'])
-        if one_request_city['shield'] == True and City.shield == False:
+        City = city.objects.get(country_id=Country.id, city_name=one_request_city['city_name'])
+        print(City)
+        print(one_request_city['develop'])
+        print("State: " + str(City.state))
+        '''print(one_request_city['shield'] == True)
+        print(City.shield == False)
+        print(City.state == True)'''
+        if (one_request_city['shield'] == True and City.shield == False) and City.state == True:
+            #print(str(City) + " shield")
             cost += 300
             if cost > Country.Budget:
                 response_data = requests.post('http://127.0.0.1:8000/login_page', json=request_data_show)
@@ -124,7 +150,8 @@ def calculations(request_data):
                 return json_response_data
             City.shield = True
             print(str(country_name) + ": add shield for city " + str(City.city_name))
-        if one_request_city['develop'] == True:
+        if one_request_city['develop'] == True and City.state == True:
+            #print(City + " develop")
             cost += 150
             if cost > Country.Budget:
                 response_data = requests.post('http://127.0.0.1:8000/login_page', json=request_data_show)
@@ -133,24 +160,23 @@ def calculations(request_data):
             City.progress += 8
             print(str(country_name) + ": upgrade progress to " + str(City.city_name))
         City.save()
-        print(str(country_name) + ": save shield and progress to " + str(City.city_name))
 
     
     #update live level in all cities at country
+    print(1)
     sum_profit = 0
     for one_city_live_level in cities:
-        City = city.objects.get(country_id=Country.id, state=True, city_name=one_city_live_level['city_name'])
+        City = city.objects.get(country_id=Country.id, city_name=one_city_live_level['city_name'])
         City.live_level = (Ecology.level * City.progress)/100
         print(str(country_name) + ": upgrade live level to " + str(City.city_name))
         City.profit = City.live_level*3
         print(str(country_name) + " upgrade profit to " + str(City.city_name))
         sum_profit += City.profit
         City.save()
-        print(str(country_name) + ": live level and profit to " + str(City.city_name))
     
 
     #up round ===========================================================================================
-    
+    print(2)
     if Country.Round<8:
         Country.Round += 1
         print(str(country_name) + ": upgrade round +1")
@@ -159,6 +185,7 @@ def calculations(request_data):
     
             
     #update ecology level ===================================================================================
+    print(3)
     Actual_ecology = session.objects.get(id=1)
     if ecology_dev == True:
         cost += 200
@@ -175,6 +202,7 @@ def calculations(request_data):
             
 
     #set nuclear technology and order new rockets ==================================================
+    print(4)
     Actual_ecology = session.objects.get(id=1)
     if nuclear_technology == True:
         if Country.NuclearTechnology == False:
@@ -202,16 +230,19 @@ def calculations(request_data):
         Country.NuclearRockets = 0
 
     #attack cities of enemies ===========================================================================
+    print(5)
     forms_check(request_data_show)
     
 
 
     #sanctions count =================================================================================
+    print(6)
     Sanction = sanction.objects.filter(sanctionFor_id=Country.id)
     Sanctions_array = list(Sanction)
     
 
     #Budget ==========================================================================================
+    print(7)
     Country.Budget += Country.Earnings - 50 * len(Sanctions_array) - cost
     print(str(country_name) + ": calculate new country budget")
     Country.Earnings = sum_profit
@@ -233,6 +264,7 @@ def calculations(request_data):
 
 @csrf_exempt
 def end_round(request):
+    print("\n\n\n")
     if request.method == 'POST':
         request_body = request.body.decode('utf-8')
         request_data = json.loads(request_body)  
