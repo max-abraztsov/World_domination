@@ -1,4 +1,4 @@
-import {FC, useEffect} from 'react';
+import {FC} from 'react';
 import Checkbox from '../UI/checkbox/Checkbox';
 import { useAppSelector, useAppDispatch } from '../../hook';
 import { toggleProtect, toggleCityDevelop } from '../../store/countrySlice';
@@ -43,12 +43,14 @@ const City: FC<CityProps> = ({city, isPresident, id, budget}) => {
                 <div>
                     { country.is_president ? ( // For president and admin
                         <div style={{marginLeft: "6px"}}>
-                            <Checkbox 
-                                formState={form.cities[id].develop}
-                                price={150}
-                                budget={budget}
-                                toggleStatus={() => dispatch(toggleCityDevelop({status:form.cities[id].develop, id: id, price: 150}))}
-                            >Develop (150$)</Checkbox>
+                            {country.cities[id].progress < 100 && (
+                                <Checkbox 
+                                    formState={form.cities[id].develop}
+                                    price={150}
+                                    budget={budget}
+                                    toggleStatus={() => dispatch(toggleCityDevelop({status:form.cities[id].develop, id: id, price: 150}))}
+                                >Develop (150$)</Checkbox>
+                            )}
                             <Checkbox 
                                 formState={form.cities[id].shield}
                                 price={300}

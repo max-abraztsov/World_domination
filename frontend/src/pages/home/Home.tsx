@@ -1,5 +1,6 @@
-import React, {FC} from 'react';
+import React, {FC, useEffect} from 'react';
 import cl from "./Home.module.css"
+import { useLocation, Link } from 'react-router-dom';
 
 // Images
 import img from "./../../assets/bomb-cursor.png"
@@ -13,6 +14,13 @@ import explosion from "./../../assets/explosion.svg"
 
 
 const Home: FC = () => {
+
+    const { pathname } = useLocation();
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [pathname]);
+
     return (
         <main>
             <section className={cl.main_overlay}>
@@ -23,11 +31,11 @@ const Home: FC = () => {
                             <h1>WORLD<br/> DOMINATION</h1>
                             <p>- Discord Web Game is an immersive online experience where players engage in a strategic competition between nations.</p>
                             <div className={cl.main_buttons}>
-                                <div className={cl.main_button}>
+                                {/* <div className={cl.main_button}>
                                     <a href="#read">Read more</a>
-                                </div>
+                                </div> */}
                                 <div className={cl.main_button__red}>
-                                    <a href="#read">Join the game</a>
+                                    <Link to="/login">Join the game</Link>
                                 </div>
                             </div>
                         </div>
@@ -63,7 +71,7 @@ const Home: FC = () => {
                             </div>
                             <div className={cl.game_general__item_red}>
                                 <p className={cl.game_general__text}>
-                                    <span>10 - 450</span><br/>players
+                                    <span>10 - 40</span><br/>players
                                 </p>
                             </div>
                             <div className={cl.game_general__item}>
@@ -87,7 +95,7 @@ const Home: FC = () => {
                         Will you defend peaceful principles until the end or unleash a nuclear apocalypse on the planet? The decision is yours. In this game, you can do it all: engage in negotiations, bargain, bluff, and weave intrigues, or isolate yourself behind an iron curtain and secretly forge a weapon of retaliation. This thrilling mix of classic "Mafia" and turn-based political strategy will appeal to both those seeking fun and lovers of cunning tactics.
                                 </p>
                                 <div className={cl.game_join}>
-                                    <a href="#">Join the game</a>
+                                    <Link to="/login">Join the game</Link>
                                 </div>
                             </div>
                         </div>
@@ -123,7 +131,7 @@ const Home: FC = () => {
                     Good luck in the game!
                                 </p>
                                 <div className={cl.game_join}>
-                                    <a href="#">Join the game</a>
+                                    <Link to="/login">Join the game</Link>
                                 </div>
                             </div>
                         </div>

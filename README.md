@@ -20,9 +20,7 @@ To get started with this application, simply clone this repository onto your loc
 
 ## For frontend
 
-### `npm install --save axios`
-
-### `npm install --save react-router-dom`
+### `npm install
 
 ### `npm run dev`
 
@@ -51,7 +49,6 @@ This application was built using React and Django, and also utilizes the followi
 * react-router-dom
 * axios
 * vite.js 
-* jwt
 * json
 * timeout-decorator
 

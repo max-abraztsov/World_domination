@@ -1,11 +1,11 @@
 import axios from 'axios';
-import React, {FormEvent, useState, FC} from 'react';
+import React, {FormEvent, useState, FC, useEffect} from 'react';
 import cl from "./Login.module.css" ;
 import { useAppDispatch, useAppSelector } from '../../hook';
 import { loginUser } from '../../store/auth/actionCreators';
 import { updateCountryInfo } from '../../store/countrySlice';
 import { toggleLogged } from '../../store/loginSlice';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 //import { withRouter, RouteComponentProps, useHistory } from 'react-router-dom';
 
@@ -22,6 +22,14 @@ const Login: FC = () => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
+    const { pathname } = useLocation();
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [pathname]);
+
+    const [invalidPassword, setInvalidPassword] = useState<boolean>(false);
+
     const [userForm, setUserForm] = useState<UserProps>({
         logincode: "",
         password: "",
@@ -37,6 +45,7 @@ const Login: FC = () => {
 
     async function loginUser(userForm: UserProps){
         try {
+            setInvalidPassword(false);
             console.log(country);
             const response = await axios.post("http://127.0.0.1:8000/login_page", userForm);
             console.log(response.data);
@@ -51,6 +60,7 @@ const Login: FC = () => {
         } catch (error) {
             if (axios.isAxiosError(error)) {
                 console.log('error message: ', error.message);
+                setInvalidPassword(true);
                 return error.message;
             } else {
                 console.log('unexpected error: ', error);
@@ -112,7 +122,9 @@ const Login: FC = () => {
                             <span style={{transitionDelay: "350ms"}}>d</span>
                         </label>
                     </div>
-
+                    {invalidPassword && (
+                        <p className={cl.login__text_red}>Invalid password or login. Try again... </p>
+                    )}
                     <button id={cl.login__button} type="submit">
                         Login
                         <div className={cl.arrow_wrapper}>

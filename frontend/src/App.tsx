@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import {BrowserRouter, Routes, Route} from "react-router-dom"
 import './App.css'
 import Navigation from './components/UI/navigation/Navigation'
@@ -19,6 +19,25 @@ function App() {
   const form = useAppSelector(state => state.form);
   const dispatch = useAppDispatch();
 
+  const [authenticationChecked, setAuthenticationChecked] = useState(false);
+
+  useEffect(() => {
+    // Проверка аутентификации, например, из localStorage
+    const isAuthenticated = localStorage.getItem("authenticated") === "true";
+
+    if (isAuthenticated) {
+      dispatch(toggleLogged({ status: true }));
+    } else {
+      dispatch(toggleLogged({ status: false }));
+    }
+
+    setAuthenticationChecked(true);
+  }, []);
+
+  if (!authenticationChecked) {
+    return null; // Или замените на компонент загрузки, если нужно
+  }
+
   return (
     <BrowserRouter>
       <Navigation/>
@@ -26,7 +45,7 @@ function App() {
           <Route path="/login" element={<Login/>}/>
           {loginState.is_logged_in ? (
             <Route path="/country" element={<Country/>}/>
-          ): (
+          ):(
             <Route path="/login" element={<Login/>}/>
           )}
           {/* <Route path="/wd-admin" element={<Admin/>}/> */}
