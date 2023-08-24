@@ -5,6 +5,7 @@
 }
 .pedestal{
     background:  linear-gradient(180deg, rgba(173,185,147,1) 0%, rgba(208,211,143,1) 70%, rgba(255,240,234,1) 100%);
+    padding-bottom: 70px;
 }
 .info{
     background: rgba(255,240,234,1);
@@ -18,7 +19,7 @@
     max-width: 900px;
 }
 .game_over_content{
-    margin-top: 90px;
+    margin-top: 200px;
 }
 .game_over_title{
     text-align: center;
@@ -30,6 +31,7 @@
     margin-right: 40px;
 }
 .game_over_place{
+    display: block;
     text-align: center;
     font-family: Bebas Neue;
     font-size: 50px;
@@ -40,7 +42,7 @@
     color: #141644;
 }
 .game_over_pedestal{
-    height: 100vh;
+    height: 130vh;
     display: flex;
     justify-content: center;
     align-items:center;
@@ -142,6 +144,9 @@
     }
 }
 @media (max-width: 900px){
+    .pedestal{
+        padding-bottom: 0px;
+    }
     .game_over_city{
         font-size: 35px;
     }
