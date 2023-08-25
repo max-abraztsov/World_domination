@@ -6,8 +6,6 @@ from django.views.decorators.csrf import csrf_exempt
 import json
 from round.models import attacked_cities
 from loginPage.models import city
-import requests
-import json
 
 @csrf_exempt
 def attack(request):
