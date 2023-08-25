@@ -1,56 +1,42 @@
 # World Domination - Discord Web Game
 
-World Domination - Discord Web Game is an immersive online experience where players engage in a strategic competition between nations. The game takes place within Discord using a dedicated web application, allowing players to interact, negotiate, and witness the consequences of their actions from previous rounds. The core concept of the game revolves around communication and establishing connections with other countries, but with a twist: even the most loyal ally can turn out to be a traitor, launching a nuclear missile against you when you least expect it.
+World Domination - Web Game for Discord offers an exhilarating online experience where players engage in strategic competitive gameplay between nations. The game unfolds within Discord, utilizing a specialized web application that enables players to interact, negotiate, and observe the consequences of their actions from previous rounds. The core concept of the game revolves around communication and establishing connections with other countries, but with an intriguing twist: even the most loyal ally might turn into a traitor and launch a nuclear missile against you when least expected.
 
-In this highly dynamic and unpredictable game, players must carefully navigate diplomatic relationships, forge alliances, gather intelligence, and engage in espionage to ensure the survival and prosperity of their nation. Trust is a valuable but fragile commodity, and every decision carries the weight of potential betrayal. Choose your allies wisely, but always be prepared for unexpected turns of events.
+In this dynamic and unpredictable game, players must skillfully manage diplomatic relations, forge alliances, and gather information to ensure the survival and prosperity of their nation. Trust is a precious yet fragile resource, and every decision carries the burden of potential betrayal. Choose your allies wisely, but always be prepared for unexpected turns of events.
 
 ## Key Features:
 
-Discord-based gameplay: Interact with other players and participate in the game through Discord using a dedicated web application.
-Strategic diplomacy: Engage in diplomatic negotiations, form alliances, and establish trade agreements to strengthen your nation's position.
-Espionage and intelligence: Gather information, conduct covert operations, and uncover secrets to gain an advantage over your rivals.
-Consequences and betrayal: Experience the consequences of your actions from previous rounds, where even trusted allies may betray you unexpectedly.
-Resource management: Allocate resources wisely to sustain your nation's economy, military, and infrastructure.
-Dynamic gameplay: Adapt to ever-changing circumstances, unexpected events, and the evolving strategies of other players.
-Global leaderboard: Track your nation's progress and compare your achievements with players from around the world.
+* Discord-based Gameplay: Interact with fellow players and participate in the game through Discord, utilizing a dedicated web application.
+* Strategic Diplomacy: Engage in diplomatic negotiations and form alliances to strengthen your position on the global stage.
+* Consequences and Betrayal: Explore the repercussions of your actions from previous rounds, where even trusted allies might unexpectedly turn against you.
+* Resource Management: Wisely allocate resources to sustain your economy, military forces, and national infrastructure.
+* Dynamic Gameplay: Adapt to ever-changing circumstances, unexpected events, and evolving strategies of other players.
+* Global Leadership: Monitor your nation's progress and compare achievements with players from around the world.
 
-## Getting Started
+Become the nation with the highest quality of life!
 
-To get started with this application, simply clone this repository onto your local machine and run the following commands:
+## Actual plans 
 
-## For frontend
+### Plans for "World Domination v2.0" include:
 
-### `npm install
-
-### `npm run dev`
-
-## For backend 
-
-### `python -m pip install Django`
-
-### `python manage.py makemigrations`
-
-### `python manage.py migrate`
-
-### `python manage.py runserver`
-
-This will install all the necessary dependencies and start the application on your local server.
-For full operation of the project, a database must also be running (can be run either on a regular server or on a local server).
-
-## Usage
-
-Gather your friends and start playing (at least 12 people are recommended)
+* Implementation of JWT tokens for security and authentication.
+* Strengthening data protection with password encryption.
+* Transitioning the system to use Websockets for real-time information retrieval.
+* Creation of an administrative page to manage the game and players.
+* Integration with Discord for convenient communication and player coordination.
+* Expansion of the number of countries in the game to enrich the global dynamics.
+* Introduction of espionage functionality between countries, revealing additional strategic opportunities.
+* Granting the ability to participate in negotiations in another country exclusively to ministers, accompanied by corresponding content changes in the minister's office.
 
 ## Technologies Used
 
-This application was built using React and Django, and also utilizes the following libraries:
+This application was created using React, Django, and MySQL as the database, and it utilizes the following libraries and technologies (as of now):
 
-* react-tabs
 * react-router-dom
 * axios
-* vite.js 
+* vite.js
+* chart.js
+* redux toolkit
+* typescript
 * json
-* timeout-decorator
-
-## Contributing
-If you would like to contribute to this project, please feel free to fork this repository and submit a pull request.
+* requests
