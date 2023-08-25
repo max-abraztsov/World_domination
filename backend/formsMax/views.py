@@ -8,7 +8,7 @@ import json
 @csrf_exempt
 def formsmax(request):
     if request.method == 'POST':
-        choisen_countries = ["Belarus", "Ukraine", "Poland", "Lithuania"]
+        choisen_countries = ['Germany', 'USA', 'North Korea', 'Israel']
         all_countries = country.objects.all()
 
         try:

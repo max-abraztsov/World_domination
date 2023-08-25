@@ -15,6 +15,16 @@ In this dynamic and unpredictable game, players must skillfully manage diplomati
 
 Become the nation with the highest quality of life!
 
+## Login and Password for test (test country)
+
+### For president:
+Login: GB230666
+Password: Britain2023
+
+### For minister:
+Login: GB230665
+Password: Britain2023Minister
+
 ## Actual plans 
 
 ### Plans for "World Domination v2.0" include:

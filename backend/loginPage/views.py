@@ -60,7 +60,7 @@ def login_page(request):
             #Data about other countries
             OthersCountries_objects = country.objects.filter(~Q(CountryName=Country.CountryName)).values('id', 'CountryName')
             OthersCountries_fulllist = list(OthersCountries_objects)
-            chosen_countries=['Belarus', 'Ukraine', 'Poland', 'Lithuania']
+            chosen_countries=['Germany', 'USA', 'North Korea', 'Israel']
             OthersCountries_list=[]
             for chosen in OthersCountries_fulllist:
                 if chosen['CountryName'] in chosen_countries:
