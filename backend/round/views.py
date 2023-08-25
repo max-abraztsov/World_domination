@@ -149,7 +149,7 @@ def calculations(request_data):
         City = city.objects.get(country_id=Country.id, city_name=one_city_live_level['city_name'])
         City.live_level = (Ecology.level * City.progress)/100
         print(str(country_name) + ": upgrade live level to " + str(City.city_name))
-        City.profit = City.live_level*3
+        City.profit = City.live_level * 2.3
         print(str(country_name) + " upgrade profit to " + str(City.city_name))
         sum_profit += City.profit
         City.save()
