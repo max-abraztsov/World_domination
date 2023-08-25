@@ -2,6 +2,7 @@ import { Chart as ChartJS, registerables } from 'chart.js';
 import { Chart } from 'react-chartjs-2';
 import {FC, useState, useEffect } from 'react';
 import { useAppSelector, useAppDispatch } from '../../hook';
+import { useLocation } from 'react-router-dom';
 import {  
     getOtherInfo, 
     postForm,
@@ -13,13 +14,11 @@ import cl from "./Country.module.css"
 import Printer from '../../components/Printer/Printer';
 import { generateDefaultForm } from '../../store/defaultValue';
 import NuclearButton from '../../components/UI/nuclearButton/NuclearButton';
-import { useLocation } from 'react-router-dom';
 import Loader from '../../components/UI/loader/Loader';
-
-import Pen from "./../../assets/Pen.svg"
 import MinisterPage from '../../components/ministerPage/MinisterPage';
 import PresidentPage from '../../components/presidentPage/PresidentPage';
 import GameOver from '../../components/gameOver/GameOver';
+import Pen from "./../../assets/Pen.svg"
 
 
 const Country: FC = () => {
@@ -28,6 +27,11 @@ const Country: FC = () => {
     const country = useAppSelector(state => state.country.initialStateCountry);
     const countriesPublic = useAppSelector(state => state.countriesPublic.initialStateCountriesPublic);
     const dispatch = useAppDispatch();
+    const { pathname } = useLocation();
+
+    const [chartData, setChartData] = useState({});
+    const [metricData, setMetricData] = useState({});
+    const [isSubmitting, setIsSubmitting] = useState(false);
     
     const getColorByValue = (value: number | null): string | null => {
         if (value != null && value <= 35) {
@@ -41,10 +45,32 @@ const Country: FC = () => {
         }      
     };
 
-    const [chartData, setChartData] = useState({});
-    const [metricData, setMetricData] = useState({});
+    const clickHandler = async (e: React.MouseEvent<HTMLButtonElement>): Promise<void> => {
+        e.preventDefault();
+        await setIsSubmitting(true);
+        try{
+            await dispatch(postForm(form));
+            await dispatch(getOtherInfo(form));
+            await dispatch(updateFormInfo({update: generateDefaultForm(JSON.parse(localStorage.getItem("country")))}));
+            await setIsSubmitting(false);
+        } catch (error) {
+            await setIsSubmitting(false);
+        }
+    }
 
-    const { pathname } = useLocation();
+    const updateMinisterInformation = async (e: React.MouseEvent<HTMLButtonElement>): Promise<void> => {
+        console.log(form);
+        e.preventDefault();
+        await setIsSubmitting(true);
+        try{
+            await dispatch(clarifyCountryInfo({logincode: country.country, password: country.flag_photo}));
+            await dispatch(getOtherInfo(form));
+            await dispatch(updateFormInfo({update: generateDefaultForm(JSON.parse(localStorage.getItem("country")))}));
+            await setIsSubmitting(false);
+        } catch (error) {
+            await setIsSubmitting(false);
+        }
+    }
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -89,60 +115,8 @@ const Country: FC = () => {
                 ],
             });
         }
-        console.log(chartData, metricData);
     }, [countriesPublic]);
 
-    const [isSubmitting, setIsSubmitting] = useState(false);
-
-    const clickHandler = async (e: React.MouseEvent<HTMLButtonElement>): Promise<void> => {
-        console.log(form);
-        e.preventDefault();
-        await setIsSubmitting(true);
-        try{
-            await dispatch(postForm(form));
-            await dispatch(getOtherInfo(form));
-            await dispatch(updateFormInfo({update: generateDefaultForm(JSON.parse(localStorage.getItem("country")))}));
-            await setIsSubmitting(false);
-            await console.log(country, form);
-        } catch (error) {
-            await setIsSubmitting(false);
-        }
-    }
-
-    const updateMinisterInformation = async (e: React.MouseEvent<HTMLButtonElement>): Promise<void> => {
-        console.log(form);
-        e.preventDefault();
-        await setIsSubmitting(true);
-        try{
-            await dispatch(clarifyCountryInfo({logincode: country.country, password: country.flag_photo}));
-            await dispatch(getOtherInfo(form));
-            await dispatch(updateFormInfo({update: generateDefaultForm(JSON.parse(localStorage.getItem("country")))}));
-            await setIsSubmitting(false);
-            await console.log(country, form);
-        } catch (error) {
-            await setIsSubmitting(false);
-        }
-    }
-
-    const resetLoserInfo = async (e: React.MouseEvent<HTMLButtonElement>): Promise<void> => {
-        console.log(form);
-        e.preventDefault();
-        await setIsSubmitting(true);
-        try{
-            await dispatch(clarifyCountryInfo({logincode: country.country, password: country.flag_photo}));
-            await dispatch(getOtherInfo(form));
-            await dispatch(updateFormInfo({update: generateDefaultForm(JSON.parse(localStorage.getItem("country")))}));
-            await setIsSubmitting(false);
-            await console.log(country, form);
-        } catch (error) {
-            await setIsSubmitting(false);
-        }
-    }
-
-
-
-    console.log(metricData, chartData);
-    
     return (
         <div>
             {countriesPublic.countries[0].country == "" && <Loader text={"Waiting..."} />}
@@ -150,11 +124,11 @@ const Country: FC = () => {
             <div>
             { country.round < 7 ? (
                 <div>
-                    {country !== null && country.country != "" ? (
+                    {country !== null && country.country != "" && (
                         <div className={cl.country}>
                             <div className={cl.container}>
                                 <div className={cl.country__table}> 
-                                    {country && country.is_president ? (             
+                                    {country && country.is_president && (             
                                         <section className={cl.country__print}>
                                             <div>
                                                 <Printer />
@@ -162,13 +136,13 @@ const Country: FC = () => {
                                                     <img src={Pen}/>
                                                 </div>
                                             </div>
-                                            { country.round < 7 ? (
+                                            { country.round < 7 && (
                                                 <div className={cl.desktop__button}>
-                                                <NuclearButton onClick={clickHandler} /> 
-                                            </div>  
-                                            ) : (<div></div>)}                                                                               
+                                                    <NuclearButton onClick={clickHandler} /> 
+                                                </div>  
+                                            )}                                                                               
                                         </section>  
-                                    ):(<div></div>)}
+                                    )}
                                     {country && country.is_president ? (
                                         <div className={cl.country__documents_president}>
                                             <PresidentPage 
@@ -177,11 +151,11 @@ const Country: FC = () => {
                                                 clickHandler={clickHandler} 
                                                 resetInfo={updateMinisterInformation}
                                             />
-                                            {country.round < 7 ? (
+                                            {country.round < 7 && (
                                                 <div className={cl.mobile__button}>
-                                                <NuclearButton onClick={clickHandler} /> 
-                                            </div> 
-                                            ) : (<div></div>)} 
+                                                    <NuclearButton onClick={clickHandler} /> 
+                                                </div> 
+                                            )} 
                                         </div>
                                     ) : country ? (
                                         <MinisterPage 
@@ -193,7 +167,7 @@ const Country: FC = () => {
                                 </div>
                             </div>
                         </div>
-                    ) : (<div></div>)}
+                    )}
                 </div>
             ) : country.round === 7 ? (
                 <GameOver />

@@ -1,9 +1,8 @@
-import React, {FC, useEffect} from 'react';
+import {FC, useEffect} from 'react';
 import cl from "./Home.module.css"
 import { useLocation, Link } from 'react-router-dom';
 
 // Images
-import img from "./../../assets/bomb-cursor.png"
 import telegram from "./../../assets/telegram-icon.svg"
 import instagram from "./../../assets/instagram-icon.svg"
 import facebook from "./../../assets/facebook-icon.svg"
@@ -31,9 +30,6 @@ const Home: FC = () => {
                             <h1>WORLD<br/> DOMINATION</h1>
                             <p>- Discord Web Game is an immersive online experience where players engage in a strategic competition between nations.</p>
                             <div className={cl.main_buttons}>
-                                {/* <div className={cl.main_button}>
-                                    <a href="#read">Read more</a>
-                                </div> */}
                                 <div className={cl.main_button__red}>
                                     <Link to="/login">Join the game</Link>
                                 </div>
@@ -62,7 +58,6 @@ const Home: FC = () => {
             <section className={cl.overlay} id="read">
                 <div className={cl.container}>
                     <section className={cl.game_information}>
-
                         <div className={cl.game_general__items}>
                             <div className={cl.game_general__item}>
                                 <p className={cl.game_general__text}>
@@ -99,7 +94,6 @@ const Home: FC = () => {
                                 </div>
                             </div>
                         </div>
-                        
                         <div className={cl.game_about}>
                             <div className={cl.game_information__grafic}>
                                 <h2>RULES OF THE GAME</h2>
@@ -139,7 +133,6 @@ const Home: FC = () => {
                 </div>
             </section>
         </main>
-       
     );
 };
 

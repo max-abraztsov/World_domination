@@ -58,7 +58,6 @@ const Navigation: FC = () => {
             <ul className={cl.navigation__links}>
                 {login.is_logged_in ? (
                     <div className={cl.navigation__links}>
-                        {/* <Link className={cl.navigation__link} to="/country">Your country</Link> */}
                         <Link className={cl.navigation__link} to="/"><Logout /></Link>
                     </div>
                 ) : (

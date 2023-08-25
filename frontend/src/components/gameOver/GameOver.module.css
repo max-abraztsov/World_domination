@@ -19,7 +19,7 @@
     max-width: 900px;
 }
 .game_over_content{
-    margin-top: 200px;
+    margin-top: 70px;
 }
 .game_over_title{
     text-align: center;
@@ -27,7 +27,6 @@
     font-size: 110px;
     font-style: normal;
     font-weight: 500;
-    line-height: 98.5%;
     margin-right: 40px;
 }
 .game_over_place{
@@ -42,7 +41,7 @@
     color: #141644;
 }
 .game_over_pedestal{
-    height: 130vh;
+    height: 100vh;
     display: flex;
     justify-content: center;
     align-items:center;
@@ -115,6 +114,22 @@
     line-height: 98.5%; 
 }
 @media (max-width: 1200px){
+    .game_over_title{
+        display: block;
+        margin-top: 20px;
+        text-align: center;
+        font-family: Bebas Neue;
+        font-size: 80px;
+        font-style: normal;
+        font-weight: 500;
+        margin-right: 30px;
+    }
+    .game_over_content{
+        margin-top: 140px;
+    }
+    .game_over_pedestal{
+        height: 100vh;
+    }
     .game_over_place{
         font-size: 40px; 
         margin-right: 30px;

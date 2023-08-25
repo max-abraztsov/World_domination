@@ -106,7 +106,7 @@ const Login: FC = () => {
                         <input 
                             className={cl.login__input}
                             onChange={changePassword} 
-                            type="text" 
+                            type="password" 
                             value={userForm.password} 
                             name="upassword" 
                             required 

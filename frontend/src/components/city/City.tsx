@@ -41,7 +41,7 @@ const City: FC<CityProps> = ({city, isPresident, id, budget}) => {
                     <hr className={cl.hr_black}/>
                 </div>
                 <div>
-                    { country.is_president ? ( // For president and admin
+                    { country.is_president ? ( // For president
                         <div style={{marginLeft: "6px"}}>
                             {country.cities[id].progress < 100 && (
                                 <Checkbox 
@@ -59,7 +59,7 @@ const City: FC<CityProps> = ({city, isPresident, id, budget}) => {
                                 checked={city.shield}
                             >Protect (300$)</Checkbox>
                         </div>
-                    ) : ( // For simple users
+                    ) : ( // For minister
                         <div style={{marginLeft: "6px"}}>
                             <p className={cl.city__price}>Develop (150$)</p>
                             <p className={cl.city__price}>Protect (300$)</p>

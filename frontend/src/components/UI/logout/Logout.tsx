@@ -1,7 +1,7 @@
 import React, {FC} from 'react';
 import cl from "./Logout.module.css"
 import { useNavigate } from 'react-router-dom';
-import { useAppSelector, useAppDispatch } from '../../../hook';
+import { useAppDispatch } from '../../../hook';
 import { toggleLogged } from '../../../store/loginSlice';
 
 
@@ -9,7 +9,6 @@ const Logout: FC = () => {
 
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
-    const status = useAppSelector(state => state.status);
 
     function clickHandler(e: React.MouseEvent<HTMLButtonElement>){
         e.preventDefault();
@@ -19,7 +18,6 @@ const Logout: FC = () => {
         if (location.pathname === "/country") {
             navigate("/");
         }
-
     }
 
     return (

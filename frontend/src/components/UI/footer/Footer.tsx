@@ -38,18 +38,12 @@ const Footer: FC = () => {
                         <a className={cl.footer_social}>
                             <p>@world.domination</p><img src={instagram}/>
                         </a>
-                        {/* <a className={cl.footer_social}>
-                            <p>@world.domination</p><img src={facebook}/>
-                        </a> */}
                         <a className={cl.footer_social}>
                             <p>@world.domination</p><img src={discord}/>
                         </a>
                         <a className={cl.footer_social}>
                             <p>@world.domination</p><img src={telegram}/>
                         </a>
-                        {/* <a className={cl.footer_social}>
-                            <p>@world.domination</p><img src={tiktok}/>
-                        </a> */}
                     </div>
                 </div>
                 <div className={cl.copyright}>
