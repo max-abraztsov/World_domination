@@ -105,6 +105,7 @@ def calculations(request_data):
     
     # add sanctions from this country =========================================================================
     for enemy in enemies:
+        print("true")
         if enemy['sanctions'] == True:
             country_under_sanction = country.objects.filter(CountryName=enemy['country']).values('id')
             if_sanction_exist = sanction.objects.filter(Q(sanctionFrom_id=Country.id) & Q(sanctionFor_id=country_under_sanction[0]['id'])).exists()
@@ -112,6 +113,13 @@ def calculations(request_data):
                 new_sanction = sanction(sanctionFrom_id = Country.id, sanctionFor_id = country_under_sanction[0]['id'])
                 new_sanction.save()
                 print(str(country_name) + ": add sanctions on " + str(enemy['country']))
+        print("false")
+        if enemy['sanctions'] == False:
+            country_without_sanction = country.objects.filter(CountryName=enemy['country']).values('id')
+            if_sanction_exist = sanction.objects.filter(Q(sanctionFrom_id=Country.id) & Q(sanctionFor_id=country_without_sanction[0]['id'])).exists()
+            if if_sanction_exist == True:
+                sanction.objects.filter(Q(sanctionFrom_id=Country.id) & Q(sanctionFor_id=country_without_sanction[0]['id'])).delete()
+                print(str(country_name) + ": sanctions from " + str(enemy['country']) + " was removed")
 
 
     #update info about all cities in country (shields and progress)
@@ -141,7 +149,7 @@ def calculations(request_data):
         City = city.objects.get(country_id=Country.id, city_name=one_city_live_level['city_name'])
         City.live_level = (Ecology.level * City.progress)/100
         print(str(country_name) + ": upgrade live level to " + str(City.city_name))
-        City.profit = City.live_level*3
+        City.profit = City.live_level * 2.3
         print(str(country_name) + " upgrade profit to " + str(City.city_name))
         sum_profit += City.profit
         City.save()
