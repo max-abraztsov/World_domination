@@ -5,10 +5,9 @@ import { useLocation } from 'react-router-dom';
 
 import logo from "./../../../assets/LOgo.svg"
 import instagram from "./../../../assets/instagram-icon.svg"
-import facebook from "./../../../assets/facebook-icon.svg"
 import discord from "./../../../assets/discord-icon.svg"
 import telegram from "./../../../assets/telegram-icon.svg"
-import tiktok from "./../../../assets/tiktok-icon.svg"
+
 
 const Footer: FC = () => {
 
@@ -20,7 +19,7 @@ const Footer: FC = () => {
                 <div className={cl.footer}>
                     <div className={cl.footer_information}>
                         <div className={cl.footer_logo}>
-                            <img src={logo} />
+                            <img src={logo} width="42" height="44" alt="footer logo"/>
                         </div>
                         {location.pathname !== "/country" && (
                             <ul className={cl.footer_links}>
@@ -29,20 +28,22 @@ const Footer: FC = () => {
                             </ul> 
                         )}
                         <div className={cl.footer_kontakt}>
-                            <p><span>Kontakt</span><br/>
-                                world.domination@gmail.com
+                            <p><span className={cl.kontakt_title}>Kontakt</span><br/>
+                                <span className={cl.kontakt_text}>
+                                    world.game.domination.2023@gmail.com
+                                </span>          
                             </p>
                         </div>
                     </div>
                     <div className={cl.footer_socials}>
-                        <a className={cl.footer_social}>
-                            <p>@world.domination</p><img src={instagram}/>
+                        <a href="https://www.instagram.com/" className={cl.footer_social}>
+                            <p>@world.domination</p><img width="25" height="25" src={instagram} alt="instagram icon"/>
                         </a>
-                        <a className={cl.footer_social}>
-                            <p>@world.domination</p><img src={discord}/>
+                        <a href="https://discord.com/" className={cl.footer_social}>
+                            <p>@world.domination</p><img width="25" height="25" src={discord} alt="discord icon"/>
                         </a>
-                        <a className={cl.footer_social}>
-                            <p>@world.domination</p><img src={telegram}/>
+                        <a href="https://telegram.org/" className={cl.footer_social}>
+                            <p>@world.domination</p><img width="25" height="25" src={telegram} alt="telegram icon"/>
                         </a>
                     </div>
                 </div>

@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import {FC} from 'react';
 import cl from "./Page404.module.css"
 
 const Page404: FC = () => {

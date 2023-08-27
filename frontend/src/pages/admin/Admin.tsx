@@ -1,39 +1,21 @@
 import {FC} from 'react';
-import Country from '../country/Country';
+// import Country from '../country/Country';
 import cl from "./Admin.module.css";
-import { useAppSelector } from '../../hook';
 import BarChart from '../../components/UI/charts/BarChart';
-import { Chart as ChartJS, registerables } from 'chart.js';
-import { Chart } from 'react-chartjs-2'
 
 const Admin: FC = () => {
-
-    const countries = useAppSelector(state => state.countries);
-
-    const countriesPublic = useAppSelector(state => state.countriesPublic);
-
-    const chartData = {
-        labels: countriesPublic.countries.map( item => item.country),
-        datasets: [
-            {
-                label: 'Average live level',
-                data: countriesPublic.countries.map( item => item.average_live_level),
-                backgroundColor: '#55828B',
-            },
-        ],
-    };
 
     return (
         <div className={cl.admin}>
             <div className={cl.container}>
                 <section className={cl.countries}>
-                    <BarChart data={chartData}/>
-                    {countries.countries.map( country => 
+                    <BarChart/>
+                    {/* {countries.countries.map( country => 
                         <div>
-                            <Country key={country.country} forAdmin={country}></Country>
+                            <Country key={country.country}></Country>
                             <hr className={cl.hr}></hr>
                         </div> 
-                    )}
+                    )} */}
                 </section>
                 <aside className={cl.panel}>
                     <button className={cl.admin__button}>Initiate</button>

@@ -1,5 +1,3 @@
-import { Chart as ChartJS, registerables } from 'chart.js';
-import { Chart } from 'react-chartjs-2';
 import {FC, useState, useEffect } from 'react';
 import { useAppSelector, useAppDispatch } from '../../hook';
 import { useLocation } from 'react-router-dom';
@@ -20,7 +18,6 @@ import PresidentPage from '../../components/presidentPage/PresidentPage';
 import GameOver from '../../components/gameOver/GameOver';
 import Pen from "./../../assets/Pen.svg"
 
-
 const Country: FC = () => {
 
     const form = useAppSelector(state => state.form.formResult);
@@ -29,21 +26,7 @@ const Country: FC = () => {
     const dispatch = useAppDispatch();
     const { pathname } = useLocation();
 
-    const [chartData, setChartData] = useState({});
-    const [metricData, setMetricData] = useState({});
     const [isSubmitting, setIsSubmitting] = useState(false);
-    
-    const getColorByValue = (value: number | null): string | null => {
-        if (value != null && value <= 35) {
-            return '#DD7474'; 
-        } else if (value != null && value > 35 && value < 70) {
-            return '#E1BC5C'; 
-        } else if (value != null && value >= 70){
-            return '#5ACA85'; 
-        } else {
-            return null;
-        }      
-    };
 
     const clickHandler = async (e: React.MouseEvent<HTMLButtonElement>): Promise<void> => {
         e.preventDefault();
@@ -51,7 +34,10 @@ const Country: FC = () => {
         try{
             await dispatch(postForm(form));
             await dispatch(getOtherInfo(form));
-            await dispatch(updateFormInfo({update: generateDefaultForm(JSON.parse(localStorage.getItem("country")))}));
+            const localStorageCountry = localStorage.getItem("country");
+            if (localStorageCountry !== null && typeof localStorageCountry === "string") {
+                await dispatch(updateFormInfo({ update: generateDefaultForm(JSON.parse(localStorageCountry)) }));
+            }
             await setIsSubmitting(false);
         } catch (error) {
             await setIsSubmitting(false);
@@ -65,7 +51,10 @@ const Country: FC = () => {
         try{
             await dispatch(clarifyCountryInfo({logincode: country.country, password: country.flag_photo}));
             await dispatch(getOtherInfo(form));
-            await dispatch(updateFormInfo({update: generateDefaultForm(JSON.parse(localStorage.getItem("country")))}));
+            const localStorageCountry = localStorage.getItem("country");
+            if (localStorageCountry !== null && typeof localStorageCountry === "string") {
+                await dispatch(updateFormInfo({ update: generateDefaultForm(JSON.parse(localStorageCountry)) }));
+            }
             await setIsSubmitting(false);
         } catch (error) {
             await setIsSubmitting(false);
@@ -88,34 +77,6 @@ const Country: FC = () => {
             console.log("Error");
         }
     }, []); 
-
-    useEffect(() => {
-        if (countriesPublic && countriesPublic.countries) {
-            setChartData({
-                labels: countriesPublic.countries.map((item) => item.country),
-                datasets: [
-                    {
-                        label: 'Average live level',
-                        data: countriesPublic.countries.map((item) => item.average_live_level),
-                        backgroundColor: countriesPublic.countries.map((item) => getColorByValue(item.average_live_level)),
-                    },
-                ],
-            });
-        }
-    
-        if (countriesPublic && countriesPublic.ecology) {
-            setMetricData({
-                labels: countriesPublic.ecology.map((item) => item.round),
-                datasets: [
-                    {
-                        label: 'Ecology',
-                        data: countriesPublic.ecology.map((item) => item.value),
-                        backgroundColor: countriesPublic.ecology.map((item) => getColorByValue(item.value)),
-                    },
-                ],
-            });
-        }
-    }, [countriesPublic]);
 
     return (
         <div>
@@ -146,8 +107,6 @@ const Country: FC = () => {
                                     {country && country.is_president ? (
                                         <div className={cl.country__documents_president}>
                                             <PresidentPage 
-                                                metricData={metricData} 
-                                                chartData={chartData} 
                                                 clickHandler={clickHandler} 
                                                 resetInfo={updateMinisterInformation}
                                             />
@@ -158,11 +117,7 @@ const Country: FC = () => {
                                             )} 
                                         </div>
                                     ) : country ? (
-                                        <MinisterPage 
-                                            metricData={metricData} 
-                                            chartData={chartData} 
-                                            clickHandler={updateMinisterInformation}
-                                        />                      
+                                        <MinisterPage clickHandler={updateMinisterInformation}/>                      
                                     ) : (<div>An error accured...</div>)}
                                 </div>
                             </div>

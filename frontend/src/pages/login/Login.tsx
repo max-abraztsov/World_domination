@@ -2,7 +2,6 @@ import axios from 'axios';
 import React, {FormEvent, useState, FC, useEffect} from 'react';
 import cl from "./Login.module.css" ;
 import { useAppDispatch, useAppSelector } from '../../hook';
-import { loginUser } from '../../store/auth/actionCreators';
 import { updateCountryInfo } from '../../store/countrySlice';
 import { toggleLogged } from '../../store/loginSlice';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -16,7 +15,6 @@ interface UserProps {
 
 const Login: FC = () => {
 
-    const login = useAppSelector(state => state.status);
     const country = useAppSelector(state => state.country);
 
     const dispatch = useAppDispatch();

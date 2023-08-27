@@ -7,7 +7,6 @@ import Login from './pages/login/Login'
 import Country from './pages/country/Country'
 import Home from './pages/home/Home'
 import Page404 from "./pages/404page/Page404"
-import Admin from "./pages/admin/Admin"
 import { useAppSelector, useAppDispatch } from "./hook"
 import { toggleLogged } from "./store/loginSlice"
 
@@ -15,8 +14,6 @@ import { toggleLogged } from "./store/loginSlice"
 function App() {
 
   const loginState = useAppSelector(state => state.status);
-  const country = useAppSelector(state => state.country);
-  const form = useAppSelector(state => state.form);
   const dispatch = useAppDispatch();
 
   const [authenticationChecked, setAuthenticationChecked] = useState(false);
@@ -48,7 +45,6 @@ function App() {
           ):(
             <Route path="/login" element={<Login/>}/>
           )}
-          {/* <Route path="/wd-admin" element={<Admin/>}/> */}
           <Route path="*" element={<Page404/>}/>
           <Route path="/" element={<Home/>}/>
         </Routes>

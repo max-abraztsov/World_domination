@@ -11,7 +11,7 @@ main{
 .main_overlay{
     display: flex;
     justify-content: center;
-    background-image: url(./../../assets/main-background-image.jpg);
+    background-image: url(./../../assets/background-login.webp);
     background-size: cover;
     background-position: 50% 50%;
     background-repeat: no-repeat;
@@ -57,7 +57,7 @@ main{
 
 .main_button__red{
     border-radius: 19px;
-    background: #F2716B;
+    background: #08275E;
     max-width: 245px;
     transition: 0.3s;
 }
@@ -307,12 +307,12 @@ main{
     max-width: 340px;
     padding: 20px 66px;
     border-radius: 20px;
-    background: #F2716B;
+    background: #256985;
     transition: 0.3s;
 }
 
 .game_join:hover{
-    background: #38758E;
+    background: #04083b;
     transition: 0.3s;
 }
 
@@ -402,4 +402,11 @@ main{
     .game_information__grafic h2{
         font-size: 40px;
     }
+}
+@media (max-width: 500px){
+    .game_join{
+        padding: 10px 25px;
+        border-radius: 10px;
+    }
+
 }

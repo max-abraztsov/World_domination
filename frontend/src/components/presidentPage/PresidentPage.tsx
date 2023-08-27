@@ -18,25 +18,13 @@ import {
 } from '../../store/countrySlice';
 import bomb from "../../assets/rocket-counter.svg"
 
-interface chartData {
-    labels: string,
-    datasets: [ 
-        {
-            label: string,
-            data: number,
-            backgroundColor: string, 
-        }, 
-    ]
-}
 
 interface PresidentPageProps{
-    metricData: chartData,
-    chartData: chartData,
     clickHandler: (e: React.MouseEvent<HTMLButtonElement>) => Promise<void>;
     resetInfo: (e:  React.MouseEvent<HTMLButtonElement>) => Promise<void>;
 }
 
-const PresidentPage: FC<PresidentPageProps> = ({metricData, chartData, clickHandler, resetInfo}) => {
+const PresidentPage: FC<PresidentPageProps> = ({clickHandler, resetInfo}) => {
     
     const form = useAppSelector(state => state.form.formResult);
     const country = useAppSelector(state => state.country.initialStateCountry);
@@ -96,8 +84,8 @@ const PresidentPage: FC<PresidentPageProps> = ({metricData, chartData, clickHand
                     </div>
                 </div>
                 <section>
-                    <GrowthChart data={metricData}/> 
-                    <BarChart data={chartData}/>  
+                    <GrowthChart/> 
+                    <BarChart/>  
                     <div className={cl.countries__information}>
                         {countriesPublic.countries && countriesPublic.countries.map( (country, index) => 
                             <div className={cl.countries__country} key={`${country.country }-${index}`}>
@@ -146,7 +134,6 @@ const PresidentPage: FC<PresidentPageProps> = ({metricData, chartData, clickHand
                                     key={`${item.city_name}${item.photo}`}
                                     city={item} 
                                     id={index} 
-                                    isPresident={country.is_president}
                                 />                     
                             )}
                         </section>

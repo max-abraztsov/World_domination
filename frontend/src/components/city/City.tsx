@@ -8,12 +8,11 @@ import redCross from "./../../assets/not-shield14.svg"
 
 interface CityProps{
    city: ICity;
-   isPresident: boolean; 
    id: number;
    budget: number;
 }
 
-const City: FC<CityProps> = ({city, isPresident, id, budget}) => {
+const City: FC<CityProps> = ({city, id, budget}) => {
     
     const dispatch = useAppDispatch();
     const form = useAppSelector(state => state.form.formResult);

@@ -1,6 +1,6 @@
 import {configureStore} from "@reduxjs/toolkit"
 import countryReducer from "./countrySlice"
-import adminReducers from "./adminSlice"
+// import adminReducers from "./adminSlice"
 import loginReducers from "./loginSlice"
 import authReducers from "./auth/authSlice"
 
@@ -13,7 +13,7 @@ const store = configureStore({
         form: countryReducer.formReducer,
         countriesPublic: countryReducer.countriesPublic,
         // Admin reducers
-        countries: adminReducers.countriesReducer, // Reducer for information about all countries 
+        // countries: adminReducers.countriesReducer, // Reducer for information about all countries 
         // Login reducers
         status: loginReducers.statusReducer, // Reducer for user status
         auth: authReducers,

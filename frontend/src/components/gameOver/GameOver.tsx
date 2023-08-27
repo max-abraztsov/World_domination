@@ -19,54 +19,10 @@ const GameOver: FC = () => {
 
     const [yourPlace, setYourPlace] = useState(sortedCountries.findIndex(item => item.country === country));
 
-    const [chartData, setChartData] = useState({});
-    const [metricData, setMetricData] = useState({});
-
-    const getColorByValue = (value: number | null): string | null => {
-        if (value != null && value <= 35) {
-            return '#DD7474'; 
-        } else if (value != null && value > 35 && value < 70) {
-            return '#E1BC5C'; 
-        } else if (value != null && value >= 70){
-            return '#5ACA85'; 
-        } else {
-            return null;
-        }      
-    };
-
     useEffect(() => {
         const yourPlace = sortedCountries.findIndex(item => item.country === country);
         setYourPlace(yourPlace);
     }, [sortedCountries, country]);
-
-    useEffect(() => {
-        if (countriesPublic && countriesPublic.countries) {
-            setChartData({
-                labels: countriesPublic.countries.map((item) => item.country),
-                datasets: [
-                    {
-                        label: 'Average live level',
-                        data: countriesPublic.countries.map((item) => item.average_live_level),
-                        backgroundColor: countriesPublic.countries.map((item) => getColorByValue(item.average_live_level)),
-                    },
-                ],
-            });
-        }
-    
-        if (countriesPublic && countriesPublic.ecology) {
-            setMetricData({
-                labels: countriesPublic.ecology.map((item) => item.round),
-                datasets: [
-                    {
-                        label: 'Ecology',
-                        data: countriesPublic.ecology.map((item) => item.value),
-                        backgroundColor: countriesPublic.ecology.map((item) => getColorByValue(item.value)),
-                    },
-                ],
-            });
-        }
-        console.log(chartData, metricData);
-    }, [countriesPublic]);
 
     return (
         <div>
@@ -93,7 +49,7 @@ const GameOver: FC = () => {
             <div className={[cl.game_over, cl.info].join(" ")}> 
                 <div className={[cl.container, cl.container_charts].join(" ")}>
                     <div className={cl.game_over_info}> 
-                        <BarChart data={chartData}/>  
+                        <BarChart/>  
                         <div className={cl.countries__information}>
                             {countriesPublic.countries.map( (country, index) => 
                                 <div className={cl.countries__country} key={`${country.country }-${index}`}>

@@ -1,45 +1,59 @@
-import {useEffect, useRef, FC} from 'react';
+import {useEffect, useRef, FC, useState} from 'react';
 import { Chart } from 'react-chartjs-2'
+import { useAppSelector } from '../../../hook';
 
 
-interface ChartData {
-    labels: string[];
-    datasets: ChartDataset[];
-}
+const GrowthChart: FC = () => {
+
+    
+    const countriesPublic = useAppSelector(state => state.countriesPublic.initialStateCountriesPublic);
   
-interface ChartDataset {
-    label: string;
-    data: number[];
-    backgroundColor: () => string;
-}
-  
-interface Props {
-    data: ChartData;
-}
 
-const GrowthChart: FC<Props> = ({ data }) => {
-    const chartRef = useRef<Chart | null>(null);
+    const [labels, setLabels] = useState<string[]>([]);
+    const [data, setData] = useState<(number | null)[]>([]);
+    const [backgroundColor, setBackgroundColor] = useState<string>("#5ACA84");
+
+    const chartRef = useRef<any>(null);
 
     useEffect(() => {
-        if (chartRef.current) {
-        chartRef.current.destroy(); // Уничтожаем предыдущий график, если он существует
+        if (countriesPublic && countriesPublic.ecology){
+            setLabels(countriesPublic.ecology.map((item) => item.round))
+            setData(countriesPublic.ecology.map((item) => item.value));
+            setBackgroundColor("#5ACA85")
         }
+      }, [countriesPublic]);
 
-        chartRef.current = new Chart(document.getElementById('myChart2') as HTMLCanvasElement, {
-        type: 'line',
-        data: data,
-        options: {
-            scales: {
-            x: {
-                beginAtZero: true,
+    useEffect(() => {
+        if (labels.length != 0) {
+            if (chartRef.current) {
+                chartRef.current.destroy();
+            }
+            chartRef.current = new Chart(document.getElementById('myChart2') as HTMLCanvasElement, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        label: 'Ecology',
+                        data: data,
+                        backgroundColor: backgroundColor,
+                    },
+                ],
             },
-            y: {
-                beginAtZero: true,
+            options: {
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                    },
+                    y: {
+                        beginAtZero: true,
+                        max: 100,
+                    },
+                },
             },
-            },
-        },
-        });
-    }, [data]);
+            });
+        }
+    }, [labels]);
 
     return <canvas id="myChart2" />;
 };

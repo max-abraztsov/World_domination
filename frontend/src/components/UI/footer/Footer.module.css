@@ -47,23 +47,24 @@ footer{
     margin-right: 80px;
 }
 
-.footer_kontakt p{
-    color: #FFF;
-    font-family: Arimo;
-    font-size: 18px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 104.49%;
-}
-
-.footer_kontakt p span{
+.kontakt_title{
     display: inline-block;
-    margin-bottom: 18px;
+    margin-bottom: 14px;
     color: #FFF;
     font-family: Arimo;
     font-size: 24px;
     font-style: normal;
     font-weight: 700;
+    line-height: 104.49%;
+}
+
+.kontakt_text{
+    display: inline-block;
+    color: #FFF;
+    font-family: Arimo;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
     line-height: 104.49%;
 }
 
@@ -113,5 +114,3 @@ footer{
         display: none;
     }
 }
-
-

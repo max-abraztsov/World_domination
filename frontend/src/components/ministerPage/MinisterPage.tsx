@@ -14,25 +14,11 @@ import {
 } from '../../store/countrySlice';
 import bomb from "../../assets/rocket-counter.svg"
 
-interface chartData {
-    labels: string,
-    datasets: [ 
-        {
-            label: string,
-            data: number,
-            backgroundColor: string, 
-        }, 
-    ]
-}
-
 interface MinisterPageProps{
-    metricData: chartData,
-    chartData: chartData,
     clickHandler: (e: React.MouseEvent<HTMLButtonElement>) => Promise<void>;
 }
 
-
-const MinisterPage: FC<MinisterPageProps> = ({chartData, metricData, clickHandler}) => {
+const MinisterPage: FC<MinisterPageProps> = ({clickHandler}) => {
 
     const dispatch = useAppDispatch();
     const countriesPublic = useAppSelector( state => state.countriesPublic.initialStateCountriesPublic);
@@ -71,10 +57,7 @@ const MinisterPage: FC<MinisterPageProps> = ({chartData, metricData, clickHandle
         let count = 0;
         country.cities.forEach( item => {
             if( item.state == false){
-                console.log(5000);
                count++;
-            } else {
-                console.log(9000);
             }
         })
         if(count == 4){
@@ -91,8 +74,8 @@ const MinisterPage: FC<MinisterPageProps> = ({chartData, metricData, clickHandle
                     </div>
                 </div>
                 <section>
-                    <GrowthChart data={metricData}/> 
-                    <BarChart data={chartData}/>  
+                    <GrowthChart/> 
+                    <BarChart/>  
                     <div className={cl.countries__information}>
                         {countriesPublic.countries.map( (country, index) => 
                             <div className={cl.countries__country} key={`${country.country }-${index}`}>
@@ -142,7 +125,6 @@ const MinisterPage: FC<MinisterPageProps> = ({chartData, metricData, clickHandle
                                 key={`${item.city_name}${item.photo}`} 
                                 city={item} 
                                 id={index}
-                                isPresident={country.is_president}
                             />                     
                         )}
                     </section>
