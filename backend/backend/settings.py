@@ -1,5 +1,6 @@
 from pathlib import Path 
 from rest_framework.permissions import AllowAny 
+from decouple import config
  
 # Build paths inside the project like this: BASE_DIR / 'subdir'. 
 BASE_DIR = Path(__file__).resolve().parent.parent 
@@ -9,7 +10,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/ 
  
 # SECURITY WARNING: keep the secret key used in production secret! 
-SECRET_KEY = 'django-insecure-8v(ee)1$5uh0+l7f^65spl%wn6ya!#c1z&_r%xsn=#bljv_&^^' 
+SECRET_KEY = config('SECRET_KEY')
  
 # SECURITY WARNING: don't run with debug turned on in production! 
 DEBUG = True 
@@ -84,19 +85,17 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # Database 
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases 
  
-DATABASES = { 
+DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'worlddomination',
-        'USER': 'root',
-        'PASSWORD': '',
-        'HOST': '127.0.0.1',
-        'PORT': '3306',
-        'OPTIONS': {
-            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
-        },
+        'ENGINE': config('DB_ENGINE'),
+        'NAME': config('DB_NAME'),
+        'USER': config('DB_USER'),
+        'PASSWORD': config('DB_PASSWORD'),
+        'HOST': config('DB_HOST'),
+        'PORT': config('DB_PORT'),
+        'OPTIONS': config('DB_OPTIONS', default='', cast=dict),
     }
-} 
+}
 
 
  
