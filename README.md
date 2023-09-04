@@ -1,3 +1,4 @@
+![main-baner](https://github.com/max-abraztsov/World_domination/assets/85298173/23854692-d955-4fba-a3f9-eb5f38a9ff11)
 # World Domination - Discord Web Game
 
 World Domination - Web Game for Discord offers an exhilarating online experience where players engage in strategic competitive gameplay between nations. The game unfolds within Discord, utilizing a specialized web application that enables players to interact, negotiate, and observe the consequences of their actions from previous rounds. The core concept of the game revolves around communication and establishing connections with other countries, but with an intriguing twist: even the most loyal ally might turn into a traitor and launch a nuclear missile against you when least expected.
@@ -15,15 +16,15 @@ In this dynamic and unpredictable game, players must skillfully manage diplomati
 
 Become the nation with the highest quality of life!
 
-## Login and Password for test (test country)
+## Screenshots and GIF from the game
 
-### For president:
-Login: GB230666
-Password: Britain2023
+![screens-from-president-page](https://github.com/max-abraztsov/World_domination/assets/85298173/f30d6735-6ef5-4045-8d01-1f7b61a624e4)
+![game-over-baner](https://github.com/max-abraztsov/World_domination/assets/85298173/2d4bfd27-9507-4a60-a96c-ca74531fbe40)
 
-### For minister:
-Login: GB230665
-Password: Britain2023Minister
+### Animation of printer
+![ezgif com-crop](https://github.com/max-abraztsov/World_domination/assets/85298173/f26a37b3-9f2e-4004-b7e7-6ca21bbe1bf7)
+
+## Access to the server is currently restricted!
 
 ## Actual plans 
 
